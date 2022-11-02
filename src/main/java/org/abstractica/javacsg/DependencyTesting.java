@@ -4,6 +4,6 @@ public class DependencyTesting
 {
 	public static void test()
 	{
-		System.out.println("It works!");
+		System.out.println("It works and now it is different!");
 	}
 }
