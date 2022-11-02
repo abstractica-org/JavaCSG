@@ -24,7 +24,8 @@
         <dependency>
             <groupId>com.github.abstractica-org</groupId>
             <artifactId>JavaOpenSCAD</artifactId>
-            <version>0.1.0-alpha.1</version>
+            <!--suppress MavenModelInspection -->
+            <version>main-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
