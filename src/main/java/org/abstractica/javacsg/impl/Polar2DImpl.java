@@ -1,6 +1,6 @@
 package org.abstractica.javacsg.impl;
 
-import org.abstractica.javacsg.intf.Angle;
+import org.abstractica.javacsg.intf.angle.Angle;
 import org.abstractica.javacsg.intf.csg2D.Polar2D;
 
 public class Polar2DImpl implements Polar2D

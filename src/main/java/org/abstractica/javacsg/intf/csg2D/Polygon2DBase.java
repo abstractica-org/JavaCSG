@@ -1,11 +1,12 @@
 package org.abstractica.javacsg.intf.csg2D;
 
 
+import org.abstractica.javaopenscad.JavaOpenSCAD;
 import org.abstractica.javaopenscad.intf.Geometry2D;
 import org.abstractica.javaopenscad.intf.polygon.Path;
 import org.abstractica.javaopenscad.intf.polygon.Vector2D;
 
-public interface Polygon2DBase extends Rotation2DBase
+public interface Polygon2DBase extends JavaOpenSCAD
 {
 	default Geometry2D polygon2DGeometry(Iterable<Vector2D> vertices)
 	{

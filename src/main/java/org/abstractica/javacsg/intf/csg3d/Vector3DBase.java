@@ -2,7 +2,7 @@ package org.abstractica.javacsg.intf.csg3d;
 
 import org.abstractica.javacsg.intf.csg2D.CSG2DBase;
 
-public interface Vector3DBase extends CSG2DBase
+public interface Vector3DBase
 {
 	Vector3D vector3D(double x, double y, double z);
 	default double length(Vector3D v)

@@ -4,25 +4,25 @@ import org.abstractica.javaopenscad.impl.JavaOpenSCADImpl;
 import org.abstractica.javaopenscad.intf.Geometry2D;
 import org.abstractica.javaopenscad.intf.polygon.Polygon2D;
 import org.abstractica.javaopenscad.intf.polygon.Vector2D;
-import org.abstractica.javacsg.intf.Angle;
-import org.abstractica.javacsg.intf.CSG;
+import org.abstractica.javacsg.intf.angle.Angle;
+import org.abstractica.javacsg.JavaCSG;
 import org.abstractica.javacsg.intf.csg2D.Polar2D;
 import org.abstractica.javacsg.intf.csg3d.Vector3D;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CSGImpl extends JavaOpenSCADImpl implements CSG
+public class JavaCSGImpl extends JavaOpenSCADImpl implements JavaCSG
 {
 	private static final double DEGREES_TO_ROTATIONS = 1.0/360.0;
 	private static final double RADIANS_TO_ROTATIONS = 1.0/(2.0*Math.PI);
 
-	public CSGImpl(String moduleDirectoryName, boolean binarySTL)
+	public JavaCSGImpl(String moduleDirectoryName, boolean binarySTL)
 	{
 		super(moduleDirectoryName, binarySTL);
 	}
 
-	public CSGImpl()
+	public JavaCSGImpl()
 	{
 		super(null, false);
 	}

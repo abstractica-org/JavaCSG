@@ -1,9 +1,11 @@
 package org.abstractica.javacsg.intf.csg3d;
 
+import org.abstractica.javacsg.intf.angle.AngleBase;
+import org.abstractica.javaopenscad.JavaOpenSCAD;
 import org.abstractica.javaopenscad.intf.Geometry3DFrom3D;
-import org.abstractica.javacsg.intf.Angle;
+import org.abstractica.javacsg.intf.angle.Angle;
 
-public interface Rotation3DBase extends Translation3DBase
+public interface Rotation3DBase extends AngleBase
 {
 	default Geometry3DFrom3D rotate3D(Angle x, Angle y, Angle z)
 	{

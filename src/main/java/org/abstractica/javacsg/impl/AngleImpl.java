@@ -1,6 +1,6 @@
 package org.abstractica.javacsg.impl;
 
-import org.abstractica.javacsg.intf.Angle;
+import org.abstractica.javacsg.intf.angle.Angle;
 
 public class AngleImpl implements Angle
 {

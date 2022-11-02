@@ -4,7 +4,7 @@ package org.abstractica.javacsg.intf.csg2D;
 import org.abstractica.javaopenscad.intf.Geometry2D;
 import org.abstractica.javaopenscad.intf.polygon.Vector2D;
 
-public interface CSG2DBase extends Polygon2DBase
+public interface CSG2DBase extends Vector2DBase, Polar2DBase, Polygon2DBase, Translation2DBase, Rotation2DBase
 {
 	//Ellipse based geometry
 	Geometry2D ellipse(double diameterX, double diameterY, int angularResolution);

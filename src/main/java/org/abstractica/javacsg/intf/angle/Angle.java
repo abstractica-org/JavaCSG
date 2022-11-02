@@ -1,4 +1,4 @@
-package org.abstractica.javacsg.intf;
+package org.abstractica.javacsg.intf.angle;
 
 public interface Angle
 {

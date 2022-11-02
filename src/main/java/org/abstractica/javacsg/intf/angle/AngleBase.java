@@ -1,6 +1,7 @@
-package org.abstractica.javacsg.intf;
+package org.abstractica.javacsg.intf.angle;
 
-import org.abstractica.javaopenscad.intf.JavaOpenSCAD;
+import org.abstractica.javacsg.intf.angle.Angle;
+import org.abstractica.javaopenscad.JavaOpenSCAD;
 
 public interface AngleBase extends JavaOpenSCAD
 {
