@@ -34,7 +34,6 @@
             <artifactId>JavaOpenSCAD</artifactId>
             <!--suppress MavenModelInspection -->
             <version>main-SNAPSHOT</version>
-            <!--<version>8833d8ac26</version>-->
         </dependency>
     </dependencies>
 
