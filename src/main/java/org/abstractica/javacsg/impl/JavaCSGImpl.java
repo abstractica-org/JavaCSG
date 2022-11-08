@@ -2,12 +2,11 @@ package org.abstractica.javacsg.impl;
 
 import org.abstractica.javaopenscad.impl.JavaOpenSCADImpl;
 import org.abstractica.javaopenscad.intf.Geometry2D;
-import org.abstractica.javaopenscad.intf.polygon.Polygon2D;
-import org.abstractica.javaopenscad.intf.polygon.Vector2D;
 import org.abstractica.javacsg.intf.angle.Angle;
 import org.abstractica.javacsg.JavaCSG;
 import org.abstractica.javacsg.intf.csg2D.Polar2D;
-import org.abstractica.javacsg.intf.csg3d.Vector3D;
+import org.abstractica.javaopenscad.intf.Polygon2D;
+import org.abstractica.javaopenscad.intf.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,12 +50,6 @@ public class JavaCSGImpl extends JavaOpenSCADImpl implements JavaCSG
 		return new Polar2DImpl(r, theta);
 	}
 
-	@Override
-	public Vector3D vector3D(double x, double y, double z)
-	{
-		return new Vector3DImpl(x, y, z);
-	}
-
 	private Geometry2D d1Circle(int angularResolution)
 	{
 		List<Vector2D> vertices = new ArrayList<>();
@@ -68,9 +61,8 @@ public class JavaCSGImpl extends JavaOpenSCADImpl implements JavaCSG
 			Vector2D vector = asVector2D(polar);
 			vertices.add(vector);
 		}
-		Polygon2D polygon = polygon2D(vertices);
-		Geometry2D circle =  polygon2DGeometry(polygon);
-		return module(circle);
+		Polygon2D polygon = polygon2D(vertices, 1);
+		return polygon2DGeometry(polygon);
 	}
 
 	private Geometry2D d1Rect()
@@ -80,18 +72,18 @@ public class JavaCSGImpl extends JavaOpenSCADImpl implements JavaCSG
 		vertices.add(vector2D(0.5, 0.5));
 		vertices.add(vector2D(-0.5, 0.5));
 		vertices.add(vector2D(-0.5, -0.5));
-		Geometry2D rect =  polygon2DGeometry(vertices);
-		return module(rect);
+		Polygon2D polygon = polygon2D(vertices, 1);
+		return polygon2DGeometry(polygon);
 	}
 
 	@Override
-	public Geometry2D ellipse(double diameterX, double diameterY, int angularResolution)
+	public Geometry2D ellipse2D(double diameterX, double diameterY, int angularResolution)
 	{
 		return module(scale2D(diameterX, diameterY).add(d1Circle(angularResolution)));
 	}
 
 	@Override
-	public Geometry2D rectangle(double xSize, double ySize)
+	public Geometry2D rectangle2D(double xSize, double ySize)
 	{
 		return module(scale2D(xSize, ySize).add(d1Rect()));
 	}

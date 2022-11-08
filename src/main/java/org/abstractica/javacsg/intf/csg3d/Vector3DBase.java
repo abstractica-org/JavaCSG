@@ -1,10 +1,11 @@
 package org.abstractica.javacsg.intf.csg3d;
 
-import org.abstractica.javacsg.intf.csg2D.CSG2DBase;
 
-public interface Vector3DBase
+import org.abstractica.javacsg.intf.angle.AngleBase;
+import org.abstractica.javaopenscad.intf.Vector3D;
+
+public interface Vector3DBase extends AngleBase
 {
-	Vector3D vector3D(double x, double y, double z);
 	default double length(Vector3D v)
 	{
 		return Math.sqrt(v.x()*v.x() + v.y()*v.y() + + v.z()*v.z());
