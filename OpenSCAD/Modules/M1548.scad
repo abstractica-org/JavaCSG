@@ -1,9 +1,6 @@
-translate([0.0, 0.0, 12.5])
+linear_extrude(height = 10.0, center = true, twist = 0.0, scale = 0.5, slices = 1, convexity = 1)
 {
-    linear_extrude(height = 15.0, center = true, twist = 0.0, scale = 1.0, slices = 1, convexity = 1)
-    {
-        M1544();
-    }
+    M1544();
 }
 
 module M1544()

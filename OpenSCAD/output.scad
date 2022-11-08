@@ -1,6 +1,6 @@
-M26();
+M1558();
 
-module M26()
+module M1558()
 {
-    import("C:/Abstractica/Libraries/Java/JavaCSG/OpenSCAD/Modules/M23.stl", convexity=30);
+    import("C:/Abstractica/Libraries/Java/JavaCSG/OpenSCAD/Modules/M1556.stl", convexity=30);
 }
