@@ -11,7 +11,7 @@ public class TestRectangle
 {
 	public static void main(String[] args) throws IOException
 	{
-		CSG2DBase gb = new JavaCSGImpl();
+		CSG2DBase gb = new JavaCSGImpl(true);
 		Geometry2D circle = gb.circle2D(10, 128);
 		gb.generateOpenSCADFile("OpenSCAD/output.scad", circle);
 		System.out.println(AllStrings.listAllStrings());

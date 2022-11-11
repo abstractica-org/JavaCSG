@@ -10,7 +10,7 @@ public class TestBox
 {
 	public static void main(String[] args) throws IOException
 	{
-		JavaCSG csg = new JavaCSGImpl("C:/Abstractica/Libraries/Java/JavaCSG/OpenSCAD/Modules", true);
+		JavaCSG csg = new JavaCSGImpl(true);
 		Geometry3D box = csg.box3D(10, 20, 30, false);
 		csg.generateOpenSCADFile("C:/Abstractica/Libraries/Java/JavaCSG/OpenSCAD/output.scad", box);
 	}

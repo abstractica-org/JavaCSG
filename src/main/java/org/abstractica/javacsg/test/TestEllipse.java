@@ -11,7 +11,7 @@ public class TestEllipse
 {
 	public static void main(String[] args) throws IOException
 	{
-		CSG2DBase gb = new JavaCSGImpl();
+		CSG2DBase gb = new JavaCSGImpl(true);
 		Geometry2D ellipse = gb.ellipse2D(gb.vector2D(10,20), gb.vector2D(0, -10), 128);
 		//Geometry2D ellipse = gb.ellipse(0, 10, -10, 20, 128);
 		gb.generateOpenSCADFile("OpenSCAD/output.scad", ellipse);

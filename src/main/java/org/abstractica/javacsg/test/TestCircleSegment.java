@@ -11,7 +11,7 @@ public class TestCircleSegment
 {
 	public static void main(String[] args) throws IOException
 	{
-		CSG2DBase gb = new JavaCSGImpl();
+		CSG2DBase gb = new JavaCSGImpl(true);
 		Geometry2D circleSegment = gb.circle2DSegment(
 				10,
 				gb.degrees(45),

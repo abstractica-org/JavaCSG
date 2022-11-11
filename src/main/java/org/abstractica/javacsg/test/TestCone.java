@@ -10,7 +10,7 @@ public class TestCone
 {
 	public static void main(String[] args) throws IOException
 	{
-		JavaCSG csg = new JavaCSGImpl("C:/Abstractica/Libraries/Java/JavaCSG/OpenSCAD/Modules", true);
+		JavaCSG csg = new JavaCSGImpl(true);
 		Geometry3D cone = csg.cone3D(10, 5, 10, false, 1024);
 		csg.generateOpenSCADFile("C:/Abstractica/Libraries/Java/JavaCSG/OpenSCAD/output.scad", cone);
 	}

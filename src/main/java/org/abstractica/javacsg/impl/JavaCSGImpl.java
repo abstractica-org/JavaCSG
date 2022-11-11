@@ -16,14 +16,14 @@ public class JavaCSGImpl extends JavaOpenSCADImpl implements JavaCSG
 	private static final double DEGREES_TO_ROTATIONS = 1.0/360.0;
 	private static final double RADIANS_TO_ROTATIONS = 1.0/(2.0*Math.PI);
 
-	public JavaCSGImpl(String moduleDirectoryName, boolean binarySTL)
+	public JavaCSGImpl(boolean useCache, boolean binarySTL)
 	{
-		super(moduleDirectoryName, binarySTL);
+		super(useCache, binarySTL);
 	}
 
-	public JavaCSGImpl()
+	public JavaCSGImpl(boolean useCache)
 	{
-		super(null, false);
+		super(useCache, true);
 	}
 
 	@Override
