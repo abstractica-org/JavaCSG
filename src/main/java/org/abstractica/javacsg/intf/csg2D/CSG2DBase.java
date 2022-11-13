@@ -13,17 +13,6 @@ import java.util.List;
 
 public interface CSG2DBase extends ExtrudeBase, Vector2DBase, Polar2DBase, Polygon2DBase, Translation2DBase, Rotation2DBase
 {
-	//Shortcut to polygon
-	default Geometry2D polygon2DGeometry(List<Vector2D> vertices, int convexity)
-	{
-		Polygon2D polygon = polygon2D(vertices, convexity);
-		return polygon2DGeometry(polygon);
-	}
-	default Geometry2D polygon2DGeometry(List<Vector2D> vertices, List<Path> paths, int convexity)
-	{
-		Polygon2D polygon = polygon2D(vertices, paths, convexity);
-		return polygon2DGeometry(polygon);
-	}
 	//Ellipse based geometry
 	Geometry2D ellipse2D(double diameterX, double diameterY, int angularResolution);
 	default Geometry2D circle2D(double diameter, int angularResolution)
