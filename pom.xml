@@ -33,7 +33,7 @@
             <groupId>com.github.abstractica-org</groupId>
             <artifactId>JavaOpenSCAD</artifactId>
             <!--suppress MavenModelInspection -->
-            <version>main-SNAPSHOT</version>
+            <version>Refactor-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
