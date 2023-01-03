@@ -15,27 +15,31 @@ public interface JavaCSG
 	// Vector2D
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Vector2D vector2D(double x, double y);
+	double sqrLength(Vector2D vector);
+	double length(Vector2D vector);
+	double dist(Vector2D vector1, Vector2D vector2);
+	Vector2D normalize(Vector2D vector);
+	Vector2D add(Vector2D vector1, Vector2D vector2);
+	Vector2D sub(Vector2D vector1, Vector2D vector2);
+	Vector2D mul(Vector2D vector, double scalar);
+	Vector2D div(Vector2D vector, double scalar);
+	double dot(Vector2D vector1, Vector2D vector2);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Polygon2D
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Geometry2D polygon2D(Iterable<Vector2D> vertices);
-	Geometry2D polygon2D(Iterable<Vector2D> vertices, Iterable<Iterable<Integer>> paths);
+	Geometry2D polygon2D(Iterable<Vector2D> vertices, Iterable<? extends Iterable<Integer>> paths);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 2D transformations
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Transform2D identity2D();
-	Transform2D compose(Transform2D... transforms);
-	Transform2D inverse(Transform2D transform);
+	Transform2D compose3D(Transform2D... transforms);
 	Transform2D translate2D(double x, double y);
 	Transform2D rotate2D(Angle angle);
 	Transform2D scale2D(double x, double y);
 	Transform2D mirror2D(double normX, double normY);
-
-	Vector2D transformPoint(Transform2D transform, Vector2D vector);
-	Vector2D transformDirection(Transform2D transform, Vector2D vector);
-	Geometry2D transform(Transform2D transform, Geometry2D geometry);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Resize 2D geometry
@@ -53,8 +57,8 @@ public interface JavaCSG
 	Geometry2D difference2D(Geometry2D filled, Iterable<Geometry2D> cutouts);
 	Geometry2D hull2D(Geometry2D... geometries);
 	Geometry2D hull2D(Iterable<Geometry2D> geometries);
-	Geometry2D minkowsky2D(Geometry2D... geometries);
-	Geometry2D minkowsky2D(Iterable<Geometry2D> geometries);
+	Geometry2D minkowski2D(Geometry2D... geometries);
+	Geometry2D minkowski2D(Iterable<Geometry2D> geometries);
 	Geometry2D offset2D(double delta, boolean chamfer, Geometry2D... geometries);
 	Geometry2D offset2D(double delta, boolean chamfer, Iterable<Geometry2D> geometries);
 	Geometry2D offsetRound2D(double radius, int angularResolution, Geometry2D... geometries);
@@ -65,17 +69,25 @@ public interface JavaCSG
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Text2D
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/*
-	OpenSCADTextFont textFont(String fontName, String fontStyle, String language, String script);
-	OpenSCADTextSize textSize(double size, double spacing);
-	OpenSCADTextAlignment textAlignment(OpenSCADTextAlignment.Direction direction, OpenSCADTextAlignment.Horizontal horizontal, OpenSCADTextAlignment.Vertical vertical);
-	OpenSCADTextAttributes textAttributes(OpenSCADTextFont font, OpenSCADTextSize size, OpenSCADTextAlignment alignment);
-	OpenSCADGeometry2D text(String text, OpenSCADTextAttributes attributes, int angularResolution);
-	*/
+	Geometry2D char2D(char ch, double height, int angularResolution);
+	Geometry2D char2D(char ch, double height, double width, int angularResolution);
+	double charWidth2D(double height);
+	double charBaseline2D(double height);
+	Geometry2D text2D(String text, double height, int angularResolution);
+
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Vector3D
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Vector3D vector3D(double x, double y, double z);
+	double sqrLength(Vector3D vector);
+	double length(Vector3D vector);
+	double dist(Vector3D vector1, Vector3D vector2);
+	Vector3D normalize(Vector3D vector);
+	Vector3D add(Vector3D vector1, Vector3D vector2);
+	Vector3D sub(Vector3D vector1, Vector3D vector2);
+	Vector3D mul(Vector3D vector, double scalar);
+	Vector3D div(Vector3D vector, double scalar);
+	double dot(Vector3D vector1, Vector3D vector2);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Matrix multiplication
@@ -98,15 +110,15 @@ public interface JavaCSG
 	// 3D transformations
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Transform3D identity3D();
-	Transform3D compose(Transform3D... transforms);
-	Transform3D inverse(Transform3D transform);
+	Transform3D compose3D(Transform3D... transforms);
 	Transform3D translate3D(double x, double y, double z);
 	Transform3D rotate3D(Angle angleX, Angle angleY, Angle angleZ);
-	Transform3D rotate3D(Vector3D axis, Angle angle);
+	Transform3D rotate3DX(Angle angle);
+	Transform3D rotate3DY(Angle angle);
+	Transform3D rotate3DZ(Angle angle);
+	//Transform3D rotate3D(Vector3D axis, Angle angle);
 	Transform3D scale3D(double x, double y, double z);
 	Transform3D mirror3D(double normX, double normY, double normZ);
-	Vector3D transform(Transform3D transform, Vector3D vector);
-	Geometry3D transform(Transform3D transform, Geometry3D geometry);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 3D operations
@@ -119,8 +131,8 @@ public interface JavaCSG
 	Geometry3D difference3D(Geometry3D solid, Iterable<Geometry3D> cutouts);
 	Geometry3D hull3D(Geometry3D... geometries);
 	Geometry3D hull3D(Iterable<Geometry3D> geometries);
-	Geometry3D minkowsky3D(Geometry3D... geometries);
-	Geometry3D minkowsky3D(Iterable<Geometry3D> geometries);
+	Geometry3D minkowski3D(Geometry3D... geometries);
+	Geometry3D minkowski3D(Iterable<Geometry3D> geometries);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 2D to 3D operations
@@ -128,10 +140,16 @@ public interface JavaCSG
 	Geometry3D linearExtrude(double height, double twistRotations, double scale, int slices, Geometry2D geometry);
 	Geometry3D rotateExtrude(double rotations, int angularResolution, Geometry2D geometry);
 
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// View geometry
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	void view(Geometry2D geometry);
+	void view(Geometry3D geometry);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Cache geometry
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//ToDo: Should these be removed and automated?
 	Geometry2D cache(Geometry2D geometry);
 	Geometry3D cache(Geometry3D geometry);
 
