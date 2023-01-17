@@ -8,7 +8,7 @@ public class TextExample
 {
 	public static void main(String[] args)
 	{
-		JavaCSGBase jcsg = new JavaCSGBaseOpenSCADImpl();
+		JavaCSGBase jcsg = new JavaCSGBaseOpenSCADImpl(true);
 		Geometry2D text = jcsg.text2D("Hello world!", 100, 1);
 		jcsg.view(text);
 	}

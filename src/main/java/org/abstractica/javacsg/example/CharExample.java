@@ -8,7 +8,7 @@ public class CharExample
 {
 	public static void main(String[] args)
 	{
-		JavaCSGBase jcsg = new JavaCSGBaseOpenSCADImpl();
+		JavaCSGBase jcsg = new JavaCSGBaseOpenSCADImpl(true);
 		Geometry2D ch = jcsg.char2D('f', 10.0,4);
 		jcsg.view(ch);
 	}

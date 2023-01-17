@@ -11,7 +11,7 @@ public class BoxTest
 {
 	public static void main(String[] args)
 	{
-		JavaCSGBase base = new JavaCSGBaseOpenSCADImpl();
+		JavaCSGBase base = new JavaCSGBaseOpenSCADImpl(true);
 		JavaCSG csg = new JavaCSGImpl(base);
 
 

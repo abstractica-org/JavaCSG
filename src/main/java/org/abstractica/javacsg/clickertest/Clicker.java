@@ -13,7 +13,7 @@ public class Clicker
 {
 	public static void main(String[] args)
 	{
-		JavaCSGBase jcsg = new JavaCSGBaseOpenSCADImpl();
+		JavaCSGBase jcsg = new JavaCSGBaseOpenSCADImpl(true);
 		List<Vector2D> vertices = new ArrayList<>();
 		vertices.add(jcsg.vector2D(0, 0));
 		vertices.add(jcsg.vector2D(4, 0));

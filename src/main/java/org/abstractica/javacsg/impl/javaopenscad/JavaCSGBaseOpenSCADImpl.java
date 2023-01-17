@@ -23,9 +23,9 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	private final OpenSCADTextAttributes textAttributes;
 	private final double textScale;
 
-	public JavaCSGBaseOpenSCADImpl()
+	public JavaCSGBaseOpenSCADImpl(boolean useCache)
 	{
-		this.javaOpenSCAD = new JavaOpenSCADImpl(true);
+		this.javaOpenSCAD = new JavaOpenSCADImpl(useCache);
 		OpenSCADTextFont font = javaOpenSCAD.textFont("Consolas", "Regular", "en", "latin");
 		OpenSCADTextSize textSize = javaOpenSCAD.textSize(10.0, 1);
 		OpenSCADTextAlignment alignment = javaOpenSCAD.textAlignment(
