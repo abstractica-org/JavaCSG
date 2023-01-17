@@ -13,11 +13,15 @@ public class BoxTest
 	{
 		JavaCSGBase base = new JavaCSGBaseOpenSCADImpl();
 		JavaCSG csg = new JavaCSGImpl(base);
+
+
 		Geometry3D box = csg.box3D(10, 20, 30, true);
 		Transform3D rotate = csg.rotate3DY(csg.degrees(45));
 		box = rotate.transform(box);
-		Geometry3D cylinder = csg.cylinder3D(10, 40, 64, true);
+		Geometry3D cylinder = csg.cylinder3D(10, 40, 32, true);
 		Geometry3D diff = csg.difference3D(box, cylinder);
-		csg.view(diff);
+
+
+		csg.view(csg.cache(diff));
 	}
 }

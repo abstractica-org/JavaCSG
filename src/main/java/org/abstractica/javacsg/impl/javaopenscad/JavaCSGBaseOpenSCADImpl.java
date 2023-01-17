@@ -818,8 +818,15 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	public Geometry3D cache(Geometry3D geometry)
 	{
 		OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
-		OpenSCADGeometry3D cached = javaOpenSCAD.module(openSCADGeometry);
-		return new Geometry3DImpl(cached);
+		try
+		{
+			OpenSCADGeometry3D cached = javaOpenSCAD.cacheGeometry3D(openSCADGeometry);
+			return new Geometry3DImpl(cached);
+		} catch (IOException e)
+		{
+			throw new RuntimeException("Could not cache geometry!", e);
+		}
+
 	}
 
 	@Override
