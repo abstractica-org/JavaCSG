@@ -2,9 +2,9 @@ package org.abstractica.javacsg.clickertest;
 
 import org.abstractica.javacsg.Geometry2D;
 import org.abstractica.javacsg.Geometry3D;
-import org.abstractica.javacsg.JavaCSG;
+import org.abstractica.javacsg.JavaCSGBase;
 import org.abstractica.javacsg.Vector2D;
-import org.abstractica.javacsg.impl.javaopenscad.JavaCSGOpenSCADImpl;
+import org.abstractica.javacsg.impl.javaopenscad.JavaCSGBaseOpenSCADImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ public class CLickerCutout
 {
 	public static void main(String[] args)
 	{
-		JavaCSG jcsg = new JavaCSGOpenSCADImpl();
+		JavaCSGBase jcsg = new JavaCSGBaseOpenSCADImpl();
 		List<Vector2D> vertices = new ArrayList<>();
 		vertices.add(jcsg.vector2D(0, -0.1));
 		vertices.add(jcsg.vector2D(4, -0.1));

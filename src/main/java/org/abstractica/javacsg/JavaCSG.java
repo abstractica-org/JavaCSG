@@ -1,161 +1,97 @@
 package org.abstractica.javacsg;
 
-import java.io.IOException;
-
-public interface JavaCSG
+public interface JavaCSG extends JavaCSGBase
 {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Angle
+	// 2D shapes
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Angle rotations(double rotations);
-	Angle degrees(double degrees);
-	Angle radians(double radians);
+	Geometry2D circle2D(double diameter, int angularResolution);
+
+	Geometry2D cutoutPie2D(double diameter, Angle beginAngle, Angle endAngle);
+
+	Geometry2D circleSegment2D(double diameter, Angle beginAngle, Angle endAngle, int angularResolution);
+
+	Geometry2D ring2D(double innerDiameter, double outerDiameter, int angularResolution);
+
+	Geometry2D ringSegment2D(double innerDiameter,
+	                         double outerDiameter,
+	                         Angle beginAngle,
+	                         Angle endAngle,
+	                         int angularResolution);
+
+	Geometry2D rectangle2D(double xSize, double ySize);
+
+	Geometry2D rectangleCorners2D(double c1x, double c1y, double c2x, double c2y);
+
+	Geometry2D rectangleCenter2D(double cx, double cy, double xSize, double ySize);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Vector2D
+	// 3D shapes
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Vector2D vector2D(double x, double y);
-	double sqrLength(Vector2D vector);
-	double length(Vector2D vector);
-	double dist(Vector2D vector1, Vector2D vector2);
-	Vector2D normalize(Vector2D vector);
-	Vector2D add(Vector2D vector1, Vector2D vector2);
-	Vector2D sub(Vector2D vector1, Vector2D vector2);
-	Vector2D mul(Vector2D vector, double scalar);
-	Vector2D div(Vector2D vector, double scalar);
-	double dot(Vector2D vector1, Vector2D vector2);
+	Geometry3D sphere3D(double diameter, int angularResolution, boolean centerZ);
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Polygon2D
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry2D polygon2D(Iterable<Vector2D> vertices);
-	Geometry2D polygon2D(Iterable<Vector2D> vertices, Iterable<? extends Iterable<Integer>> paths);
+	Geometry3D box3D(double xSize, double ySize, double zSize, boolean centerZ);
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 2D transformations
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Transform2D identity2D();
-	Transform2D compose3D(Transform2D... transforms);
-	Transform2D translate2D(double x, double y);
-	Transform2D rotate2D(Angle angle);
-	Transform2D scale2D(double x, double y);
-	Transform2D mirror2D(double normX, double normY);
+	Geometry3D boxCenter3D(double cx, double cy, double cz, double xSize, double ySize, double zSize);
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Resize 2D geometry
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry2D resize2D(double x, double y, boolean autoX, boolean autoY, Geometry2D geometry);
+	Geometry3D boxCorners3D(double c1x, double c1y, double c1z, double c2x, double c2y, double c2z);
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 2D operations
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry2D union2D(Geometry2D... geometries);
-	Geometry2D union2D(Iterable<Geometry2D> geometries);
-	Geometry2D intersection2D(Geometry2D... geometries);
-	Geometry2D intersection2D(Iterable<Geometry2D> geometries);
-	Geometry2D difference2D(Geometry2D filled, Geometry2D... cutouts);
-	Geometry2D difference2D(Geometry2D filled, Iterable<Geometry2D> cutouts);
-	Geometry2D hull2D(Geometry2D... geometries);
-	Geometry2D hull2D(Iterable<Geometry2D> geometries);
-	Geometry2D minkowski2D(Geometry2D... geometries);
-	Geometry2D minkowski2D(Iterable<Geometry2D> geometries);
-	Geometry2D offset2D(double delta, boolean chamfer, Geometry2D... geometries);
-	Geometry2D offset2D(double delta, boolean chamfer, Iterable<Geometry2D> geometries);
-	Geometry2D offsetRound2D(double radius, int angularResolution, Geometry2D... geometries);
-	Geometry2D offsetRound2D(double radius, int angularResolution, Iterable<Geometry2D> geometries);
-	Geometry2D color2D(double r, double g, double b, double a, Geometry2D... geometries);
-	Geometry2D color2D(double r, double g, double b, double a, Iterable<Geometry2D> geometries);
+	Geometry3D cylinder3D(double diameter, double height, int angularResolution, boolean centerZ);
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Text2D
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry2D char2D(char ch, double height, int angularResolution);
-	Geometry2D char2D(char ch, double height, double width, int angularResolution);
-	double charWidth2D(double height);
-	double charBaseline2D(double height);
-	Geometry2D text2D(String text, double height, int angularResolution);
+	Geometry3D cylinderSegment3D(double diameter,
+	                             double height,
+	                             Angle beginAngle,
+	                             Angle endAngle,
+	                             int angularResolution,
+	                             boolean centerZ);
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Vector3D
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Vector3D vector3D(double x, double y, double z);
-	double sqrLength(Vector3D vector);
-	double length(Vector3D vector);
-	double dist(Vector3D vector1, Vector3D vector2);
-	Vector3D normalize(Vector3D vector);
-	Vector3D add(Vector3D vector1, Vector3D vector2);
-	Vector3D sub(Vector3D vector1, Vector3D vector2);
-	Vector3D mul(Vector3D vector, double scalar);
-	Vector3D div(Vector3D vector, double scalar);
-	double dot(Vector3D vector1, Vector3D vector2);
+	Geometry3D hollowCylinder3D(double outerDiameter, double innerDiameter, double height, int angularResolution, boolean centerZ);
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Matrix multiplication
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry3D multMatrix3D(double m00, double m01, double m02, double m03,
-	                        double m10, double m11, double m12, double m13,
-	                        double m20, double m21, double m22, double m23,
-	                        Geometry3D geometry);
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Polyhedron3D
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry3D polyhedron3D(Iterable<Vector3D> vertices, Iterable<? extends Iterable<Integer>> faces);
+	Geometry3D hollowCylinderSegment3D(double outerDiameter,
+	                             double innerDiameter,
+	                             double height,
+	                             Angle beginAngle,
+	                             Angle endAngle,
+	                             int angularResolution,
+	                             boolean centerZ);
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 3D to 2D operations
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry2D project(boolean cutAtZeroZ, Geometry3D geometry);
+	Geometry3D cone3D(double bottomDiameter,
+	                  double topDiameter,
+	                  double height,
+	                  int angularResolution,
+	                  boolean centerZ);
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 3D transformations
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Transform3D identity3D();
-	Transform3D compose3D(Transform3D... transforms);
-	Transform3D translate3D(double x, double y, double z);
-	Transform3D rotate3D(Angle angleX, Angle angleY, Angle angleZ);
-	Transform3D rotate3DX(Angle angle);
-	Transform3D rotate3DY(Angle angle);
-	Transform3D rotate3DZ(Angle angle);
-	//Transform3D rotate3D(Vector3D axis, Angle angle);
-	Transform3D scale3D(double x, double y, double z);
-	Transform3D mirror3D(double normX, double normY, double normZ);
+	Geometry3D coneSegment3D(double bottomDiameter,
+	                         double topDiameter,
+	                         double height,
+	                         Angle beginAngle,
+	                         Angle endAngle,
+	                         int angularResolution,
+	                         boolean centerZ);
+	Geometry3D flatRing3D(double innerDiameter,
+	                      double outerDiameter,
+	                      double height,
+	                      int angularResolution,
+	                      boolean centerZ);
+	Geometry3D flatRingSegment3D(double innerDiameter,
+	                             double outerDiameter,
+	                             double height,
+	                             Angle beginAngle,
+	                             Angle endAngle,
+	                             int angularResolution,
+	                             boolean centerZ);
+	Geometry3D torus3D(double smallCircleDiameter,
+	                   double largeCircleDiameter,
+	                   int smallCircleResolution,
+	                   int largeCircleResolution,
+	                   boolean centerZ);
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 3D operations
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry3D union3D(Geometry3D... geometries);
-	Geometry3D union3D(Iterable<Geometry3D> geometries);
-	Geometry3D intersection3D(Geometry3D... geometries);
-	Geometry3D intersection3D(Iterable<Geometry3D> geometries);
-	Geometry3D difference3D(Geometry3D solid, Geometry3D... cutouts);
-	Geometry3D difference3D(Geometry3D solid, Iterable<Geometry3D> cutouts);
-	Geometry3D hull3D(Geometry3D... geometries);
-	Geometry3D hull3D(Iterable<Geometry3D> geometries);
-	Geometry3D minkowski3D(Geometry3D... geometries);
-	Geometry3D minkowski3D(Iterable<Geometry3D> geometries);
+	Geometry3D torusSegment3D(double smallCircleDiameter,
+	                          double largeCircleDiameter,
+	                          Angle beginAngle,
+	                          Angle endAngle,
+	                          int smallCircleResolution,
+							  int largeCircleResolution,
+	                          boolean centerZ);
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 2D to 3D operations
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry3D linearExtrude(double height, double twistRotations, double scale, int slices, Geometry2D geometry);
-	Geometry3D rotateExtrude(double rotations, int angularResolution, Geometry2D geometry);
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// View geometry
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void view(Geometry2D geometry);
-	void view(Geometry3D geometry);
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Cache geometry
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//ToDo: Should these be removed and automated?
-	Geometry2D cache(Geometry2D geometry);
-	Geometry3D cache(Geometry3D geometry);
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Save and load STL
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry3D loadSTL(String name) throws IOException;
-	void saveSTL(String name, Geometry3D geometry) throws IOException;
 }

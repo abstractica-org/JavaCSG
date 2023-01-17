@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class JavaCSGOpenSCADImpl implements JavaCSG
+public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 {
 	private static final double DEGREES_TO_ROTATIONS = 1.0 / 360.0;
 	private static final double RADIANS_TO_ROTATIONS = 1.0 / (2.0 * Math.PI);
@@ -23,7 +23,7 @@ public class JavaCSGOpenSCADImpl implements JavaCSG
 	private final OpenSCADTextAttributes textAttributes;
 	private final double textScale;
 
-	public JavaCSGOpenSCADImpl()
+	public JavaCSGBaseOpenSCADImpl()
 	{
 		this.javaOpenSCAD = new JavaOpenSCADImpl(true);
 		OpenSCADTextFont font = javaOpenSCAD.textFont("Consolas", "Regular", "en", "latin");
@@ -117,6 +117,24 @@ public class JavaCSGOpenSCADImpl implements JavaCSG
 	}
 
 	@Override
+	public Polar2D polar2D(double r, Angle phi)
+	{
+		return new Polar2DImpl(r, phi);
+	}
+
+	@Override
+	public Polar2D asPolar2D(Vector2D vector)
+	{
+		return polar2D(length(vector), radians(Math.atan2(vector.y(), vector.x())));
+	}
+
+	@Override
+	public Vector2D asVector2D(Polar2D polar)
+	{
+		return vector2D(polar.r() * Math.cos(polar.phi().asRadians()), polar.r() * Math.sin(polar.phi().asRadians()));
+	}
+
+	@Override
 	public Geometry2D polygon2D(Iterable<Vector2D> vertices)
 	{
 		List<OpenSCADVector2D> openSCADVertices = new ArrayList<>();
@@ -158,6 +176,18 @@ public class JavaCSGOpenSCADImpl implements JavaCSG
 	public Transform2D translate2D(double x, double y)
 	{
 		return new Transform2DTranslate(x, y);
+	}
+
+	@Override
+	public Transform2D translate2DX(double x)
+	{
+		return new Transform2DTranslate(x, 0.0);
+	}
+
+	@Override
+	public Transform2D translate2DY(double y)
+	{
+		return new Transform2DTranslate(0.0, y);
 	}
 
 	@Override
@@ -544,11 +574,29 @@ public class JavaCSGOpenSCADImpl implements JavaCSG
 	}
 
 	@Override
+	public Transform3D translate3DX(double x)
+	{
+		return new Transform3DTranslate(x, 0, 0);
+	}
+
+	@Override
+	public Transform3D translate3DY(double y)
+	{
+		return new Transform3DTranslate(0, y, 0);
+	}
+
+	@Override
+	public Transform3D translate3DZ(double z)
+	{
+		return new Transform3DTranslate(0, 0, z);
+	}
+
+	@Override
 	public Transform3D rotate3D(Angle angleX, Angle angleY, Angle angleZ)
 	{
 		Transform3D rotX = new Transform3DRotateX(angleX.asRadians());
-		Transform3D rotY = new Transform3DRotateX(angleY.asRadians());
-		Transform3D rotZ = new Transform3DRotateX(angleZ.asRadians());
+		Transform3D rotY = new Transform3DRotateY(angleY.asRadians());
+		Transform3D rotZ = new Transform3DRotateZ(angleZ.asRadians());
 		return new Transform3DComposed(Arrays.asList(rotX, rotY, rotZ));
 	}
 
@@ -717,6 +765,12 @@ public class JavaCSGOpenSCADImpl implements JavaCSG
 	}
 
 	@Override
+	public Geometry3D linearExtrude(double height, Geometry2D geometry)
+	{
+		return linearExtrude(height, 0, 1, 1, geometry);
+	}
+
+	@Override
 	public Geometry3D rotateExtrude(double rotations, int angularResolution, Geometry2D geometry)
 	{
 		OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
@@ -771,13 +825,14 @@ public class JavaCSGOpenSCADImpl implements JavaCSG
 	@Override
 	public Geometry3D loadSTL(String name) throws IOException
 	{
-		return null;
+		return new Geometry3DImpl(javaOpenSCAD.loadSTL(name));
 	}
 
 	@Override
 	public void saveSTL(String name, Geometry3D geometry) throws IOException
 	{
-
+		OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
+		javaOpenSCAD.saveSTL(name, openSCADGeometry);
 	}
 
 	private static class Transform2DComposed implements Transform2D
@@ -1486,6 +1541,36 @@ public class JavaCSGOpenSCADImpl implements JavaCSG
 		public String toString()
 		{
 			return "Vector2D(" + x + ", " + y + ")";
+		}
+	}
+
+	private static class Polar2DImpl implements Polar2D
+	{
+		private final double r;
+		private final Angle phi;
+
+		public Polar2DImpl(double r, Angle phi)
+		{
+			this.r = r;
+			this.phi = phi;
+		}
+
+		@Override
+		public double r()
+		{
+			return r;
+		}
+
+		@Override
+		public Angle phi()
+		{
+			return phi;
+		}
+
+		@Override
+		public String toString()
+		{
+			return "Polar2D(" + r + ", " + phi.asDegrees() + " deg)";
 		}
 	}
 
