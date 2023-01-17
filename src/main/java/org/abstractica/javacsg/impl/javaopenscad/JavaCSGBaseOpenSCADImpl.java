@@ -755,19 +755,24 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry3D linearExtrude(double height, double twistRotations, double scale, int slices, Geometry2D geometry)
+	public Geometry3D linearExtrude(double height,
+	                                double twistRotations,
+	                                double scale,
+	                                int slices,
+	                                boolean centerZ,
+	                                Geometry2D geometry)
 	{
 		OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
 		OpenSCADGeometry3DFrom2D linearExtrude =
-				javaOpenSCAD.linearExtrude(height, twistRotations, scale, slices);
+				javaOpenSCAD.linearExtrude(height, twistRotations, scale, slices, centerZ);
 		linearExtrude.add(openSCADGeometry);
 		return new Geometry3DImpl(linearExtrude);
 	}
 
 	@Override
-	public Geometry3D linearExtrude(double height, Geometry2D geometry)
+	public Geometry3D linearExtrude(double height, boolean centerZ, Geometry2D geometry)
 	{
-		return linearExtrude(height, 0, 1, 1, geometry);
+		return linearExtrude(height, 0, 1, 1, centerZ, geometry);
 	}
 
 	@Override
@@ -783,10 +788,22 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	@Override
 	public void view(Geometry2D geometry)
 	{
+		view(geometry, 0);
+	}
+
+	@Override
+	public void view(Geometry3D geometry)
+	{
+		view(geometry, 0);
+	}
+
+	@Override
+	public void view(Geometry2D geometry, int windowID)
+	{
 		try
 		{
 			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
-			javaOpenSCAD.generateOpenSCADFile("OpenSCAD/View.scad", openSCADGeometry);
+			javaOpenSCAD.generateOpenSCADFile("OpenSCAD/View" + windowID + ".scad", openSCADGeometry);
 		} catch (IOException e)
 		{
 			throw new RuntimeException("Could not view geometry!", e);
@@ -794,12 +811,12 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public void view(Geometry3D geometry)
+	public void view(Geometry3D geometry, int windowID)
 	{
 		try
 		{
 			OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
-			javaOpenSCAD.generateOpenSCADFile("OpenSCAD/View.scad", openSCADGeometry);
+			javaOpenSCAD.generateOpenSCADFile("OpenSCAD/View" + windowID + ".scad", openSCADGeometry);
 		} catch (IOException e)
 		{
 			throw new RuntimeException("Could not view geometry!", e);

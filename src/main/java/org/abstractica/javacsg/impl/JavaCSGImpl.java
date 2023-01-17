@@ -146,13 +146,8 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	public Geometry3D box3D(double xSize, double ySize, double zSize, boolean centerZ)
 	{
 		Geometry2D rect = rectangle2D(xSize, ySize);
-		Geometry3D box = linearExtrude(zSize, rect);
-		if(centerZ)
-		{
-			return box;
-		}
-		Transform3D translate = translate3DZ(zSize/2);
-		return translate.transform(box);
+		Geometry3D box = linearExtrude(zSize, centerZ, rect);
+		return box;
 	}
 
 	@Override
@@ -179,56 +174,40 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	public Geometry3D cylinder3D(double diameter, double height, int angularResolution, boolean centerZ)
 	{
 		Geometry2D circle = circle2D(diameter, angularResolution);
-		Geometry3D cylinder = linearExtrude(height, circle);
-		if(centerZ)
-		{
-			return cylinder;
-		}
-		Transform3D translate = translate3DZ(height/2);
-		return translate.transform(cylinder);
+		Geometry3D cylinder = linearExtrude(height, centerZ, circle);
+		return cylinder;
 	}
 
 	@Override
 	public Geometry3D cylinderSegment3D(double diameter, double height, Angle beginAngle, Angle endAngle, int angularResolution, boolean centerZ)
 	{
 		Geometry2D circleSegment = circleSegment2D(diameter, beginAngle, endAngle, angularResolution);
-		Geometry3D cylinder = linearExtrude(height, circleSegment);
-		if(centerZ)
-		{
-			return cylinder;
-		}
-		Transform3D translate = translate3DZ(height/2);
-		return translate.transform(cylinder);
+		Geometry3D cylinder = linearExtrude(height, centerZ, circleSegment);
+		return cylinder;
 	}
 
 	@Override
 	public Geometry3D hollowCylinder3D(double outerDiameter, double innerDiameter, double height, int angularResolution, boolean centerZ)
 	{
 		Geometry2D ring = ring2D(innerDiameter, outerDiameter, angularResolution);
-		Geometry3D cylinder = linearExtrude(height, ring);
-		if(centerZ)
-		{
-			return cylinder;
-		}
-		Transform3D translate = translate3DZ(height/2);
-		return translate.transform(cylinder);
+		Geometry3D cylinder = linearExtrude(height, centerZ, ring);
+		return cylinder;
 	}
 
 	@Override
 	public Geometry3D hollowCylinderSegment3D(double outerDiameter, double innerDiameter, double height, Angle beginAngle, Angle endAngle, int angularResolution, boolean centerZ)
 	{
 		Geometry2D ringSegment = ringSegment2D(innerDiameter, outerDiameter, beginAngle, endAngle, angularResolution);
-		Geometry3D cylinder = linearExtrude(height, ringSegment);
-		if(centerZ)
-		{
-			return cylinder;
-		}
-		Transform3D translate = translate3DZ(height/2);
-		return translate.transform(cylinder);
+		Geometry3D cylinder = linearExtrude(height, centerZ, ringSegment);
+		return cylinder;
 	}
 
 	@Override
-	public Geometry3D cone3D(double bottomDiameter, double topDiameter, double height, int angularResolution, boolean centerZ)
+	public Geometry3D cone3D(double bottomDiameter,
+	                         double topDiameter,
+	                         double height,
+	                         int angularResolution,
+	                         boolean centerZ)
 	{
 		if(bottomDiameter < 0.0)
 		{
@@ -254,7 +233,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 			topDiameter = temp;
 		}
 		Geometry2D circle = circle2D(bottomDiameter, angularResolution);
-		Geometry3D cone = linearExtrude(height, 0, topDiameter / bottomDiameter, 1, circle);
+		Geometry3D cone = linearExtrude(height, 0, topDiameter / bottomDiameter, 1, true, circle);
 		if(flip)
 		{
 			Transform3D flipTransform = mirror3D(0, 0, 1);
@@ -295,7 +274,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 			topDiameter = temp;
 		}
 		Geometry2D circleSegment = circleSegment2D(bottomDiameter, beginAngle, endAngle, angularResolution);
-		Geometry3D cone = linearExtrude(height, 0, topDiameter / bottomDiameter, 1, circleSegment);
+		Geometry3D cone = linearExtrude(height, 0, topDiameter / bottomDiameter, 1, true, circleSegment);
 		if(flip)
 		{
 			Transform3D flipTransform = mirror3D(0, 0, 1);
@@ -313,26 +292,16 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	public Geometry3D flatRing3D(double innerDiameter, double outerDiameter, double height, int angularResolution, boolean centerZ)
 	{
 		Geometry2D ring = ring2D(innerDiameter, outerDiameter, angularResolution);
-		Geometry3D flatRing = linearExtrude(height, ring);
-		if(centerZ)
-		{
-			return flatRing;
-		}
-		Transform3D translate = translate3DZ(height/2);
-		return translate.transform(flatRing);
+		Geometry3D flatRing = linearExtrude(height, centerZ, ring);
+		return flatRing;
 	}
 
 	@Override
 	public Geometry3D flatRingSegment3D(double innerDiameter, double outerDiameter, double height, Angle beginAngle, Angle endAngle, int angularResolution, boolean centerZ)
 	{
 		Geometry2D ringSegment = ringSegment2D(innerDiameter, outerDiameter, beginAngle, endAngle, angularResolution);
-		Geometry3D flatRing = linearExtrude(height, ringSegment);
-		if(centerZ)
-		{
-			return flatRing;
-		}
-		Transform3D translate = translate3DZ(height/2);
-		return translate.transform(flatRing);
+		Geometry3D flatRing = linearExtrude(height, centerZ, ringSegment);
+		return flatRing;
 	}
 
 	@Override
@@ -370,7 +339,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		Geometry2D cutoutPie = cutoutPie2D( largeCircleDiameter + smallCircleDiameter,
 											beginAngle,
 											endAngle);
-		Geometry3D cutoutPie3D = linearExtrude(smallCircleDiameter+2, cutoutPie);
+		Geometry3D cutoutPie3D = linearExtrude(smallCircleDiameter+2, true, cutoutPie);
 		Geometry3D torusSegment = intersection3D(torus, cutoutPie3D);
 
 		if(centerZ)

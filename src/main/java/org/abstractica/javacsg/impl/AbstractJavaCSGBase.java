@@ -512,15 +512,20 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry3D linearExtrude(double height, double twistRotations, double scale, int slices, Geometry2D geometry)
+	public Geometry3D linearExtrude(double height,
+	                                double twistRotations,
+	                                double scale,
+	                                int slices,
+									boolean centerZ,
+	                                Geometry2D geometry)
 	{
-		return base.linearExtrude(height, twistRotations, scale, slices, geometry);
+		return base.linearExtrude(height, twistRotations, scale, slices, centerZ, geometry);
 	}
 
 	@Override
-	public Geometry3D linearExtrude(double height, Geometry2D geometry)
+	public Geometry3D linearExtrude(double height, boolean centerZ, Geometry2D geometry)
 	{
-		return base.linearExtrude(height, geometry);
+		return base.linearExtrude(height, centerZ, geometry);
 	}
 
 	@Override
@@ -539,6 +544,18 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	public void view(Geometry3D geometry)
 	{
 		base.view(geometry);
+	}
+
+	@Override
+	public void view(Geometry2D geometry, int windowID)
+	{
+		base.view(geometry, windowID);
+	}
+
+	@Override
+	public void view(Geometry3D geometry, int windowID)
+	{
+		base.view(geometry, windowID);
 	}
 
 	@Override

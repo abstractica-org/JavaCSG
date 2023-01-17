@@ -9,7 +9,7 @@ import org.abstractica.javacsg.impl.javaopenscad.JavaCSGBaseOpenSCADImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CLicker
+public class Clicker
 {
 	public static void main(String[] args)
 	{
@@ -29,7 +29,8 @@ public class CLicker
 		Geometry2D mirrored = jcsg.mirror2D(1, 0).transform(profile);
 		Geometry2D union = jcsg.union2D(profile, mirrored);
 		Geometry2D adjusted = jcsg.offsetRound2D(-0.1, 16, union);
-		Geometry3D extruded = jcsg.linearExtrude(4,0, 1,1, adjusted);
-		jcsg.view(extruded);
+		Geometry3D extruded = jcsg.linearExtrude(4,0, 1,1,true, adjusted);
+		Geometry3D result = jcsg.cache(extruded);
+		jcsg.view(result, 1);
 	}
 }

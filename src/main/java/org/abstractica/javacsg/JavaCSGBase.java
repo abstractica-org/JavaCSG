@@ -217,9 +217,14 @@ public interface JavaCSGBase
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 2D to 3D operations
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry3D linearExtrude(double height, double twistRotations, double scale, int slices, Geometry2D geometry);
+	Geometry3D linearExtrude(double height,
+	                         double twistRotations,
+	                         double scale,
+	                         int slices,
+							 boolean centerZ,
+	                         Geometry2D geometry);
 
-	Geometry3D linearExtrude(double height, Geometry2D geometry);
+	Geometry3D linearExtrude(double height, boolean centerZ, Geometry2D geometry);
 
 	Geometry3D rotateExtrude(double rotations, int angularResolution, Geometry2D geometry);
 
@@ -228,6 +233,8 @@ public interface JavaCSGBase
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void view(Geometry2D geometry);
 	void view(Geometry3D geometry);
+	void view(Geometry2D geometry, int windowID);
+	void view(Geometry3D geometry, int windowID);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Cache geometry
