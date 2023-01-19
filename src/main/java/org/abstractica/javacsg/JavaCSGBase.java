@@ -112,15 +112,17 @@ public interface JavaCSGBase
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Text2D
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	Geometry2D char2D(char ch, double height, int angularResolution);
+	Geometry2D char2D(char ch, double width, int angularResolution);
 
-	Geometry2D char2D(char ch, double height, double width, int angularResolution);
+	Geometry2D char2D(char ch, double width, double height, int angularResolution);
 
-	double charWidth2D(double height);
+	double charHeight2D(double width);
 
 	double charBaseline2D(double height);
 
-	Geometry2D text2D(String text, double height, int angularResolution);
+	Geometry2D text2D(String text, double letterWidth, int angularResolution);
+
+	Geometry2D text2D(String text, double letterWidth, double letterHeight, int angularResolution);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Vector3D

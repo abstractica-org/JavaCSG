@@ -33,7 +33,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 				OpenSCADTextAlignment.Horizontal.LEFT,
 				OpenSCADTextAlignment.Vertical.BASELINE);
 		this.textAttributes = javaOpenSCAD.textAttributes(font, textSize, alignment);
-		this.textScale = 1.0 / 15.0;
+		this.textScale = 2.0 / 15.0;
 		//this.textScaleX = this.textScaleY * (0.75 / 7.4575);
 	}
 
@@ -144,7 +144,8 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			openSCADVertices.add(vector);
 		}
 		OpenSCADGeometry2D geometry = javaOpenSCAD.polygon2D(openSCADVertices);
-		return new Geometry2DImpl(geometry);
+		OpenSCADGeometry2D result = javaOpenSCAD.module(geometry);
+		return new Geometry2DImpl(result);
 	}
 
 	@Override
@@ -157,7 +158,8 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			openSCADVertices.add(vector);
 		}
 		OpenSCADGeometry2D geometry = javaOpenSCAD.polygon2D(openSCADVertices, paths);
-		return new Geometry2DImpl(geometry);
+		OpenSCADGeometry2D result = javaOpenSCAD.module(geometry);
+		return new Geometry2DImpl(result);
 	}
 
 	@Override
@@ -414,28 +416,30 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry2D char2D(char ch, double height, int angularResolution)
+	public Geometry2D char2D(char ch, double width, int angularResolution)
 	{
 		OpenSCADGeometry2D char2D = javaOpenSCAD.text("" + ch, textAttributes, angularResolution);
-		OpenSCADGeometry2DFrom2D scale2D = javaOpenSCAD.scale2D(height*textScale, height*textScale);
+		OpenSCADGeometry2DFrom2D scale2D = javaOpenSCAD.scale2D(width*textScale, width*textScale);
 		scale2D.add(char2D);
-		return new Geometry2DImpl(scale2D);
+		OpenSCADGeometry2D result = javaOpenSCAD.module(scale2D);
+		return new Geometry2DImpl(result);
 	}
 
 	@Override
-	public Geometry2D char2D(char ch, double height, double width, int angularResolution)
+	public Geometry2D char2D(char ch, double width, double height, int angularResolution)
 	{
 
 		OpenSCADGeometry2D char2D = javaOpenSCAD.text("" + ch, textAttributes, angularResolution);
-		OpenSCADGeometry2DFrom2D scale2D = javaOpenSCAD.scale2D(this.textScale*2*width, this.textScale*height);
+		OpenSCADGeometry2DFrom2D scale2D = javaOpenSCAD.scale2D(this.textScale*width, this.textScale*0.5*height);
 		scale2D.add(char2D);
-		return new Geometry2DImpl(scale2D);
+		OpenSCADGeometry2D result = javaOpenSCAD.module(scale2D);
+		return new Geometry2DImpl(result);
 	}
 
 	@Override
-	public double charWidth2D(double height)
+	public double charHeight2D(double width)
 	{
-		return 0.5*height;
+		return 2*width;
 	}
 
 	@Override
@@ -445,14 +449,25 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry2D text2D(String text, double height, int angularResolution)
+	public Geometry2D text2D(String text, double letterWidth, int angularResolution)
 	{
 		List<Geometry2D> chars = new ArrayList<>();
-		double charWidth = charWidth2D(height);
 		for(int i = 0; i < text.length(); i++)
 		{
-			Transform2D t = translate2D(i*charWidth, 0);
-			chars.add(t.transform(char2D(text.charAt(i), height, angularResolution)));
+			Transform2D t = translate2D(i*letterWidth, 0);
+			chars.add(t.transform(char2D(text.charAt(i), letterWidth, angularResolution)));
+		}
+		return union2D(chars);
+	}
+
+	@Override
+	public Geometry2D text2D(String text, double letterWidth, double letterHeight, int angularResolution)
+	{
+		List<Geometry2D> chars = new ArrayList<>();
+		for(int i = 0; i < text.length(); i++)
+		{
+			Transform2D t = translate2D(i*letterWidth, 0);
+			chars.add(t.transform(char2D(text.charAt(i), letterWidth, letterHeight, angularResolution)));
 		}
 		return union2D(chars);
 	}

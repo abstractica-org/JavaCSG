@@ -9,7 +9,7 @@ public class CharExample
 	public static void main(String[] args)
 	{
 		JavaCSGBase jcsg = new JavaCSGBaseOpenSCADImpl(true);
-		Geometry2D ch = jcsg.char2D('f', 10.0,4);
+		Geometry2D ch = jcsg.char2D('f', 10.0,10,4);
 		jcsg.view(ch);
 	}
 }

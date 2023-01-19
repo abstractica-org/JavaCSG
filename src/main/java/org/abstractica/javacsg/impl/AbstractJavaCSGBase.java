@@ -284,9 +284,9 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	}
 
 	@Override
-	public double charWidth2D(double height)
+	public double charHeight2D(double width)
 	{
-		return base.charWidth2D(height);
+		return base.charHeight2D(width);
 	}
 
 	@Override
@@ -296,9 +296,15 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry2D text2D(String text, double height, int angularResolution)
+	public Geometry2D text2D(String text, double letterWidth, int angularResolution)
 	{
-		return base.text2D(text, height, angularResolution);
+		return base.text2D(text, letterWidth, angularResolution);
+	}
+
+	@Override
+	public Geometry2D text2D(String text, double letterWidth, double letterHeight, int angularResolution)
+	{
+		return base.text2D(text, letterWidth, letterHeight, angularResolution);
 	}
 
 	@Override

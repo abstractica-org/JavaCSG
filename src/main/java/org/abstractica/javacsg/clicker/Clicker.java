@@ -92,7 +92,7 @@ public class Clicker
 
 
 		result = jcsg.rotate3DX(jcsg.degrees(-90)).transform(result);
-		return result;
+		return jcsg.cache(result);
 	}
 
 	public Geometry3D createClickerCutout()
@@ -114,7 +114,7 @@ public class Clicker
 		Geometry2D profile = jcsg.polygon2D(vertices);
 		Geometry3D result = jcsg.rotateExtrude(jcsg.rotations(1), 64, profile);
 		result = jcsg.union3D(result, ridge(), jcsg.rotate3DZ(jcsg.degrees(90)).transform(ridge()));
-		return result;
+		return jcsg.cache(result);
 	}
 
 	private Geometry3D ridge()
