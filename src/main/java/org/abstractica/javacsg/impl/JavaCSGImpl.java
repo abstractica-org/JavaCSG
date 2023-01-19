@@ -312,13 +312,13 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	                          boolean centerZ)
 	{
 		Geometry2D smallCircle = circle2D(smallCircleDiameter, smallCircleResolution);
-		Geometry3D torus = rotateExtrude(largeCircleDiameter, largeCircleResolution, smallCircle);
+		smallCircle = translate2DX(largeCircleDiameter / 2).transform(smallCircle);
+		Geometry3D torus = rotateExtrude(rotations(1), largeCircleResolution, smallCircle);
 		if(centerZ)
 		{
 			return torus;
 		}
-		Transform3D translate = translate3DZ(largeCircleDiameter/2);
-		return translate.transform(torus);
+		return translate3DZ(largeCircleDiameter / 2).transform(torus);
 	}
 
 	@Override

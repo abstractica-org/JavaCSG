@@ -226,7 +226,7 @@ public interface JavaCSGBase
 
 	Geometry3D linearExtrude(double height, boolean centerZ, Geometry2D geometry);
 
-	Geometry3D rotateExtrude(double rotations, int angularResolution, Geometry2D geometry);
+	Geometry3D rotateExtrude(Angle angle, int angularResolution, Geometry2D geometry);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// View geometry

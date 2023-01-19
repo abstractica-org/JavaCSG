@@ -776,11 +776,11 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry3D rotateExtrude(double rotations, int angularResolution, Geometry2D geometry)
+	public Geometry3D rotateExtrude(Angle angle, int angularResolution, Geometry2D geometry)
 	{
 		OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
 		OpenSCADGeometry3DFrom2D rotateExtrude =
-				javaOpenSCAD.rotateExtrude(rotations, angularResolution);
+				javaOpenSCAD.rotateExtrude(angle.asDegrees(), angularResolution);
 		rotateExtrude.add(openSCADGeometry);
 		return new Geometry3DImpl(rotateExtrude);
 	}

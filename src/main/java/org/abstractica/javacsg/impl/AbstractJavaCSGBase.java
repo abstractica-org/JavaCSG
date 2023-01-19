@@ -529,9 +529,9 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry3D rotateExtrude(double rotations, int angularResolution, Geometry2D geometry)
+	public Geometry3D rotateExtrude(Angle angle, int angularResolution, Geometry2D geometry)
 	{
-		return base.rotateExtrude(rotations, angularResolution, geometry);
+		return base.rotateExtrude(angle, angularResolution, geometry);
 	}
 
 	@Override
