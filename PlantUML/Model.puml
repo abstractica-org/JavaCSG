@@ -1,0 +1,24 @@
+@startuml
+
+state JavaToSTL {
+    OpenBuildSystem : Building system
+    Java3DPrint : 3D printer tolerences
+    JavaCSG : Java oriented interface
+    JavaOpenSCAD : Java wrapper for OpenSCAD
+    OpenSCAD : Used for boolean operations and csg
+    OpenBuildSystem --> Java3DPrint
+    Java3DPrint --> JavaCSG
+    JavaCSG --> JavaOpenSCAD
+    JavaOpenSCAD --> OpenSCAD
+    STLFile : 3D model file
+}
+state 3DPrinterOperator {
+    Slicer : Slices the STL file
+    GCode : GCode file
+    OpenSCAD --> STLFile
+
+    Slicer --> GCode
+    GCode --> [*] : To 3D printer
+}
+JavaToSTL -r-> 3DPrinterOperator
+@enduml
