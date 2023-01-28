@@ -92,6 +92,12 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	}
 
 	@Override
+	public Vector2D fromTo(Vector2D from, Vector2D to)
+	{
+		return base.fromTo(from, to);
+	}
+
+	@Override
 	public Polar2D polar2D(double r, Angle phi)
 	{
 		return base.polar2D(r, phi);
@@ -365,6 +371,12 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	public double dot(Vector3D vector1, Vector3D vector2)
 	{
 		return base.dot(vector1, vector2);
+	}
+
+	@Override
+	public Vector3D fromTo(Vector3D from, Vector3D to)
+	{
+		return null;
 	}
 
 	@Override

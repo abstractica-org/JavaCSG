@@ -117,6 +117,12 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
+	public Vector2D fromTo(Vector2D from, Vector2D to)
+	{
+		return sub(to, from);
+	}
+
+	@Override
 	public Polar2D polar2D(double r, Angle phi)
 	{
 		return new Polar2DImpl(r, phi);
@@ -531,6 +537,12 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	public double dot(Vector3D vector1, Vector3D vector2)
 	{
 		return vector1.x() * vector2.x() + vector1.y() * vector2.y() + vector1.z() * vector2.z();
+	}
+
+	@Override
+	public Vector3D fromTo(Vector3D from, Vector3D to)
+	{
+		return sub(to, from);
 	}
 
 	@Override
