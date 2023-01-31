@@ -36,6 +36,31 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	}
 
 	@Override
+	public Geometry2D pie2D(double diameter, Angle beginAngle, Angle endAngle, int angularResolution)
+	{
+		Transform2D scale = scale2D(diameter, diameter);
+		return scale.transform(d1Pie2D(beginAngle, endAngle, angularResolution));
+	}
+
+	private Geometry2D d1Pie2D(Angle beginAngle, Angle endAngle, int angularResolution)
+	{
+
+		int steps = angularResolution;
+		double fBegin = beginAngle.asRotations();
+		double fEnd = endAngle.asRotations();
+		double stepSize = fBegin < fEnd ?
+				(fEnd-fBegin)/steps :
+				(1.0 - (fBegin-fEnd))/steps;
+		List<Vector2D> vertices = new ArrayList<>(9);
+		vertices.add(vector2D(0, 0));
+		for(int i = 0; i <= steps; ++i)
+		{
+			vertices.add(asVector2D(polar2D(1, rotations(fBegin + i*stepSize))));
+		}
+		return polygon2D(vertices);
+	}
+
+	@Override
 	public Geometry2D cutoutPie2D(double diameter, Angle beginAngle, Angle endAngle)
 	{
 		int steps = 8;
@@ -117,12 +142,13 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 
 	private Geometry3D d1Sphere3D(int angularResolution)
 	{
-		if(angularResolution < 3)
+		if(angularResolution < 4)
 		{
-			throw new IllegalArgumentException("angularResolution must be at least 3");
+			throw new IllegalArgumentException("angularResolution must be at least 4");
 		}
-		//ToDo: Build a sphere...
-		throw new UnsupportedOperationException("Not implemented yet");
+		Geometry2D pie = d1Pie2D(degrees(-90), degrees(90), angularResolution/2);
+		Geometry3D res = rotateExtrude(degrees(360), angularResolution, pie);
+		return res;
 	}
 
 	@Override

@@ -7,6 +7,8 @@ public interface JavaCSG extends JavaCSGBase
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Geometry2D circle2D(double diameter, int angularResolution);
 
+	Geometry2D pie2D(double diameter, Angle beginAngle, Angle endAngle, int angularResolution);
+
 	Geometry2D cutoutPie2D(double diameter, Angle beginAngle, Angle endAngle);
 
 	Geometry2D circleSegment2D(double diameter, Angle beginAngle, Angle endAngle, int angularResolution);
