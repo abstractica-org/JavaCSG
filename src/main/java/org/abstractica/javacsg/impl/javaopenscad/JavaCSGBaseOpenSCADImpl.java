@@ -8,8 +8,12 @@ import org.abstractica.javaopenscad.intf.text.OpenSCADTextAlignment;
 import org.abstractica.javaopenscad.intf.text.OpenSCADTextAttributes;
 import org.abstractica.javaopenscad.intf.text.OpenSCADTextFont;
 import org.abstractica.javaopenscad.intf.text.OpenSCADTextSize;
+import org.abstractica.javaopenscad.stl.STL;
+import org.abstractica.javaopenscad.stl.STLTriangle;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -1693,13 +1697,17 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		}
 	}
 
-	private static class Geometry2DImpl implements Geometry2D
+	private class Geometry2DImpl implements Geometry2D
 	{
 		private final OpenSCADGeometry2D geometry;
+		private Vector2D min;
+		private Vector2D max;
 
 		public Geometry2DImpl(OpenSCADGeometry2D geometry)
 		{
 			this.geometry = geometry;
+			this.min = null;
+			this.max = null;
 		}
 
 		public OpenSCADGeometry2D getOpenSCADGeometry()
@@ -1718,15 +1726,80 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		{
 			geometry.disable();
 		}
+
+		@Override
+		public Vector2D getMin()
+		{
+			if(min == null)
+			{
+				calculateMinMax();
+			}
+			return min;
+		}
+
+		@Override
+		public Vector2D getMax()
+		{
+			if(max == null)
+			{
+				calculateMinMax();
+			}
+			return max;
+		}
+
+		private void calculateMinMax()
+		{
+			try
+			{
+				Geometry3D tmp = linearExtrude(1, false, this);
+				String dirName = "OpenSCAD/tmp";
+				String fileName = dirName + "/tmpMinMax";
+				String stlFileName = fileName + ".stl";
+				String scadFileName = fileName + ".scad";
+				saveSTL(stlFileName, tmp);
+				STL stl = STL.load(stlFileName);
+				Files.delete(Paths.get(stlFileName));
+				Files.delete(Paths.get(scadFileName));
+				Files.delete(Paths.get(dirName));
+				double minX = Double.MAX_VALUE;
+				double minY = Double.MAX_VALUE;
+				double maxX = Double.MIN_VALUE;
+				double maxY = Double.MIN_VALUE;
+				for(STLTriangle triangle : stl.getTriangles())
+				{
+					minX = Math.min(minX, triangle.v1.x);
+					minX = Math.min(minX, triangle.v2.x);
+					minX = Math.min(minX, triangle.v3.x);
+					minY = Math.min(minY, triangle.v1.y);
+					minY = Math.min(minY, triangle.v2.y);
+					minY = Math.min(minY, triangle.v3.y);
+					maxX = Math.max(maxX, triangle.v1.x);
+					maxX = Math.max(maxX, triangle.v2.x);
+					maxX = Math.max(maxX, triangle.v3.x);
+					maxY = Math.max(maxY, triangle.v1.y);
+					maxY = Math.max(maxY, triangle.v2.y);
+					maxY = Math.max(maxY, triangle.v3.y);
+				}
+				min = vector2D(minX, minY);
+				max = vector2D(maxX, maxY);
+			} catch (IOException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
-	private static class Geometry3DImpl implements Geometry3D
+	private class Geometry3DImpl implements Geometry3D
 	{
 		private final OpenSCADGeometry3D geometry;
+		private Vector3D min;
+		private Vector3D max;
 
 		public Geometry3DImpl(OpenSCADGeometry3D geometry)
 		{
 			this.geometry = geometry;
+			this.min = null;
+			this.max = null;
 		}
 
 		public OpenSCADGeometry3D getOpenSCADGeometry()
@@ -1744,6 +1817,74 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		public void disable()
 		{
 			geometry.disable();
+		}
+
+		@Override
+		public Vector3D getMin()
+		{
+			if(min == null)
+			{
+				calculateMinMax();
+			}
+			return min;
+		}
+
+		@Override
+		public Vector3D getMax()
+		{
+			if(max == null)
+			{
+				calculateMinMax();
+			}
+			return max;
+		}
+
+		private void calculateMinMax()
+		{
+			try
+			{
+				String dirName = "OpenSCAD/tmp";
+				String fileName = dirName + "/tmpMinMax";
+				String stlFileName = fileName + ".stl";
+				String scadFileName = fileName + ".scad";
+				saveSTL(stlFileName, this);
+				STL stl = STL.load(stlFileName);
+				Files.delete(Paths.get(stlFileName));
+				Files.delete(Paths.get(scadFileName));
+				Files.delete(Paths.get(dirName));
+				double minX = Double.MAX_VALUE;
+				double minY = Double.MAX_VALUE;
+				double minZ = Double.MAX_VALUE;
+				double maxX = Double.MIN_VALUE;
+				double maxY = Double.MIN_VALUE;
+				double maxZ = Double.MIN_VALUE;
+				for(STLTriangle triangle : stl.getTriangles())
+				{
+					minX = Math.min(minX, triangle.v1.x);
+					minX = Math.min(minX, triangle.v2.x);
+					minX = Math.min(minX, triangle.v3.x);
+					minY = Math.min(minY, triangle.v1.y);
+					minY = Math.min(minY, triangle.v2.y);
+					minY = Math.min(minY, triangle.v3.y);
+					minZ = Math.min(minZ, triangle.v1.z);
+					minZ = Math.min(minZ, triangle.v2.z);
+					minZ = Math.min(minZ, triangle.v3.z);
+					maxX = Math.max(maxX, triangle.v1.x);
+					maxX = Math.max(maxX, triangle.v2.x);
+					maxX = Math.max(maxX, triangle.v3.x);
+					maxY = Math.max(maxY, triangle.v1.y);
+					maxY = Math.max(maxY, triangle.v2.y);
+					maxY = Math.max(maxY, triangle.v3.y);
+					maxZ = Math.max(maxZ, triangle.v1.z);
+					maxZ = Math.max(maxZ, triangle.v2.z);
+					maxZ = Math.max(maxZ, triangle.v3.z);
+				}
+				min = vector3D(minX, minY, minZ);
+				max = vector3D(maxX, maxY, maxZ);
+			} catch (IOException e)
+			{
+				throw new RuntimeException(e);
+			}
 		}
 	}
 }

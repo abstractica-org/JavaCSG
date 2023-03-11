@@ -376,7 +376,7 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	@Override
 	public Vector3D fromTo(Vector3D from, Vector3D to)
 	{
-		return null;
+		return base.fromTo(from, to);
 	}
 
 	@Override
