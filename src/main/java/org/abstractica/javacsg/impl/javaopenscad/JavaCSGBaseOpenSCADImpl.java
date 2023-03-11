@@ -1753,13 +1753,10 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			{
 				Geometry3D tmp = linearExtrude(1, false, this);
 				String dirName = "OpenSCAD/tmp";
-				String fileName = dirName + "/tmpMinMax";
-				String stlFileName = fileName + ".stl";
-				String scadFileName = fileName + ".scad";
-				saveSTL(stlFileName, tmp);
-				STL stl = STL.load(stlFileName);
-				Files.delete(Paths.get(stlFileName));
-				Files.delete(Paths.get(scadFileName));
+				String fileName = dirName + "/tmpMinMax.stl";
+				saveSTL(fileName, tmp);
+				STL stl = STL.load(fileName);
+				Files.delete(Paths.get(fileName));
 				Files.delete(Paths.get(dirName));
 				double minX = Double.MAX_VALUE;
 				double minY = Double.MAX_VALUE;
@@ -1844,13 +1841,10 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			try
 			{
 				String dirName = "OpenSCAD/tmp";
-				String fileName = dirName + "/tmpMinMax";
-				String stlFileName = fileName + ".stl";
-				String scadFileName = fileName + ".scad";
-				saveSTL(stlFileName, this);
-				STL stl = STL.load(stlFileName);
-				Files.delete(Paths.get(stlFileName));
-				Files.delete(Paths.get(scadFileName));
+				String fileName = dirName + "/tmpMinMax.stl";
+				saveSTL(fileName, this);
+				STL stl = STL.load(fileName);
+				Files.delete(Paths.get(fileName));
 				Files.delete(Paths.get(dirName));
 				double minX = Double.MAX_VALUE;
 				double minY = Double.MAX_VALUE;
