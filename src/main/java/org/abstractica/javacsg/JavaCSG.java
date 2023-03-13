@@ -95,5 +95,11 @@ public interface JavaCSG extends JavaCSGBase
 	                          int smallCircleResolution,
 							  int largeCircleResolution,
 	                          boolean centerZ);
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 3D Operations
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	Geometry3D slice3DX(double xMin, double xMax, Geometry3D geometry);
+	Geometry3D slice3DY(double yMin, double yMax, Geometry3D geometry);
+	Geometry3D slice3DZ(double zMin, double zMax, Geometry3D geometry);
 
 }

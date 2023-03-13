@@ -375,4 +375,85 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		Transform3D translate = translate3DZ(smallCircleDiameter/2);
 		return translate.transform(torusSegment);
 	}
+
+	@Override
+	public Geometry3D slice3DX(double xMin, double xMax, Geometry3D geometry)
+	{
+		Vector3D min = geometry.getMin();
+		Vector3D max = geometry.getMax();
+		Geometry3D lower = boxCorners3D
+			(
+				min.x()-1,
+				min.y()-1,
+				min.z()-1,
+				xMin,
+				max.y()+1,
+				max.z()+1
+			);
+		Geometry3D upper = boxCorners3D
+			(
+				xMax,
+				min.y()-1,
+				min.z()-1,
+				max.x()+1,
+				max.y()+1,
+				max.z()+1
+			);
+		Geometry3D slice = difference3D(geometry, lower, upper);
+		return slice;
+	}
+
+	@Override
+	public Geometry3D slice3DY(double yMin, double yMax, Geometry3D geometry)
+	{
+		Vector3D min = geometry.getMin();
+		Vector3D max = geometry.getMax();
+		Geometry3D lower = boxCorners3D
+			(
+				min.x()-1,
+				min.y()-1,
+				min.z()-1,
+				max.x()+1,
+				yMin,
+				max.z()+1
+			);
+		Geometry3D upper = boxCorners3D
+			(
+				min.x()-1,
+				yMax,
+				min.z()-1,
+				max.x()+1,
+				max.y()+1,
+				max.z()+1
+			);
+		Geometry3D slice = difference3D(geometry, lower, upper);
+		return slice;
+	}
+
+	@Override
+	public Geometry3D slice3DZ(double zMin, double zMax, Geometry3D geometry)
+	{
+		Vector3D min = geometry.getMin();
+		Vector3D max = geometry.getMax();
+		Geometry3D lower = boxCorners3D
+			(
+				min.x()-1,
+				min.y()-1,
+				min.z()-1,
+				max.x()+1,
+				max.y()+1,
+				zMin
+			);
+		Geometry3D upper = boxCorners3D
+			(
+				min.x()-1,
+				min.y()-1,
+				zMax,
+				max.x()+1,
+				max.y()+1,
+				max.z()+1
+			);
+		Geometry3D slice = difference3D(geometry, lower, upper);
+		return slice;
+	}
 }
