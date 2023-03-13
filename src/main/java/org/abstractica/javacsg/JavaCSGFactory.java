@@ -11,4 +11,11 @@ public class JavaCSGFactory
 		JavaCSG javaCSG = new JavaCSGImpl(base);
 		return javaCSG;
 	}
+
+	public static JavaCSG createNoCaching()
+	{
+		JavaCSGBase base = new JavaCSGBaseOpenSCADImpl(false);
+		JavaCSG javaCSG = new JavaCSGImpl(base);
+		return javaCSG;
+	}
 }
