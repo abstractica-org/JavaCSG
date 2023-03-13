@@ -1758,27 +1758,8 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 				STL stl = STL.load(fileName);
 				Files.delete(Paths.get(fileName));
 				Files.delete(Paths.get(dirName));
-				double minX = Double.MAX_VALUE;
-				double minY = Double.MAX_VALUE;
-				double maxX = Double.MIN_VALUE;
-				double maxY = Double.MIN_VALUE;
-				for(STLTriangle triangle : stl.getTriangles())
-				{
-					minX = Math.min(minX, triangle.v1.x);
-					minX = Math.min(minX, triangle.v2.x);
-					minX = Math.min(minX, triangle.v3.x);
-					minY = Math.min(minY, triangle.v1.y);
-					minY = Math.min(minY, triangle.v2.y);
-					minY = Math.min(minY, triangle.v3.y);
-					maxX = Math.max(maxX, triangle.v1.x);
-					maxX = Math.max(maxX, triangle.v2.x);
-					maxX = Math.max(maxX, triangle.v3.x);
-					maxY = Math.max(maxY, triangle.v1.y);
-					maxY = Math.max(maxY, triangle.v2.y);
-					maxY = Math.max(maxY, triangle.v3.y);
-				}
-				min = vector2D(minX, minY);
-				max = vector2D(maxX, maxY);
+				min = vector2D(stl.getMin().x, stl.getMin().y);
+				max = vector2D(stl.getMax().x, stl.getMax().y);
 			} catch (IOException e)
 			{
 				throw new RuntimeException(e);
@@ -1846,35 +1827,8 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 				STL stl = STL.load(fileName);
 				Files.delete(Paths.get(fileName));
 				Files.delete(Paths.get(dirName));
-				double minX = Double.MAX_VALUE;
-				double minY = Double.MAX_VALUE;
-				double minZ = Double.MAX_VALUE;
-				double maxX = Double.MIN_VALUE;
-				double maxY = Double.MIN_VALUE;
-				double maxZ = Double.MIN_VALUE;
-				for(STLTriangle triangle : stl.getTriangles())
-				{
-					minX = Math.min(minX, triangle.v1.x);
-					minX = Math.min(minX, triangle.v2.x);
-					minX = Math.min(minX, triangle.v3.x);
-					minY = Math.min(minY, triangle.v1.y);
-					minY = Math.min(minY, triangle.v2.y);
-					minY = Math.min(minY, triangle.v3.y);
-					minZ = Math.min(minZ, triangle.v1.z);
-					minZ = Math.min(minZ, triangle.v2.z);
-					minZ = Math.min(minZ, triangle.v3.z);
-					maxX = Math.max(maxX, triangle.v1.x);
-					maxX = Math.max(maxX, triangle.v2.x);
-					maxX = Math.max(maxX, triangle.v3.x);
-					maxY = Math.max(maxY, triangle.v1.y);
-					maxY = Math.max(maxY, triangle.v2.y);
-					maxY = Math.max(maxY, triangle.v3.y);
-					maxZ = Math.max(maxZ, triangle.v1.z);
-					maxZ = Math.max(maxZ, triangle.v2.z);
-					maxZ = Math.max(maxZ, triangle.v3.z);
-				}
-				min = vector3D(minX, minY, minZ);
-				max = vector3D(maxX, maxY, maxZ);
+				min = vector3D(stl.getMin().x, stl.getMin().y, stl.getMin().z);
+				max = vector3D(stl.getMax().x, stl.getMax().y, stl.getMax().z);
 			} catch (IOException e)
 			{
 				throw new RuntimeException(e);
