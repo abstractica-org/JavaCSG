@@ -8,12 +8,8 @@ import org.abstractica.javaopenscad.intf.text.OpenSCADTextAlignment;
 import org.abstractica.javaopenscad.intf.text.OpenSCADTextAttributes;
 import org.abstractica.javaopenscad.intf.text.OpenSCADTextFont;
 import org.abstractica.javaopenscad.intf.text.OpenSCADTextSize;
-import org.abstractica.javaopenscad.stl.STL;
-import org.abstractica.javaopenscad.stl.STLTriangle;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -1749,21 +1745,10 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 
 		private void calculateMinMax()
 		{
-			try
-			{
-				Geometry3D tmp = linearExtrude(1, false, this);
-				String dirName = "OpenSCAD/tmp";
-				String fileName = dirName + "/tmpMinMax.stl";
-				saveSTL(fileName, tmp);
-				STL stl = STL.load(fileName);
-				Files.delete(Paths.get(fileName));
-				Files.delete(Paths.get(dirName));
-				min = vector2D(stl.getMin().x, stl.getMin().y);
-				max = vector2D(stl.getMax().x, stl.getMax().y);
-			} catch (IOException e)
-			{
-				throw new RuntimeException(e);
-			}
+			OpenSCADVector2D minOSC = javaOpenSCAD.getMin2D(this.geometry);
+			OpenSCADVector2D maxOSC = javaOpenSCAD.getMax2D(this.geometry);
+			min = new Vector2DImpl(minOSC.x(), minOSC.y());
+			max = new Vector2DImpl(maxOSC.x(), maxOSC.y());
 		}
 	}
 
@@ -1819,20 +1804,10 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 
 		private void calculateMinMax()
 		{
-			try
-			{
-				String dirName = "OpenSCAD/tmp";
-				String fileName = dirName + "/tmpMinMax.stl";
-				saveSTL(fileName, this);
-				STL stl = STL.load(fileName);
-				Files.delete(Paths.get(fileName));
-				Files.delete(Paths.get(dirName));
-				min = vector3D(stl.getMin().x, stl.getMin().y, stl.getMin().z);
-				max = vector3D(stl.getMax().x, stl.getMax().y, stl.getMax().z);
-			} catch (IOException e)
-			{
-				throw new RuntimeException(e);
-			}
+			OpenSCADVector3D minOSC = javaOpenSCAD.getMin3D(this.geometry);
+			OpenSCADVector3D maxOSC = javaOpenSCAD.getMax3D(this.geometry);
+			min = new Vector3DImpl(minOSC.x(), minOSC.y(), minOSC.z());
+			max = new Vector3DImpl(maxOSC.x(), maxOSC.y(), maxOSC.z());
 		}
 	}
 }
