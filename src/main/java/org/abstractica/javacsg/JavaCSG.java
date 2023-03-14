@@ -38,7 +38,7 @@ public interface JavaCSG extends JavaCSGBase
 
 	Geometry3D boxCorners3D(double c1x, double c1y, double c1z, double c2x, double c2y, double c2z);
 
-	Geometry3D cylinder3D(double diameterTest, double height, int angularResolution, boolean centerZ);
+	Geometry3D cylinder3D(double diameter, double height, int angularResolution, boolean centerZ);
 
 	Geometry3D cylinderSegment3D(double diameter,
 	                             double height,
