@@ -783,7 +783,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 
 	@Override
 	public Geometry3D linearExtrude(double height,
-	                                double twistRotations,
+	                                double twistDegrees,
 	                                double scale,
 	                                int slices,
 	                                boolean centerZ,
@@ -791,7 +791,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	{
 		OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
 		OpenSCADGeometry3DFrom2D linearExtrude =
-				javaOpenSCAD.linearExtrude(height, twistRotations, scale, slices, centerZ);
+				javaOpenSCAD.linearExtrude(height, twistDegrees, scale, slices, centerZ);
 		linearExtrude.add(openSCADGeometry);
 		return new Geometry3DImpl(linearExtrude);
 	}

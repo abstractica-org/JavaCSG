@@ -531,13 +531,13 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 
 	@Override
 	public Geometry3D linearExtrude(double height,
-	                                double twistRotations,
+	                                double twistDegrees,
 	                                double scale,
 	                                int slices,
 									boolean centerZ,
 	                                Geometry2D geometry)
 	{
-		return base.linearExtrude(height, twistRotations, scale, slices, centerZ, geometry);
+		return base.linearExtrude(height, twistDegrees, scale, slices, centerZ, geometry);
 	}
 
 	@Override
