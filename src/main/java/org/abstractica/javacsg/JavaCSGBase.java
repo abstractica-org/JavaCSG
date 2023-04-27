@@ -224,7 +224,7 @@ public interface JavaCSGBase
 	// 2D to 3D operations
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Geometry3D linearExtrude(double height,
-	                         double twistDegrees,
+	                         Angle twist,
 	                         double scale,
 	                         int slices,
 							 boolean centerZ,

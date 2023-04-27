@@ -259,7 +259,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 			topDiameter = temp;
 		}
 		Geometry2D circle = circle2D(bottomDiameter, angularResolution);
-		Geometry3D cone = linearExtrude(height, 0, topDiameter / bottomDiameter, 1, true, circle);
+		Geometry3D cone = linearExtrude(height, degrees(0), topDiameter / bottomDiameter, 1, true, circle);
 		if(flip)
 		{
 			Transform3D flipTransform = mirror3D(0, 0, 1);
@@ -300,7 +300,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 			topDiameter = temp;
 		}
 		Geometry2D circleSegment = circleSegment2D(bottomDiameter, beginAngle, endAngle, angularResolution);
-		Geometry3D cone = linearExtrude(height, 0, topDiameter / bottomDiameter, 1, true, circleSegment);
+		Geometry3D cone = linearExtrude(height, degrees(0), topDiameter / bottomDiameter, 1, true, circleSegment);
 		if(flip)
 		{
 			Transform3D flipTransform = mirror3D(0, 0, 1);
