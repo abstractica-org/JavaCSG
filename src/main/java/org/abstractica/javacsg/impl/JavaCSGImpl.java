@@ -55,7 +55,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		vertices.add(vector2D(0, 0));
 		for(int i = 0; i <= steps; ++i)
 		{
-			vertices.add(asVector2D(polar2D(1, rotations(fBegin + i*stepSize))));
+			vertices.add(asVector2D(polar2D(0.5, rotations(fBegin + i*stepSize))));
 		}
 		return polygon2D(vertices);
 	}
@@ -164,7 +164,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		{
 			return sphere;
 		}
-		Transform3D translate = translate3DZ(diameter/2);
+		Transform3D translate = translate3DZ(0.5*diameter);
 		return translate.transform(sphere);
 	}
 
