@@ -134,9 +134,9 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	}
 
 	@Override
-	public Transform2D compose3D(Transform2D... transforms)
+	public Transform2D compose2D(Transform2D... transforms)
 	{
-		return base.compose3D(transforms);
+		return base.compose2D(transforms);
 	}
 
 	@Override

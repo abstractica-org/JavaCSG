@@ -57,7 +57,7 @@ public interface JavaCSGBase
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Transform2D identity2D();
 
-	Transform2D compose3D(Transform2D... transforms);
+	Transform2D compose2D(Transform2D... transforms);
 
 	Transform2D translate2D(double x, double y);
 
