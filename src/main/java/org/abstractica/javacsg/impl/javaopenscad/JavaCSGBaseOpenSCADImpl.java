@@ -177,7 +177,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	@Override
 	public Transform2D compose2D(Transform2D... transforms)
 	{
-		return new Transform2DComposed((Arrays.asList(transforms)).reversed());
+		return new Transform2DComposed(Arrays.asList(transforms));
 	}
 
 	@Override
@@ -591,7 +591,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	@Override
 	public Transform3D compose3D(Transform3D... transforms)
 	{
-		return new Transform3DComposed(Arrays.asList(transforms).reversed());
+		return new Transform3DComposed(Arrays.asList(transforms));
 	}
 
 	@Override
