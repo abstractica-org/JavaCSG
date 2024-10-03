@@ -177,7 +177,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	@Override
 	public Transform2D compose2D(Transform2D... transforms)
 	{
-		return new Transform2DComposed(Arrays.asList(transforms));
+		return new Transform2DComposed(Arrays.asList(transforms).reversed());
 	}
 
 	@Override
@@ -591,7 +591,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	@Override
 	public Transform3D compose3D(Transform3D... transforms)
 	{
-		return new Transform3DComposed(Arrays.asList(transforms));
+		return new Transform3DComposed(Arrays.asList(transforms).reversed());
 	}
 
 	@Override
@@ -624,7 +624,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		Transform3D rotX = new Transform3DRotateX(angleX.asRadians());
 		Transform3D rotY = new Transform3DRotateY(angleY.asRadians());
 		Transform3D rotZ = new Transform3DRotateZ(angleZ.asRadians());
-		return new Transform3DComposed(Arrays.asList(rotZ, rotY, rotX));
+		return new Transform3DComposed(Arrays.asList(rotX, rotY, rotZ));
 	}
 
 	@Override
@@ -892,7 +892,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 
 		public Transform2DComposed(List<Transform2D> children)
 		{
-			for(Transform2D child : children.reversed())
+			for(Transform2D child : children)
 			{
 				if(child instanceof Transform2DComposed composed)
 				{
@@ -931,7 +931,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 				return this;
 			}
 			List<Transform2D> inverseList = new ArrayList<>(list.size());
-			for(Transform2D t : list)
+			for(Transform2D t : list.reversed())
 			{
 				inverseList.add(t.inverse());
 			}
@@ -1186,7 +1186,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 
 		public Transform3DComposed(List<Transform3D> children)
 		{
-			for(Transform3D child : children.reversed())
+			for(Transform3D child : children)
 			{
 				if(child instanceof Transform3DComposed composed)
 				{
@@ -1225,7 +1225,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 				return this;
 			}
 			List<Transform3D> inverseList = new ArrayList<>(list.size());
-			for(Transform3D t : list)
+			for(Transform3D t : list.reversed())
 			{
 				inverseList.add(t.inverse());
 			}
