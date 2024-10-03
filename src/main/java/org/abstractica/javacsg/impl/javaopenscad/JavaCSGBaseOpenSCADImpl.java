@@ -177,7 +177,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	@Override
 	public Transform2D compose2D(Transform2D... transforms)
 	{
-		return new Transform2DComposed(Arrays.asList(transforms).reversed());
+		return new Transform2DComposed(Arrays.asList(transforms));
 	}
 
 	@Override
@@ -591,7 +591,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	@Override
 	public Transform3D compose3D(Transform3D... transforms)
 	{
-		return new Transform3DComposed(Arrays.asList(transforms).reversed());
+		return new Transform3DComposed(Arrays.asList(transforms));
 	}
 
 	@Override
@@ -892,7 +892,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 
 		public Transform2DComposed(List<Transform2D> children)
 		{
-			for(Transform2D child : children)
+			for(Transform2D child : children.reversed())
 			{
 				if(child instanceof Transform2DComposed composed)
 				{
@@ -931,9 +931,9 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 				return this;
 			}
 			List<Transform2D> inverseList = new ArrayList<>(list.size());
-			for(int i = list.size() - 1; i >= 0; i--)
+			for(Transform2D t : list)
 			{
-				inverseList.add(list.get(i).inverse());
+				inverseList.add(t.inverse());
 			}
 			return new Transform2DComposed(inverseList);
 		}
@@ -1186,7 +1186,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 
 		public Transform3DComposed(List<Transform3D> children)
 		{
-			for(Transform3D child : children)
+			for(Transform3D child : children.reversed())
 			{
 				if(child instanceof Transform3DComposed composed)
 				{
@@ -1225,9 +1225,9 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 				return this;
 			}
 			List<Transform3D> inverseList = new ArrayList<>(list.size());
-			for(int i = list.size() - 1; i >= 0; i--)
+			for(Transform3D t : list)
 			{
-				inverseList.add(list.get(i).inverse());
+				inverseList.add(t.inverse());
 			}
 			return new Transform3DComposed(inverseList);
 		}
