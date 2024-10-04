@@ -52,7 +52,7 @@
             <groupId>com.github.abstractica-org</groupId>
             <artifactId>JavaOpenSCAD</artifactId>
             <!--suppress MavenModelInspection -->
-            <version>v0.1.0</version>
+            <version>v0.1.1</version>
         </dependency>
     </dependencies>
 
