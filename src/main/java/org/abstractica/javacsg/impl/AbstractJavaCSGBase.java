@@ -164,6 +164,12 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	}
 
 	@Override
+	public Transform2D rotate2DAround(Vector2D point, Angle angle)
+	{
+		return base.rotate2DAround(point, angle);
+	}
+
+	@Override
 	public Transform2D scale2D(double x, double y)
 	{
 		return base.scale2D(x, y);
@@ -434,9 +440,21 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	}
 
 	@Override
+	public Transform3D translate3DFromTo(Vector3D from, Vector3D to)
+	{
+		return base.translate3DFromTo(from, to);
+	}
+
+	@Override
 	public Transform3D rotate3D(Angle angleX, Angle angleY, Angle angleZ)
 	{
 		return base.rotate3D(angleX, angleY, angleZ);
+	}
+
+	@Override
+	public Transform3D rotate3DAround(Vector3D point, Angle angleX, Angle angleY, Angle angleZ)
+	{
+		return base.rotate3DAround(point, angleX, angleY, angleZ);
 	}
 
 	@Override
@@ -446,15 +464,33 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	}
 
 	@Override
+	public Transform3D rotate3DXAround(Vector3D point, Angle angle)
+	{
+		return base.rotate3DXAround(point, angle);
+	}
+
+	@Override
 	public Transform3D rotate3DY(Angle angle)
 	{
 		return base.rotate3DY(angle);
 	}
 
 	@Override
+	public Transform3D rotate3DYAround(Vector3D point, Angle angle)
+	{
+		return base.rotate3DYAround(point, angle);
+	}
+
+	@Override
 	public Transform3D rotate3DZ(Angle angle)
 	{
 		return base.rotate3DZ(angle);
+	}
+
+	@Override
+	public Transform3D rotate3DZAround(Vector3D point, Angle angle)
+	{
+		return base.rotate3DZAround(point, angle);
 	}
 
 	@Override

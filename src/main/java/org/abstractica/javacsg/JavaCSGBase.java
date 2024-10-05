@@ -67,6 +67,8 @@ public interface JavaCSGBase
 
 	Transform2D rotate2D(Angle angle);
 
+	Transform2D rotate2DAround(Vector2D point, Angle angle);
+
 	Transform2D scale2D(double x, double y);
 
 	Transform2D mirror2D(double normX, double normY);
@@ -184,13 +186,23 @@ public interface JavaCSGBase
 
 	Transform3D translate3DZ(double z);
 
+	Transform3D translate3DFromTo(Vector3D from, Vector3D to);
+
 	Transform3D rotate3D(Angle angleX, Angle angleY, Angle angleZ);
+
+	Transform3D rotate3DAround(Vector3D point, Angle angleX, Angle angleY, Angle angleZ);
 
 	Transform3D rotate3DX(Angle angle);
 
+	Transform3D rotate3DXAround(Vector3D point, Angle angle);
+
 	Transform3D rotate3DY(Angle angle);
 
+	Transform3D rotate3DYAround(Vector3D point, Angle angle);
+
 	Transform3D rotate3DZ(Angle angle);
+
+	Transform3D rotate3DZAround(Vector3D point, Angle angle);
 
 	//Transform3D rotate3D(Vector3D axis, Angle angle);
 	Transform3D scale3D(double x, double y, double z);

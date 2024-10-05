@@ -205,6 +205,15 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
+	public Transform2D rotate2DAround(Vector2D point, Angle angle)
+	{
+		Transform2D toZero = translate2D(-point.x(), -point.y());
+		Transform2D rotate = rotate2D(angle);
+		Transform2D back = translate2D(point.x(), point.y());
+		return compose2D(back, rotate, toZero);
+	}
+
+	@Override
 	public Transform2D scale2D(double x, double y)
 	{
 		return new Transform2DScale(x, y);
@@ -619,12 +628,27 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
+	public Transform3D translate3DFromTo(Vector3D from, Vector3D to)
+	{
+		return new Transform3DTranslate(to.x()-from.x(), to.y()- from.y(), to.z()- from.z());
+	}
+
+	@Override
 	public Transform3D rotate3D(Angle angleX, Angle angleY, Angle angleZ)
 	{
 		Transform3D rotX = new Transform3DRotateX(angleX.asRadians());
 		Transform3D rotY = new Transform3DRotateY(angleY.asRadians());
 		Transform3D rotZ = new Transform3DRotateZ(angleZ.asRadians());
-		return new Transform3DComposed(Arrays.asList(rotX, rotY, rotZ));
+		return new Transform3DComposed(Arrays.asList(rotZ, rotY, rotX));
+	}
+
+	@Override
+	public Transform3D rotate3DAround(Vector3D point, Angle angleX, Angle angleY, Angle angleZ)
+	{
+		Transform3D toZero = translate3D(-point.x(), -point.y(), -point.z());
+		Transform3D rotate = rotate3D(angleX, angleY, angleZ);
+		Transform3D back = translate3D(point.x(), point.y(), point.z());
+		return compose3D(back, rotate, toZero);
 	}
 
 	@Override
@@ -634,15 +658,42 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
+	public Transform3D rotate3DXAround(Vector3D point, Angle angle)
+	{
+		Transform3D toZero = translate3D(0, -point.y(), -point.z());
+		Transform3D rotate = rotate3DX(angle);
+		Transform3D back = translate3D(0, point.y(), point.z());
+		return compose3D(back, rotate, toZero);
+	}
+
+	@Override
 	public Transform3D rotate3DY(Angle angle)
 	{
 		return new Transform3DRotateY(angle.asRadians());
 	}
 
 	@Override
+	public Transform3D rotate3DYAround(Vector3D point, Angle angle)
+	{
+		Transform3D toZero = translate3D(-point.x(), 0, -point.z());
+		Transform3D rotate = rotate3DX(angle);
+		Transform3D back = translate3D(point.x(), 0, point.z());
+		return compose3D(back, rotate, toZero);
+	}
+
+	@Override
 	public Transform3D rotate3DZ(Angle angle)
 	{
 		return new Transform3DRotateZ(angle.asRadians());
+	}
+
+	@Override
+	public Transform3D rotate3DZAround(Vector3D point, Angle angle)
+	{
+		Transform3D toZero = translate3D(-point.x(), -point.y(), 0);
+		Transform3D rotate = rotate3DX(angle);
+		Transform3D back = translate3D(point.x(), point.y(), 0);
+		return compose3D(back, rotate, toZero);
 	}
 
 	@Override
