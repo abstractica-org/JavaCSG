@@ -639,7 +639,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		Transform3D rotX = new Transform3DRotateX(angleX.asRadians());
 		Transform3D rotY = new Transform3DRotateY(angleY.asRadians());
 		Transform3D rotZ = new Transform3DRotateZ(angleZ.asRadians());
-		return new Transform3DComposed(Arrays.asList(rotZ, rotY, rotX));
+		return compose3D(rotZ, rotY, rotX);
 	}
 
 	@Override
