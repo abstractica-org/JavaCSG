@@ -1030,6 +1030,17 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			}
 			return geometry;
 		}
+
+		@Override
+		public Transform3D asTransform3D()
+		{
+			List<Transform3D> transform3DLst = new ArrayList<>();
+			for(Transform2D transform2D : list)
+			{
+				transform3DLst.add(transform2D.asTransform3D());
+			}
+			return new Transform3DComposed(transform3DLst);
+		}
 	}
 
 	private class Transform2DTranslate implements Transform2D
@@ -1067,6 +1078,12 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			OpenSCADGeometry2DFrom2D translate = javaOpenSCAD.translate2D(x, y);
 			translate.add(((Geometry2DImpl) geometry).getOpenSCADGeometry());
 			return new Geometry2DImpl(translate);
+		}
+
+		@Override
+		public Transform3D asTransform3D()
+		{
+			return translate3D(x, y, 0);
 		}
 	}
 
@@ -1116,6 +1133,12 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			rotate.add(((Geometry2DImpl) geometry).getOpenSCADGeometry());
 			return new Geometry2DImpl(rotate);
 		}
+
+		@Override
+		public Transform3D asTransform3D()
+		{
+			return rotate3DZ(radians(rad));
+		}
 	}
 
 	private class Transform2DScale implements Transform2D
@@ -1154,6 +1177,12 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			scale.add(((Geometry2DImpl) geometry).getOpenSCADGeometry());
 			return new Geometry2DImpl(scale);
 		}
+
+		@Override
+		public Transform3D asTransform3D()
+		{
+			return scale3D(sx, sy, 1.0);
+		}
 	}
 
 	private static class Transform2DIdentity implements Transform2D
@@ -1186,6 +1215,12 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		public Geometry2D transform(Geometry2D geometry)
 		{
 			return geometry;
+		}
+
+		@Override
+		public Transform3D asTransform3D()
+		{
+			return Transform3DIdentity.INSTANCE;
 		}
 	}
 
@@ -1228,6 +1263,12 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			OpenSCADGeometry2DFrom2D mirror = javaOpenSCAD.mirror2D(normX, normY);
 			mirror.add(((Geometry2DImpl) geometry).getOpenSCADGeometry());
 			return new Geometry2DImpl(mirror);
+		}
+
+		@Override
+		public Transform3D asTransform3D()
+		{
+			return mirror3D(normX, normY, 0);
 		}
 	}
 

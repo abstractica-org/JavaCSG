@@ -6,4 +6,5 @@ public interface Transform2D
 	Vector2D transformPoint(Vector2D vector);
 	Vector2D transformDirection(Vector2D vector);
 	Geometry2D transform(Geometry2D geometry);
+	Transform3D asTransform3D();
 }
