@@ -3,7 +3,7 @@ Java Constructive Solid Geometry. Using OpenSCAD as CSG-engine though JavaOpenSC
 
 # JavaCSG Interface Documentation (Created by ChatGPT 4o, so let me know of any mistakes)
 
-The `JavaCSG` interface provides a rich set of methods for constructing and manipulating 2D and 3D geometries programmatically. It utilizes OpenSCAD as the geometry engine and helps developers perform constructive solid geometry (CSG) operations through an easy-to-use API. This documentation combines all functionality, including the foundational features from `JavaCSGBase`.
+The `JavaCSG` interface provides a rich set of methods for constructing and manipulating 2D and 3D geometries programmatically. It utilizes OpenSCAD as the geometry engine and helps developers perform constructive solid geometry (CSG) operations through an easy-to-use API.
 ## Angle Methods
 
 ### `rotations(double rotations)`
