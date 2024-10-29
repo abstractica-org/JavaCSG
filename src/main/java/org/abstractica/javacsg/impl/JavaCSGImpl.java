@@ -344,7 +344,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		{
 			return torus;
 		}
-		return translate3DZ(largeCircleDiameter / 2).transform(torus);
+		return translate3DZ(smallCircleDiameter / 2).transform(torus);
 	}
 
 	@Override
