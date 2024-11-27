@@ -140,6 +140,22 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		return translate.transform(rect);
 	}
 
+	private Geometry2D unitTriangle2D()
+	{
+		List<Vector2D> vertices = new ArrayList<>(3);
+		vertices.add(vector2D(0, 0));
+		vertices.add(vector2D(1, 0));
+		vertices.add(vector2D(0, 1));
+		return polygon2D(vertices);
+	}
+
+	@Override
+	public Geometry2D rightTriangle2D(double xSize, double ySize)
+	{
+		Transform2D scale = scale2D(xSize, ySize);
+		return scale.transform(unitTriangle2D());
+	}
+
 	private Geometry3D d1Sphere3D(int angularResolution)
 	{
 		if(angularResolution < 4)
@@ -374,6 +390,13 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		}
 		Transform3D translate = translate3DZ(smallCircleDiameter/2);
 		return translate.transform(torusSegment);
+	}
+
+	@Override
+	public Geometry3D wedge3D(double xSize, double ySize, double zSize, boolean centerZ)
+	{
+		Geometry2D triangle = rightTriangle2D(xSize, ySize);
+		return linearExtrude(zSize, centerZ, triangle);
 	}
 
 	@Override
