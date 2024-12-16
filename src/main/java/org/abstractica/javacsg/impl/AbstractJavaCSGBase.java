@@ -200,6 +200,12 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	}
 
 	@Override
+	public Geometry2D union2D(Geometry2D geometry, Iterable<Geometry2D> geometries)
+	{
+		return base.union2D(geometry, geometries);
+	}
+
+	@Override
 	public Geometry2D intersection2D(Geometry2D... geometries)
 	{
 		return base.intersection2D(geometries);
@@ -515,6 +521,12 @@ public class AbstractJavaCSGBase implements JavaCSGBase
 	public Geometry3D union3D(Iterable<Geometry3D> geometries)
 	{
 		return base.union3D(geometries);
+	}
+
+	@Override
+	public Geometry3D union3D(Geometry3D geometry, Iterable<Geometry3D> geometries)
+	{
+		return base.union3D(geometry, geometries);
 	}
 
 	@Override

@@ -85,6 +85,8 @@ public interface JavaCSGBase
 
 	Geometry2D union2D(Iterable<Geometry2D> geometries);
 
+	Geometry2D union2D(Geometry2D geometry, Iterable<Geometry2D> geometries);
+
 	Geometry2D intersection2D(Geometry2D... geometries);
 
 	Geometry2D intersection2D(Iterable<Geometry2D> geometries);
@@ -215,6 +217,8 @@ public interface JavaCSGBase
 	Geometry3D union3D(Geometry3D... geometries);
 
 	Geometry3D union3D(Iterable<Geometry3D> geometries);
+
+	Geometry3D union3D(Geometry3D geometry, Iterable<Geometry3D> geometries);
 
 	Geometry3D intersection3D(Geometry3D... geometries);
 

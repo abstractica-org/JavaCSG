@@ -259,6 +259,19 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
+	public Geometry2D union2D(Geometry2D geometry, Iterable<Geometry2D> geometries)
+	{
+		OpenSCADGeometry2DFrom2D union = javaOpenSCAD.union2D();
+		union.add(((Geometry2DImpl) geometry).getOpenSCADGeometry());
+		for(Geometry2D geom : geometries)
+		{
+			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geom).getOpenSCADGeometry();
+			union.add(openSCADGeometry);
+		}
+		return new Geometry2DImpl(union);
+	}
+
+	@Override
 	public Geometry2D intersection2D(Geometry2D... geometries)
 	{
 		OpenSCADGeometry2DFrom2D intersection = javaOpenSCAD.intersection2D();
@@ -727,6 +740,19 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		for(Geometry3D geometry : geometries)
 		{
 			OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
+			union.add(openSCADGeometry);
+		}
+		return new Geometry3DImpl(union);
+	}
+
+	@Override
+	public Geometry3D union3D(Geometry3D geometry, Iterable<Geometry3D> geometries)
+	{
+		OpenSCADGeometry3DFrom3D union = javaOpenSCAD.union3D();
+		union.add(((Geometry3DImpl) geometry).getOpenSCADGeometry());
+		for(Geometry3D geom : geometries)
+		{
+			OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geom).getOpenSCADGeometry();
 			union.add(openSCADGeometry);
 		}
 		return new Geometry3DImpl(union);
