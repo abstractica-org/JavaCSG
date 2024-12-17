@@ -689,7 +689,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	public Transform3D rotate3DYAround(Vector3D point, Angle angle)
 	{
 		Transform3D toZero = translate3D(-point.x(), 0, -point.z());
-		Transform3D rotate = rotate3DX(angle);
+		Transform3D rotate = rotate3DY(angle);
 		Transform3D back = translate3D(point.x(), 0, point.z());
 		return compose3D(back, rotate, toZero);
 	}
@@ -704,7 +704,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	public Transform3D rotate3DZAround(Vector3D point, Angle angle)
 	{
 		Transform3D toZero = translate3D(-point.x(), -point.y(), 0);
-		Transform3D rotate = rotate3DX(angle);
+		Transform3D rotate = rotate3DZ(angle);
 		Transform3D back = translate3D(point.x(), point.y(), 0);
 		return compose3D(back, rotate, toZero);
 	}
