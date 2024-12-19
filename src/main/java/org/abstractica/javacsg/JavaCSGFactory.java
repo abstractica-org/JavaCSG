@@ -1,7 +1,8 @@
 package org.abstractica.javacsg;
 
+import org.abstractica.javacsg.baseimpl.JavaCSGBase;
 import org.abstractica.javacsg.impl.JavaCSGImpl;
-import org.abstractica.javacsg.impl.javaopenscad.JavaCSGBaseOpenSCADImpl;
+import org.abstractica.javacsg.baseimpl.javaopenscad.JavaCSGBaseOpenSCADImpl;
 
 public class JavaCSGFactory
 {
