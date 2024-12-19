@@ -48,6 +48,7 @@ Add JavaCSG to your project using Maven or Gradle.
         <version>0.6.0</version>
     </dependency>
 </dependencies>
+```
 
 **Gradle Example:**
 
@@ -59,4 +60,5 @@ repositories {
 dependencies {
     implementation 'com.github.abstractica-org:JavaCSG:0.6.0'
 }
+```
 
