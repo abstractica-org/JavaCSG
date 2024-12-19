@@ -7,7 +7,7 @@ import java.util.List;
 
 public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 {
-	public JavaCSGImpl(JavaCSGBaseOld base)
+	public JavaCSGImpl(JavaCSGBase base)
 	{
 		super(base);
 	}
