@@ -98,6 +98,7 @@ public class Example {
 ## Example project
 
 An example project using JavaCSG can be found here: [Quarto3D](https://github.com/abstractica-org/Quarto3D)
+
 Feel free to clone or fork the project and play around with it :-)
 
 ## Documentation
