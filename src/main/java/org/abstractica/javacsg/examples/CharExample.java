@@ -1,15 +1,18 @@
-package org.abstractica.javacsg.example;
+package org.abstractica.javacsg.examples;
 
 import org.abstractica.javacsg.Geometry2D;
 import org.abstractica.javacsg.JavaCSG;
 import org.abstractica.javacsg.JavaCSGFactory;
 
-public class TextExample
+
+public class CharExample
 {
 	public static void main(String[] args)
 	{
 		JavaCSG jcsg = JavaCSGFactory.createDefault();
-		Geometry2D text = jcsg.text2D("ÆØÅæøåHello world!", 5, 1);
-		jcsg.view(text);
+		Geometry2D ch = jcsg.char2D('0', 5.0,10,64);
+		jcsg.view(ch);
+		System.out.println(ch.getMin());
+		System.out.println(ch.getMax());
 	}
 }

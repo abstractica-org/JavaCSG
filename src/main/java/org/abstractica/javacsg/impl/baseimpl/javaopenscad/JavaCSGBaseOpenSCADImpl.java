@@ -1,9 +1,7 @@
-package org.abstractica.javacsg.baseimpl.javaopenscad;
+package org.abstractica.javacsg.impl.baseimpl.javaopenscad;
 
 import org.abstractica.javacsg.*;
-import org.abstractica.javacsg.baseimpl.JavaCSGBase;
-import org.abstractica.javacsg.impl.AngleImpl;
-import org.abstractica.javacsg.impl.Polar2DImpl;
+import org.abstractica.javacsg.impl.baseimpl.JavaCSGBase;
 import org.abstractica.javacsg.impl.Vector2DImpl;
 import org.abstractica.javacsg.impl.Vector3DImpl;
 import org.abstractica.javaopenscad.JavaOpenSCAD;
@@ -16,8 +14,6 @@ import org.abstractica.javaopenscad.intf.text.OpenSCADTextSize;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase

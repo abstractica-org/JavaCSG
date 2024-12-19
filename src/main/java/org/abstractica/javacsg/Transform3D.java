@@ -11,7 +11,6 @@ package org.abstractica.javacsg;
  *   <li>Apply transformations to entire 3D geometries.</li>
  * </ul>
  * These operations are useful for geometric modeling, manipulation, and rendering tasks.
- * </p>
  */
 public interface Transform3D
 {

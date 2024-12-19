@@ -1,6 +1,9 @@
-package org.abstractica.javacsg.example;
+package org.abstractica.javacsg.examples;
 
-import org.abstractica.javacsg.*;
+import org.abstractica.javacsg.Geometry3D;
+import org.abstractica.javacsg.JavaCSG;
+import org.abstractica.javacsg.JavaCSGFactory;
+import org.abstractica.javacsg.Transform3D;
 
 
 public class BoxTest

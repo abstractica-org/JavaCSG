@@ -1,4 +1,4 @@
-package org.abstractica.javacsg.baseimpl;
+package org.abstractica.javacsg.impl.baseimpl;
 
 import org.abstractica.javacsg.*;
 

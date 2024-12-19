@@ -9,7 +9,6 @@ package org.abstractica.javacsg;
  *   <li>Temporarily disable a geometry, for example, when testing or modifying larger composite structures.</li>
  * </ul>
  * These actions can be helpful during development and analysis of complex geometries.
- * </p>
  */
 public interface Geometry
 {

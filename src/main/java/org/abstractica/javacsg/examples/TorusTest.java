@@ -1,6 +1,8 @@
-package org.abstractica.javacsg.example;
+package org.abstractica.javacsg.examples;
 
-import org.abstractica.javacsg.*;
+import org.abstractica.javacsg.Geometry3D;
+import org.abstractica.javacsg.JavaCSG;
+import org.abstractica.javacsg.JavaCSGFactory;
 
 public class TorusTest
 {

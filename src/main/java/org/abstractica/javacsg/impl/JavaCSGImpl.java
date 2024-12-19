@@ -1,8 +1,7 @@
 package org.abstractica.javacsg.impl;
 
 import org.abstractica.javacsg.*;
-import org.abstractica.javacsg.baseimpl.JavaCSGBase;
-import org.abstractica.javacsg.baseimpl.javaopenscad.JavaCSGBaseOpenSCADImpl;
+import org.abstractica.javacsg.impl.baseimpl.JavaCSGBase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -877,6 +876,12 @@ public class JavaCSGImpl implements JavaCSG
 	}
 
 	@Override
+	public Geometry3D boxCenter3D(Vector3D center, double xSize, double ySize, double zSize)
+	{
+		return boxCenter3D(center.x(), center.y(), center.z(), xSize, ySize, zSize);
+	}
+
+	@Override
 	public Geometry3D boxCorners3D(double c1x, double c1y, double c1z, double c2x, double c2y, double c2z)
 	{
 		double xSize = Math.abs(c2x - c1x);
@@ -886,6 +891,12 @@ public class JavaCSGImpl implements JavaCSG
 		double cy = Math.min(c1y, c2y) + ySize/2;
 		double cz = Math.min(c1z, c2z) + zSize/2;
 		return boxCenter3D(cx, cy, cz, xSize, ySize, zSize);
+	}
+
+	@Override
+	public Geometry3D boxCorners3D(Vector3D cornerA, Vector3D cornerB)
+	{
+		return boxCorners3D(cornerA.x(), cornerA.y(), cornerA.z(), cornerB.x(), cornerB.y(), cornerB.z());
 	}
 
 	@Override
@@ -1020,6 +1031,16 @@ public class JavaCSGImpl implements JavaCSG
 		Geometry2D ringSegment = ringSegment2D(innerDiameter, outerDiameter, beginAngle, endAngle, angularResolution);
 		Geometry3D flatRing = base.linearExtrude(height, centerZ, ringSegment);
 		return base.cache(flatRing);
+	}
+
+	@Override
+	public Geometry3D flatCylinder3D(double diameter, double width, double height, int angularResolution, boolean centerZ)
+	{
+		Geometry2D profile = circle2D(diameter, angularResolution);
+		Geometry2D restrict = rectangle2D(width, diameter+2);
+		profile = intersection2D(profile, restrict);
+		Geometry3D flatCylinder = base.linearExtrude(height, centerZ, profile);
+		return base.cache(flatCylinder);
 	}
 
 	@Override

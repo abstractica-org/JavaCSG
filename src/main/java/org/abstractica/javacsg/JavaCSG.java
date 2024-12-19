@@ -18,7 +18,6 @@ import java.util.List;
  * </ul>
  * All methods return new immutable values and never modify their input arguments.
  * Use these methods to build, transform, and combine geometries for modeling, visualization, and computational geometry tasks.
- * </p>
  */
 public interface JavaCSG
 {
@@ -30,7 +29,6 @@ public interface JavaCSG
 	 * Creates a new {@link Angle} specified as a fraction of a full rotation.
 	 * <p>
 	 * Use this to define angles by how many full turns they represent.
-	 * </p>
 	 *
 	 * @param rotations the angle in full rotations (1.0 = 360°)
 	 * @return a new {@link Angle} representing the given number of rotations
@@ -844,7 +842,6 @@ public interface JavaCSG
 	 * <p>
 	 * The transformations are applied in the order of matrix multiplikation.
 	 * The list of {T1, T2, T3} is equivalent to T1 * T2 * T3.
-	 * </p>
 	 *
 	 * @param transforms a list of {@link Transform3D}
 	 * @return a new composed {@link Transform3D}
@@ -856,7 +853,6 @@ public interface JavaCSG
 	 * <p>
 	 * The transformations are applied in the order of matrix multiplikation.
 	 * The array of [T1, T2, T3] is equivalent to T1 * T2 * T3.
-	 * </p>
 	 *
 	 * @param transforms an array of {@link Transform3D}
 	 * @return a new composed {@link Transform3D}
@@ -1148,6 +1144,17 @@ public interface JavaCSG
 	Geometry3D boxCenter3D(double cx, double cy, double cz, double xSize, double ySize, double zSize);
 
 	/**
+	 * Creates a 3D box defined by a center point and extents.
+	 *
+	 * @param center the center point as a {@link Vector3D}
+	 * @param xSize the size along x-axis
+	 * @param ySize the size along y-axis
+	 * @param zSize the size along z-axis
+	 * @return a new {@link Geometry3D} box
+	 */
+	Geometry3D boxCenter3D(Vector3D center, double xSize, double ySize, double zSize);
+
+	/**
 	 * Creates a 3D box defined by two corner points.
 	 *
 	 * @param c1x the x of the first corner
@@ -1159,6 +1166,15 @@ public interface JavaCSG
 	 * @return a new {@link Geometry3D} box
 	 */
 	Geometry3D boxCorners3D(double c1x, double c1y, double c1z, double c2x, double c2y, double c2z);
+
+	/**
+	 * Creates a 3D box defined by two corner points.
+	 *
+	 * @param cornerA the first corner as a {@link Vector3D}
+	 * @param cornerB the opposite corner as a {@link Vector3D}
+	 * @return a new {@link Geometry3D} box
+	 */
+	Geometry3D boxCorners3D(Vector3D cornerA, Vector3D cornerB);
 
 	/**
 	 * Creates a 3D cylinder.
@@ -1292,6 +1308,22 @@ public interface JavaCSG
 								 Angle endAngle,
 								 int angularResolution,
 								 boolean centerZ);
+
+	/**
+	 * Creates a flat 3D cylinder defined by diameter, width, and height.
+	 *
+	 * @param diameter the diameter of the cylinder
+	 * @param width the width of the cylinder (along the X-axis)
+	 * @param height the height of the cylinder (along the Z-axis)
+	 * @param angularResolution the resolution around its circumference
+	 * @param centerZ if true, centers the cylinder along the Z-axis
+	 * @return a new {@link Geometry3D} flat cylinder
+	 */
+	Geometry3D flatCylinder3D(double diameter,
+							  double width,
+							  double height,
+							  int angularResolution,
+							  boolean centerZ);
 
 	/**
 	 * Creates a torus (doughnut shape).

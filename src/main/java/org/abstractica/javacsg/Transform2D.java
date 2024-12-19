@@ -11,7 +11,6 @@ package org.abstractica.javacsg;
  *   <li>Convert a 2D transformation into a 3D transformation context.</li>
  * </ul>
  * These operations are useful for geometric modeling, manipulation, and rendering tasks.
- * </p>
  */
 public interface Transform2D
 {
