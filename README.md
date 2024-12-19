@@ -2,7 +2,10 @@
 Java Constructive Solid Geometry. 
 
 **JavaCSG** is a Java framework for constructive solid geometry (CSG), geometric modeling, and manipulation of 2D and 3D shapes. It provides an extensive set of immutable operations and data types, including vectors, angles, transformations, and boolean operations on geometries. This makes JavaCSG suitable for computational geometry tasks, CAD/CAM applications, and procedural shape generation.
-JavaCSG uses OpenSCAD as CSG-engine though JavaOpenSCAD.
+
+## OpenSCAD
+JavaCSG uses OpenSCAD as its CSG-engine though [JavaOpenSCAD](https://github.com/abstractica-org/JavaOpenSCAD). For JavaCSG to work, OpenSCAD must be installed and available on the system path. JavaCSG uses the [manifold](https://github.com/elalish/manifold) engine in OpenSCAD which (as of when this was written) is only available in the nightly build of OpenSCAD:
+[OpenSCAD nightly build](https://openscad.org/downloads.html#snapshots)
 
 ## Features
 
@@ -61,4 +64,50 @@ dependencies {
     implementation 'com.github.abstractica-org:JavaCSG:0.6.0'
 }
 ```
+
+## Usage example
+```java
+import org.abstractica.javacsg.*;
+
+import java.io.IOException;
+
+public class Example {
+    public static void main(String[] args) throws IOException
+    {
+        JavaCSG csg = JavaCSGFactory.createNoCaching();
+
+        Geometry3D box = csg.box3D(10, 10, 10, true);
+        Geometry3D sphere = csg.sphere3D(12, 64, true);
+
+        Geometry3D intersection = csg.intersection3D(box, sphere);
+        // The 'intersection' now represents the shape where the box and sphere overlap.
+
+        csg.view(intersection);
+        // This creates the file OpenSCAD/view0.scad that can be opened with OpenSCAD
+        // OpenSCAD will automatically update the view when the file is saved
+
+        csg.saveSTL("STL/example.stl", intersection);
+        // This creates the file STL/example.stl
+        // For this to work OpenSCAD must be installed and in the system path
+    }
+}
+```
+
+## Documentation
+
+Extensive Javadoc documentation is available at:  
+**[JavaCSG Javadoc](https://abstractica-org.github.io/JavaCSG)**
+
+This site provides detailed information on all interfaces, classes, and methods within the framework.
+
+## Contributing
+
+Contributions are welcome! If you have ideas for enhancements, bug fixes, or additional features, feel free to open an issue or create a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).  
+See the [LICENSE](LICENSE) file for more details.
+
+
 
