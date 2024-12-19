@@ -1,0 +1,110 @@
+package org.abstractica.javacsg.baseimpl;
+
+import org.abstractica.javacsg.*;
+
+import java.io.IOException;
+import java.util.List;
+
+public interface JavaCSGBase
+{
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 2D Polygon
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Geometry2D polygon2D(Iterable<Vector2D> vertices);
+    Geometry2D polygon2D(Iterable<Vector2D> vertices, Iterable<? extends Iterable<Integer>> paths);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 2D transformations
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Transform2D identity2D();
+    Transform2D compose2D(List<Transform2D> transforms);
+    Transform2D translate2D(double x, double y);
+    Transform2D rotate2D(Angle angle);
+    Transform2D scale2D(double x, double y);
+    Transform2D mirror2D(double normX, double normY);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 2D operations
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Geometry2D union2D(Iterable<Geometry2D> geometries);
+    Geometry2D intersection2D(Iterable<Geometry2D> geometries);
+    Geometry2D difference2D(Geometry2D filled, Iterable<Geometry2D> cutouts);
+    Geometry2D hull2D(Iterable<Geometry2D> geometries);
+    Geometry2D minkowski2D(Iterable<Geometry2D> geometries);
+    Geometry2D offset2D(double delta, boolean chamfer, Iterable<Geometry2D> geometries);
+    Geometry2D offsetRound2D(double radius, int angularResolution, Iterable<Geometry2D> geometries);
+    Geometry2D color2D(double r, double g, double b, double a, Iterable<Geometry2D> geometries);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 2D text
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Geometry2D char2D(char ch, double width, int angularResolution);
+    Geometry2D char2D(char ch, double width, double height, int angularResolution);
+    double charHeight2D(double width);
+    double charBaseline2D(double height);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 3D Polyhedron
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Geometry3D polyhedron3D(Iterable<Vector3D> vertices, Iterable<? extends Iterable<Integer>> faces);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // 2D to 3D operations
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Geometry3D linearExtrude(double height,
+                             Angle twist,
+                             double scale,
+                             int slices,
+                             boolean centerZ,
+                             Geometry2D geometry);
+
+    Geometry3D linearExtrude(double height, boolean centerZ, Geometry2D geometry);
+
+    Geometry3D rotateExtrude(Angle angle, int angularResolution, Geometry2D geometry);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // 3D to 2D operations
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Geometry2D project(boolean cutAtZeroZ, Geometry3D geometry);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 3D transformations
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Transform3D identity3D();
+    Transform3D compose3D(List<Transform3D> transforms);
+    Transform3D translate3D(double x, double y, double z);
+    Transform3D rotate3DX(Angle angle);
+    Transform3D rotate3DY(Angle angle);
+    Transform3D rotate3DZ(Angle angle);
+    Transform3D scale3D(double x, double y, double z);
+    Transform3D mirror3D(double normX, double normY, double normZ);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 3D operations
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Geometry3D union3D(Iterable<Geometry3D> geometries);
+    Geometry3D intersection3D(Iterable<Geometry3D> geometries);
+    Geometry3D difference3D(Geometry3D filled, Iterable<Geometry3D> cutouts);
+    Geometry3D hull3D(Iterable<Geometry3D> geometries);
+    Geometry3D minkowski3D(Iterable<Geometry3D> geometries);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // View geometry
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    void view(Geometry2D geometry);
+    void view(Geometry3D geometry);
+    void view(Geometry2D geometry, int windowID);
+    void view(Geometry3D geometry, int windowID);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Cache geometry
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Geometry2D cache(Geometry2D geometry);
+    Geometry3D cache(Geometry3D geometry);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Save and load STL
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Geometry3D loadSTL(String fileName) throws IOException;
+    void saveSTL(String fileName, Geometry3D geometry) throws IOException;
+}

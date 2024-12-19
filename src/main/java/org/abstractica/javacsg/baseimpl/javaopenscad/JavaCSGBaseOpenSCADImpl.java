@@ -1,6 +1,11 @@
-package org.abstractica.javacsg.impl.javaopenscad;
+package org.abstractica.javacsg.baseimpl.javaopenscad;
 
 import org.abstractica.javacsg.*;
+import org.abstractica.javacsg.baseimpl.JavaCSGBase;
+import org.abstractica.javacsg.impl.AngleImpl;
+import org.abstractica.javacsg.impl.Polar2DImpl;
+import org.abstractica.javacsg.impl.Vector2DImpl;
+import org.abstractica.javacsg.impl.Vector3DImpl;
 import org.abstractica.javaopenscad.JavaOpenSCAD;
 import org.abstractica.javaopenscad.impl.JavaOpenSCADImpl;
 import org.abstractica.javaopenscad.intf.*;
@@ -12,6 +17,7 @@ import org.abstractica.javaopenscad.intf.text.OpenSCADTextSize;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
@@ -36,138 +42,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		this.textScale = 2.0 / 15.0;
 		//this.textScaleX = this.textScaleY * (0.75 / 7.4575);
 	}
-
-	@Override
-	public Angle rotations(double rotations)
-	{
-		return new AngleImpl(rotations);
-	}
-
-	@Override
-	public Angle degrees(double degrees)
-	{
-		return new AngleImpl(degrees * DEGREES_TO_ROTATIONS);
-	}
-
-	@Override
-	public Angle radians(double radians)
-	{
-		return new AngleImpl(radians * RADIANS_TO_ROTATIONS);
-	}
-
-	@Override
-	public Vector2D vector2D(double x, double y)
-	{
-		return new Vector2DImpl(x, y);
-	}
-
-	@Override
-	public double sqrLength(Vector2D vector)
-	{
-		return vector.x() * vector.x() + vector.y() * vector.y();
-	}
-
-	@Override
-	public double length(Vector2D vector)
-	{
-		return Math.sqrt(sqrLength(vector));
-	}
-
-	@Override
-	public double dist(Vector2D vector1, Vector2D vector2)
-	{
-		return length(sub(vector1, vector2));
-	}
-
-	@Override
-	public Vector2D normalize(Vector2D vector)
-	{
-		double len = length(vector);
-		return vector2D(vector.x() / len, vector.y() / len);
-	}
-
-	@Override
-	public Vector2D add(Vector2D vector1, Vector2D vector2)
-	{
-		return vector2D(vector1.x() + vector2.x(), vector1.y() + vector2.y());
-	}
-
-	@Override
-	public Vector2D sub(Vector2D vector1, Vector2D vector2)
-	{
-		return vector2D(vector1.x() - vector2.x(), vector1.y() - vector2.y());
-	}
-
-	@Override
-	public Vector2D mul(Vector2D vector, double scalar)
-	{
-		return vector2D(vector.x() * scalar, vector.y() * scalar);
-	}
-
-	@Override
-	public Vector2D div(Vector2D vector, double scalar)
-	{
-		return vector2D(vector.x() / scalar, vector.y() / scalar);
-	}
-
-	@Override
-	public double dot(Vector2D vector1, Vector2D vector2)
-	{
-		return vector1.x() * vector2.x() + vector1.y() * vector2.y();
-	}
-
-	@Override
-	public Vector2D fromTo(Vector2D from, Vector2D to)
-	{
-		return sub(to, from);
-	}
-
-	@Override
-	public Polar2D polar2D(double r, Angle phi)
-	{
-		return new Polar2DImpl(r, phi);
-	}
-
-	@Override
-	public Polar2D asPolar2D(Vector2D vector)
-	{
-		return polar2D(length(vector), radians(Math.atan2(vector.y(), vector.x())));
-	}
-
-	@Override
-	public Vector2D asVector2D(Polar2D polar)
-	{
-		return vector2D(polar.r() * Math.cos(polar.phi().asRadians()), polar.r() * Math.sin(polar.phi().asRadians()));
-	}
-
-	@Override
-	public Geometry2D polygon2D(Iterable<Vector2D> vertices)
-	{
-		List<OpenSCADVector2D> openSCADVertices = new ArrayList<>();
-		for(Vector2D vertex : vertices)
-		{
-			OpenSCADVector2D vector = javaOpenSCAD.vector2D(vertex.x(), vertex.y());
-			openSCADVertices.add(vector);
-		}
-		OpenSCADGeometry2D geometry = javaOpenSCAD.polygon2D(openSCADVertices);
-		OpenSCADGeometry2D result = javaOpenSCAD.module(geometry);
-		return new Geometry2DImpl(result);
-	}
-
-	@Override
-	public Geometry2D polygon2D(Iterable<Vector2D> vertices, Iterable<? extends Iterable<Integer>> paths)
-	{
-		List<OpenSCADVector2D> openSCADVertices = new ArrayList<>();
-		for(Vector2D vertex : vertices)
-		{
-			OpenSCADVector2D vector = javaOpenSCAD.vector2D(vertex.x(), vertex.y());
-			openSCADVertices.add(vector);
-		}
-		OpenSCADGeometry2D geometry = javaOpenSCAD.polygon2D(openSCADVertices, paths);
-		OpenSCADGeometry2D result = javaOpenSCAD.module(geometry);
-		return new Geometry2DImpl(result);
-	}
-
 	@Override
 	public Transform2D identity2D()
 	{
@@ -175,9 +49,9 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Transform2D compose2D(Transform2D... transforms)
+	public Transform2D compose2D(List<Transform2D> transforms)
 	{
-		return new Transform2DComposed(Arrays.asList(transforms).reversed());
+		return new Transform2DComposed(transforms);
 	}
 
 	@Override
@@ -187,30 +61,9 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Transform2D translate2DX(double x)
-	{
-		return new Transform2DTranslate(x, 0.0);
-	}
-
-	@Override
-	public Transform2D translate2DY(double y)
-	{
-		return new Transform2DTranslate(0.0, y);
-	}
-
-	@Override
 	public Transform2D rotate2D(Angle angle)
 	{
 		return new Transform2DRotate(angle);
-	}
-
-	@Override
-	public Transform2D rotate2DAround(Vector2D point, Angle angle)
-	{
-		Transform2D toZero = translate2D(-point.x(), -point.y());
-		Transform2D rotate = rotate2D(angle);
-		Transform2D back = translate2D(point.x(), point.y());
-		return compose2D(back, rotate, toZero);
 	}
 
 	@Override
@@ -226,27 +79,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry2D resize2D(double x, double y, boolean autoX, boolean autoY, Geometry2D geometry)
-	{
-		OpenSCADGeometry2DFrom2D resize = javaOpenSCAD.resize2D(x, y, autoX, autoY);
-		OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
-		resize.add(openSCADGeometry);
-		return new Geometry2DImpl(resize);
-	}
-
-	@Override
-	public Geometry2D union2D(Geometry2D... geometries)
-	{
-		OpenSCADGeometry2DFrom2D union = javaOpenSCAD.union2D();
-		for(Geometry2D geometry : geometries)
-		{
-			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
-			union.add(openSCADGeometry);
-		}
-		return new Geometry2DImpl(union);
-	}
-
-	@Override
 	public Geometry2D union2D(Iterable<Geometry2D> geometries)
 	{
 		OpenSCADGeometry2DFrom2D union = javaOpenSCAD.union2D();
@@ -259,31 +91,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry2D union2D(Geometry2D geometry, Iterable<Geometry2D> geometries)
-	{
-		OpenSCADGeometry2DFrom2D union = javaOpenSCAD.union2D();
-		union.add(((Geometry2DImpl) geometry).getOpenSCADGeometry());
-		for(Geometry2D geom : geometries)
-		{
-			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geom).getOpenSCADGeometry();
-			union.add(openSCADGeometry);
-		}
-		return new Geometry2DImpl(union);
-	}
-
-	@Override
-	public Geometry2D intersection2D(Geometry2D... geometries)
-	{
-		OpenSCADGeometry2DFrom2D intersection = javaOpenSCAD.intersection2D();
-		for(Geometry2D geometry : geometries)
-		{
-			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
-			intersection.add(openSCADGeometry);
-		}
-		return new Geometry2DImpl(intersection);
-	}
-
-	@Override
 	public Geometry2D intersection2D(Iterable<Geometry2D> geometries)
 	{
 		OpenSCADGeometry2DFrom2D intersection = javaOpenSCAD.intersection2D();
@@ -293,20 +100,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			intersection.add(openSCADGeometry);
 		}
 		return new Geometry2DImpl(intersection);
-	}
-
-	@Override
-	public Geometry2D difference2D(Geometry2D filled, Geometry2D... cutouts)
-	{
-		OpenSCADGeometry2DFrom2D difference = javaOpenSCAD.difference2D();
-		OpenSCADGeometry2D openSCADFilled = ((Geometry2DImpl) filled).getOpenSCADGeometry();
-		difference.add(openSCADFilled);
-		for(Geometry2D cutout : cutouts)
-		{
-			OpenSCADGeometry2D openSCADCutout = ((Geometry2DImpl) cutout).getOpenSCADGeometry();
-			difference.add(openSCADCutout);
-		}
-		return new Geometry2DImpl(difference);
 	}
 
 	@Override
@@ -324,18 +117,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry2D hull2D(Geometry2D... geometries)
-	{
-		OpenSCADGeometry2DFrom2D hull = javaOpenSCAD.hull2D();
-		for(Geometry2D geometry : geometries)
-		{
-			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
-			hull.add(openSCADGeometry);
-		}
-		return new Geometry2DImpl(hull);
-	}
-
-	@Override
 	public Geometry2D hull2D(Iterable<Geometry2D> geometries)
 	{
 		OpenSCADGeometry2DFrom2D hull = javaOpenSCAD.hull2D();
@@ -345,18 +126,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			hull.add(openSCADGeometry);
 		}
 		return new Geometry2DImpl(hull);
-	}
-
-	@Override
-	public Geometry2D minkowski2D(Geometry2D... geometries)
-	{
-		OpenSCADGeometry2DFrom2D minkowsky = javaOpenSCAD.minkowsky2D();
-		for(Geometry2D geometry : geometries)
-		{
-			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
-			minkowsky.add(openSCADGeometry);
-		}
-		return new Geometry2DImpl(minkowsky);
 	}
 
 	@Override
@@ -372,33 +141,9 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry2D offset2D(double delta, boolean chamfer, Geometry2D... geometries)
-	{
-		OpenSCADGeometry2DFrom2D offset = javaOpenSCAD.offset2D(delta, chamfer);
-		for(Geometry2D geometry : geometries)
-		{
-			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
-			offset.add(openSCADGeometry);
-		}
-		return new Geometry2DImpl(offset);
-	}
-
-	@Override
 	public Geometry2D offset2D(double delta, boolean chamfer, Iterable<Geometry2D> geometries)
 	{
 		OpenSCADGeometry2DFrom2D offset = javaOpenSCAD.offset2D(delta, chamfer);
-		for(Geometry2D geometry : geometries)
-		{
-			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
-			offset.add(openSCADGeometry);
-		}
-		return new Geometry2DImpl(offset);
-	}
-
-	@Override
-	public Geometry2D offsetRound2D(double radius, int angularResolution, Geometry2D... geometries)
-	{
-		OpenSCADGeometry2DFrom2D offset = javaOpenSCAD.offsetRound2D(radius, angularResolution);
 		for(Geometry2D geometry : geometries)
 		{
 			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
@@ -417,18 +162,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			offset.add(openSCADGeometry);
 		}
 		return new Geometry2DImpl(offset);
-	}
-
-	@Override
-	public Geometry2D color2D(double r, double g, double b, double a, Geometry2D... geometries)
-	{
-		OpenSCADGeometry2DFrom2D color = javaOpenSCAD.color2D(r, g, b, a);
-		for(Geometry2D geometry : geometries)
-		{
-			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
-			color.add(openSCADGeometry);
-		}
-		return new Geometry2DImpl(color);
 	}
 
 	@Override
@@ -477,109 +210,31 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry2D text2D(String text, double letterWidth, int angularResolution)
+	public Geometry2D polygon2D(Iterable<Vector2D> vertices)
 	{
-		List<Geometry2D> chars = new ArrayList<>();
-		for(int i = 0; i < text.length(); i++)
+		List<OpenSCADVector2D> openSCADVertices = new ArrayList<>();
+		for(Vector2D vertex : vertices)
 		{
-			Transform2D t = translate2D(i*letterWidth, 0);
-			chars.add(t.transform(char2D(text.charAt(i), letterWidth, angularResolution)));
+			OpenSCADVector2D vector = javaOpenSCAD.vector2D(vertex.x(), vertex.y());
+			openSCADVertices.add(vector);
 		}
-		return union2D(chars);
+		OpenSCADGeometry2D geometry = javaOpenSCAD.polygon2D(openSCADVertices);
+		OpenSCADGeometry2D result = javaOpenSCAD.module(geometry);
+		return new Geometry2DImpl(result);
 	}
 
 	@Override
-	public Geometry2D text2D(String text, double letterWidth, double letterHeight, int angularResolution)
+	public Geometry2D polygon2D(Iterable<Vector2D> vertices, Iterable<? extends Iterable<Integer>> paths)
 	{
-		List<Geometry2D> chars = new ArrayList<>();
-		for(int i = 0; i < text.length(); i++)
+		List<OpenSCADVector2D> openSCADVertices = new ArrayList<>();
+		for(Vector2D vertex : vertices)
 		{
-			Transform2D t = translate2D(i*letterWidth, 0);
-			chars.add(t.transform(char2D(text.charAt(i), letterWidth, letterHeight, angularResolution)));
+			OpenSCADVector2D vector = javaOpenSCAD.vector2D(vertex.x(), vertex.y());
+			openSCADVertices.add(vector);
 		}
-		return union2D(chars);
-	}
-
-	@Override
-	public Vector3D vector3D(double x, double y, double z)
-	{
-		return new Vector3DImpl(x, y, z);
-	}
-
-	@Override
-	public double sqrLength(Vector3D vector)
-	{
-		return vector.x() * vector.x() + vector.y() * vector.y() + vector.z() * vector.z();
-	}
-
-	@Override
-	public double length(Vector3D vector)
-	{
-		return Math.sqrt(sqrLength(vector));
-	}
-
-	@Override
-	public double dist(Vector3D vector1, Vector3D vector2)
-	{
-		return length(sub(vector1, vector2));
-	}
-
-	@Override
-	public Vector3D normalize(Vector3D vector)
-	{
-		double length = length(vector);
-		return vector3D(vector.x() / length, vector.y() / length, vector.z() / length);
-	}
-
-	@Override
-	public Vector3D add(Vector3D vector1, Vector3D vector2)
-	{
-		return vector3D(vector1.x() + vector2.x(), vector1.y() + vector2.y(), vector1.z() + vector2.z());
-	}
-
-	@Override
-	public Vector3D sub(Vector3D vector1, Vector3D vector2)
-	{
-		return vector3D(vector1.x() - vector2.x(), vector1.y() - vector2.y(), vector1.z() - vector2.z());
-	}
-
-	@Override
-	public Vector3D mul(Vector3D vector, double scalar)
-	{
-		return vector3D(vector.x() * scalar, vector.y() * scalar, vector.z() * scalar);
-	}
-
-	@Override
-	public Vector3D div(Vector3D vector, double scalar)
-	{
-		return vector3D(vector.x() / scalar, vector.y() / scalar, vector.z() / scalar);
-	}
-
-	@Override
-	public double dot(Vector3D vector1, Vector3D vector2)
-	{
-		return vector1.x() * vector2.x() + vector1.y() * vector2.y() + vector1.z() * vector2.z();
-	}
-
-	@Override
-	public Vector3D fromTo(Vector3D from, Vector3D to)
-	{
-		return sub(to, from);
-	}
-
-	@Override
-	public Geometry3D multMatrix3D(double m00, double m01, double m02, double m03,
-	                               double m10, double m11, double m12, double m13,
-	                               double m20, double m21, double m22, double m23,
-	                               Geometry3D geometry  )
-	{
-		OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
-		OpenSCADGeometry3DFrom3D multMatrix = javaOpenSCAD.multMatrix3D(
-				m00, m01, m02, m03,
-				m10, m11, m12, m13,
-				m20, m21, m22, m23);
-		multMatrix.add(openSCADGeometry);
-		return new Geometry3DImpl(multMatrix);
+		OpenSCADGeometry2D geometry = javaOpenSCAD.polygon2D(openSCADVertices, paths);
+		OpenSCADGeometry2D result = javaOpenSCAD.module(geometry);
+		return new Geometry2DImpl(result);
 	}
 
 	@Override
@@ -611,9 +266,9 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Transform3D compose3D(Transform3D... transforms)
+	public Transform3D compose3D(List<Transform3D> transforms)
 	{
-		return new Transform3DComposed(Arrays.asList(transforms).reversed());
+		return new Transform3DComposed(transforms);
 	}
 
 	@Override
@@ -623,60 +278,9 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Transform3D translate3DX(double x)
-	{
-		return new Transform3DTranslate(x, 0, 0);
-	}
-
-	@Override
-	public Transform3D translate3DY(double y)
-	{
-		return new Transform3DTranslate(0, y, 0);
-	}
-
-	@Override
-	public Transform3D translate3DZ(double z)
-	{
-		return new Transform3DTranslate(0, 0, z);
-	}
-
-	@Override
-	public Transform3D translate3DFromTo(Vector3D from, Vector3D to)
-	{
-		return new Transform3DTranslate(to.x()-from.x(), to.y()- from.y(), to.z()- from.z());
-	}
-
-	@Override
-	public Transform3D rotate3D(Angle angleX, Angle angleY, Angle angleZ)
-	{
-		Transform3D rotX = new Transform3DRotateX(angleX.asRadians());
-		Transform3D rotY = new Transform3DRotateY(angleY.asRadians());
-		Transform3D rotZ = new Transform3DRotateZ(angleZ.asRadians());
-		return compose3D(rotZ, rotY, rotX);
-	}
-
-	@Override
-	public Transform3D rotate3DAround(Vector3D point, Angle angleX, Angle angleY, Angle angleZ)
-	{
-		Transform3D toZero = translate3D(-point.x(), -point.y(), -point.z());
-		Transform3D rotate = rotate3D(angleX, angleY, angleZ);
-		Transform3D back = translate3D(point.x(), point.y(), point.z());
-		return compose3D(back, rotate, toZero);
-	}
-
-	@Override
 	public Transform3D rotate3DX(Angle angle)
 	{
 		return new Transform3DRotateX(angle.asRadians());
-	}
-
-	@Override
-	public Transform3D rotate3DXAround(Vector3D point, Angle angle)
-	{
-		Transform3D toZero = translate3D(0, -point.y(), -point.z());
-		Transform3D rotate = rotate3DX(angle);
-		Transform3D back = translate3D(0, point.y(), point.z());
-		return compose3D(back, rotate, toZero);
 	}
 
 	@Override
@@ -686,27 +290,9 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Transform3D rotate3DYAround(Vector3D point, Angle angle)
-	{
-		Transform3D toZero = translate3D(-point.x(), 0, -point.z());
-		Transform3D rotate = rotate3DY(angle);
-		Transform3D back = translate3D(point.x(), 0, point.z());
-		return compose3D(back, rotate, toZero);
-	}
-
-	@Override
 	public Transform3D rotate3DZ(Angle angle)
 	{
 		return new Transform3DRotateZ(angle.asRadians());
-	}
-
-	@Override
-	public Transform3D rotate3DZAround(Vector3D point, Angle angle)
-	{
-		Transform3D toZero = translate3D(-point.x(), -point.y(), 0);
-		Transform3D rotate = rotate3DZ(angle);
-		Transform3D back = translate3D(point.x(), point.y(), 0);
-		return compose3D(back, rotate, toZero);
 	}
 
 	@Override
@@ -722,18 +308,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry3D union3D(Geometry3D... geometries)
-	{
-		OpenSCADGeometry3DFrom3D union = javaOpenSCAD.union3D();
-		for(Geometry3D geometry : geometries)
-		{
-			OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
-			union.add(openSCADGeometry);
-		}
-		return new Geometry3DImpl(union);
-	}
-
-	@Override
 	public Geometry3D union3D(Iterable<Geometry3D> geometries)
 	{
 		OpenSCADGeometry3DFrom3D union = javaOpenSCAD.union3D();
@@ -746,31 +320,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry3D union3D(Geometry3D geometry, Iterable<Geometry3D> geometries)
-	{
-		OpenSCADGeometry3DFrom3D union = javaOpenSCAD.union3D();
-		union.add(((Geometry3DImpl) geometry).getOpenSCADGeometry());
-		for(Geometry3D geom : geometries)
-		{
-			OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geom).getOpenSCADGeometry();
-			union.add(openSCADGeometry);
-		}
-		return new Geometry3DImpl(union);
-	}
-
-	@Override
-	public Geometry3D intersection3D(Geometry3D... geometries)
-	{
-		OpenSCADGeometry3DFrom3D intersection = javaOpenSCAD.intersection3D();
-		for(Geometry3D geometry : geometries)
-		{
-			OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
-			intersection.add(openSCADGeometry);
-		}
-		return new Geometry3DImpl(intersection);
-	}
-
-	@Override
 	public Geometry3D intersection3D(Iterable<Geometry3D> geometries)
 	{
 		OpenSCADGeometry3DFrom3D intersection = javaOpenSCAD.intersection3D();
@@ -780,20 +329,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			intersection.add(openSCADGeometry);
 		}
 		return new Geometry3DImpl(intersection);
-	}
-
-	@Override
-	public Geometry3D difference3D(Geometry3D solid, Geometry3D... cutouts)
-	{
-		OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) solid).getOpenSCADGeometry();
-		OpenSCADGeometry3DFrom3D difference = javaOpenSCAD.difference3D();
-		difference.add(openSCADGeometry);
-		for(Geometry3D cutout : cutouts)
-		{
-			OpenSCADGeometry3D openSCADCutout = ((Geometry3DImpl) cutout).getOpenSCADGeometry();
-			difference.add(openSCADCutout);
-		}
-		return new Geometry3DImpl(difference);
 	}
 
 	@Override
@@ -811,18 +346,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry3D hull3D(Geometry3D... geometries)
-	{
-		OpenSCADGeometry3DFrom3D hull = javaOpenSCAD.hull3D();
-		for(Geometry3D geometry : geometries)
-		{
-			OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
-			hull.add(openSCADGeometry);
-		}
-		return new Geometry3DImpl(hull);
-	}
-
-	@Override
 	public Geometry3D hull3D(Iterable<Geometry3D> geometries)
 	{
 		OpenSCADGeometry3DFrom3D hull = javaOpenSCAD.hull3D();
@@ -832,18 +355,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			hull.add(openSCADGeometry);
 		}
 		return new Geometry3DImpl(hull);
-	}
-
-	@Override
-	public Geometry3D minkowski3D(Geometry3D... geometries)
-	{
-		OpenSCADGeometry3DFrom3D minkowsky = javaOpenSCAD.minkowsky3D();
-		for(Geometry3D geometry : geometries)
-		{
-			OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
-			minkowsky.add(openSCADGeometry);
-		}
-		return new Geometry3DImpl(minkowsky);
 	}
 
 	@Override
@@ -866,17 +377,29 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	                                boolean centerZ,
 	                                Geometry2D geometry)
 	{
-		OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
-		OpenSCADGeometry3DFrom2D linearExtrude =
-				javaOpenSCAD.linearExtrude(height, twist.asDegrees(), scale, slices, centerZ);
-		linearExtrude.add(openSCADGeometry);
-		return new Geometry3DImpl(linearExtrude);
+		return linearExtrude(height, twist.asDegrees(), scale, slices, centerZ, geometry);
 	}
 
 	@Override
 	public Geometry3D linearExtrude(double height, boolean centerZ, Geometry2D geometry)
 	{
-		return linearExtrude(height, degrees(0), 1, 1, centerZ, geometry);
+		return linearExtrude(height, 0, 1, 1, centerZ, geometry);
+	}
+
+	private Geometry3D linearExtrude(
+			double height,
+			double twistDegrees,
+			double scale,
+			int slices,
+			boolean centerZ,
+			Geometry2D geometry
+	)
+	{
+		OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
+		OpenSCADGeometry3DFrom2D linearExtrude =
+				javaOpenSCAD.linearExtrude(height, twistDegrees, scale, slices, centerZ);
+		linearExtrude.add(openSCADGeometry);
+		return new Geometry3DImpl(linearExtrude);
 	}
 
 	@Override
@@ -971,6 +494,10 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		{
 			for(Transform2D child : children)
 			{
+				if(child instanceof Transform2DIdentity)
+				{
+					continue;
+				}
 				if(child instanceof Transform2DComposed composed)
 				{
 					if(composed.list == null)
@@ -992,10 +519,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 					{
 						list = new ArrayList<>();
 					}
-					if(!(child instanceof Transform2DIdentity))
-					{
-						list.add(child);
-					}
+					list.add(child);
 				}
 			}
 		}
@@ -1022,7 +546,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			{
 				return vector;
 			}
-			for(Transform2D transform : list)
+			for(Transform2D transform : list.reversed())
 			{
 				vector = transform.transformPoint(vector);
 			}
@@ -1036,7 +560,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			{
 				return vector;
 			}
-			for(Transform2D transform : list)
+			for(Transform2D transform : list.reversed())
 			{
 				vector = transform.transformDirection(vector);
 			}
@@ -1050,7 +574,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			{
 				return geometry;
 			}
-			for(Transform2D transform : list)
+			for(Transform2D transform : list.reversed())
 			{
 				geometry = transform.transform(geometry);
 			}
@@ -1060,12 +584,12 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		@Override
 		public Transform3D asTransform3D()
 		{
-			List<Transform3D> transform3DLst = new ArrayList<>();
+			List<Transform3D> transform3DList = new ArrayList<>();
 			for(Transform2D transform2D : list)
 			{
-				transform3DLst.add(transform2D.asTransform3D());
+				transform3DList.add(transform2D.asTransform3D());
 			}
-			return new Transform3DComposed(transform3DLst);
+			return new Transform3DComposed(transform3DList);
 		}
 	}
 
@@ -1163,7 +687,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		@Override
 		public Transform3D asTransform3D()
 		{
-			return rotate3DZ(radians(rad));
+			return new Transform3DRotateZ(rad);
 		}
 	}
 
@@ -1306,6 +830,10 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		{
 			for(Transform3D child : children)
 			{
+				if(child instanceof Transform3DIdentity)
+				{
+					continue;
+				}
 				if(child instanceof Transform3DComposed composed)
 				{
 					if(composed.list == null)
@@ -1327,10 +855,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 					{
 						list = new ArrayList<>();
 					}
-					if(!(child instanceof Transform3DIdentity))
-					{
-						list.add(child);
-					}
+					list.add(child);
 				}
 			}
 		}
@@ -1357,7 +882,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			{
 				return vector;
 			}
-			for(Transform3D transform : list)
+			for(Transform3D transform : list.reversed())
 			{
 				vector = transform.transformPoint(vector);
 			}
@@ -1371,7 +896,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			{
 				return vector;
 			}
-			for(Transform3D transform : list)
+			for(Transform3D transform : list.reversed())
 			{
 				vector = transform.transformDirection(vector);
 			}
@@ -1385,7 +910,7 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 			{
 				return geometry;
 			}
-			for(Transform3D transform : list)
+			for(Transform3D transform : list.reversed())
 			{
 				geometry = transform.transform(geometry);
 			}
@@ -1682,134 +1207,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 		}
 	}
 
-
-	private static class Vector2DImpl implements Vector2D
-	{
-		private final double x;
-		private final double y;
-
-		public Vector2DImpl(double x, double y)
-		{
-			this.x = x;
-			this.y = y;
-		}
-
-		@Override
-		public double x()
-		{
-			return x;
-		}
-
-		@Override
-		public double y()
-		{
-			return y;
-		}
-
-		@Override
-		public String toString()
-		{
-			return "Vector2D(" + x + ", " + y + ")";
-		}
-	}
-
-	private static class Polar2DImpl implements Polar2D
-	{
-		private final double r;
-		private final Angle phi;
-
-		public Polar2DImpl(double r, Angle phi)
-		{
-			this.r = r;
-			this.phi = phi;
-		}
-
-		@Override
-		public double r()
-		{
-			return r;
-		}
-
-		@Override
-		public Angle phi()
-		{
-			return phi;
-		}
-
-		@Override
-		public String toString()
-		{
-			return "Polar2D(" + r + ", " + phi.asDegrees() + " deg)";
-		}
-	}
-
-	private static class Vector3DImpl implements Vector3D
-	{
-		private final double x;
-		private final double y;
-		private final double z;
-
-		public Vector3DImpl(double x, double y, double z)
-		{
-			this.x = x;
-			this.y = y;
-			this.z = z;
-		}
-
-		@Override
-		public double x()
-		{
-			return x;
-		}
-
-		@Override
-		public double y()
-		{
-			return y;
-		}
-
-		@Override
-		public double z()
-		{
-			return z;
-		}
-
-		@Override
-		public String toString()
-		{
-			return "Vector3D(" + x + ", " + y + ", " + z + ")";
-		}
-	}
-
-	private static class AngleImpl implements Angle
-	{
-		private static final double ROTATIONS_TO_DEGREES = 360.0;
-		private static final double ROTATIONS_TO_RADIANS = 2.0 * Math.PI;
-		private final double rotations;
-
-		public AngleImpl(double rotations)
-		{
-			this.rotations = rotations;
-		}
-
-		@Override
-		public double asRotations()
-		{
-			return rotations;
-		}
-
-		@Override
-		public double asDegrees()
-		{
-			return rotations * ROTATIONS_TO_DEGREES;
-		}
-
-		@Override
-		public double asRadians()
-		{
-			return rotations * ROTATIONS_TO_RADIANS;
-		}
-	}
 
 	private class Geometry2DImpl implements Geometry2D
 	{
