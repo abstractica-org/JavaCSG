@@ -4,7 +4,7 @@ Java Constructive Solid Geometry.
 **JavaCSG** is a Java framework for constructive solid geometry (CSG), geometric modeling, and manipulation of 2D and 3D shapes. It provides an extensive set of immutable operations and data types, including vectors, angles, transformations, and boolean operations on geometries. This makes JavaCSG suitable for computational geometry tasks, CAD/CAM applications, and procedural shape generation.
 
 ## OpenSCAD
-JavaCSG uses OpenSCAD as its CSG-engine though [JavaOpenSCAD](https://github.com/abstractica-org/JavaOpenSCAD). For JavaCSG to work, OpenSCAD must be installed and available on the system path. JavaCSG uses the [manifold](https://github.com/elalish/manifold) engine in OpenSCAD which (as of when this was written) is only available in the nightly build of OpenSCAD:
+JavaCSG uses OpenSCAD as its CSG-engine though [JavaOpenSCAD](https://github.com/abstractica-org/JavaOpenSCAD). For JavaCSG to work, OpenSCAD must be installed and available on the system path. JavaCSG uses the [manifold](https://github.com/elalish/manifold) engine in OpenSCAD which (as of when this was written) is only available in the developer snapshot of OpenSCAD:
 [OpenSCAD nightly build](https://openscad.org/downloads.html#snapshots)
 
 ## Features
@@ -93,12 +93,17 @@ public class Example {
 }
 ```
 
+## Example project
+
+An example project using JavaCSG can be found here: [Quarto3D](https://github.com/abstractica-org/Quarto3D)
+Feel free to clone or fork the project and play around with it :-)
+
 ## Documentation
 
 Extensive Javadoc documentation is available at:  
 **[JavaCSG Javadoc](https://abstractica-org.github.io/JavaCSG)**
 
-This site provides detailed information on all interfaces, classes, and methods within the framework.
+This site provides detailed information on all the interfaces and the factory class that makes up the API.
 
 ## Contributing
 
