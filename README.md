@@ -111,11 +111,3 @@ This site provides detailed information on all the interfaces and the factory cl
 ## Contributing
 
 Contributions are welcome! If you have ideas for enhancements, bug fixes, or additional features, feel free to open an issue or create a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).  
-See the [LICENSE](LICENSE) file for more details.
-
-
-
