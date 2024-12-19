@@ -6,6 +6,7 @@ Java Constructive Solid Geometry.
 ## OpenSCAD
 JavaCSG uses OpenSCAD as its CSG-engine though [JavaOpenSCAD](https://github.com/abstractica-org/JavaOpenSCAD). For JavaCSG to work, OpenSCAD must be installed and available on the system path. JavaCSG uses the [manifold](https://github.com/elalish/manifold) engine in OpenSCAD which (as of when this was written) is only available in the development snapshot of OpenSCAD:
 [OpenSCAD development snapshot](https://openscad.org/downloads.html#snapshots)
+
 **Make sure to add OpenSCAD to the system path after installation and check that OpenSCAD can be called from a command prompt (windows) or a terminal (linux / mac)**
 
 ## Features
