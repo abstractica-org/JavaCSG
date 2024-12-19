@@ -7,7 +7,7 @@ import java.util.List;
 
 public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 {
-	public JavaCSGImpl(JavaCSGBase base)
+	public JavaCSGImpl(JavaCSGBaseOld base)
 	{
 		super(base);
 	}
@@ -32,14 +32,14 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	public Geometry2D circle2D(double diameter, int angularResolution)
 	{
 		Transform2D scale = scale2D(diameter, diameter);
-		return scale.transform(d1Circle2D(angularResolution));
+		return cache(scale.transform(d1Circle2D(angularResolution)));
 	}
 
 	@Override
 	public Geometry2D pie2D(double diameter, Angle beginAngle, Angle endAngle, int angularResolution)
 	{
 		Transform2D scale = scale2D(diameter, diameter);
-		return scale.transform(d1Pie2D(beginAngle, endAngle, angularResolution));
+		return cache(scale.transform(d1Pie2D(beginAngle, endAngle, angularResolution)));
 	}
 
 	private Geometry2D d1Pie2D(Angle beginAngle, Angle endAngle, int angularResolution)
@@ -63,20 +63,9 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	@Override
 	public Geometry2D cutoutPie2D(double diameter, Angle beginAngle, Angle endAngle)
 	{
-		int steps = 8;
-		double fBegin = beginAngle.asRotations();
-		double fEnd = endAngle.asRotations();
-		double stepSize = fBegin < fEnd ?
-				(fEnd-fBegin)/steps :
-				(1.0 - (fBegin-fEnd))/steps;
-		double r = diameter; //double the diameter
-		List<Vector2D> vertices = new ArrayList<>(9);
-		vertices.add(vector2D(0, 0));
-		for(int i = 0; i <= steps; ++i)
-		{
-			vertices.add(asVector2D(polar2D(r, rotations(fBegin + i*stepSize))));
-		}
-		return polygon2D(vertices);
+		Geometry2D cutoutPie = d1Pie2D(beginAngle, endAngle, 8);
+		cutoutPie = scale2D(2*diameter, 2*diameter).transform(cutoutPie);
+		return cache(cutoutPie);
 	}
 
 	@Override
@@ -84,7 +73,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Geometry2D circle = circle2D(diameter, angularResolution);
 		Geometry2D pie = cutoutPie2D(diameter, beginAngle, endAngle);
-		return intersection2D(circle, pie);
+		return cache(intersection2D(circle, pie));
 	}
 
 	@Override
@@ -92,7 +81,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Geometry2D innerCircle = circle2D(innerDiameter, angularResolution);
 		Geometry2D outerCircle = circle2D(outerDiameter, angularResolution);
-		return difference2D(outerCircle, innerCircle);
+		return cache(difference2D(outerCircle, innerCircle));
 	}
 
 	@Override
@@ -100,7 +89,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Geometry2D ring = ring2D(innerDiameter, outerDiameter, angularResolution);
 		Geometry2D pie = cutoutPie2D(outerDiameter, beginAngle, endAngle);
-		return intersection2D(ring, pie);
+		return cache(intersection2D(ring, pie));
 	}
 
 	private Geometry2D unitSquare2D()
@@ -117,7 +106,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	public Geometry2D rectangle2D(double width, double height)
 	{
 		Transform2D scale = scale2D(width, height);
-		return scale.transform(unitSquare2D());
+		return cache(scale.transform(unitSquare2D()));
 	}
 
 	@Override
@@ -129,7 +118,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		double y = Math.min(c1y, c2y) + height/2;
 		Transform2D translate = translate2D(x, y);
 		Geometry2D rect = rectangle2D(width, height);
-		return translate.transform(rect);
+		return cache(translate.transform(rect));
 	}
 
 	@Override
@@ -137,7 +126,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Transform2D translate = translate2D(cx, cy);
 		Geometry2D rect = rectangle2D(width, height);
-		return translate.transform(rect);
+		return cache(translate.transform(rect));
 	}
 
 	private Geometry2D unitTriangle2D()
@@ -153,7 +142,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	public Geometry2D rightTriangle2D(double xSize, double ySize)
 	{
 		Transform2D scale = scale2D(xSize, ySize);
-		return scale.transform(unitTriangle2D());
+		return cache(scale.transform(unitTriangle2D()));
 	}
 
 	private Geometry3D d1Sphere3D(int angularResolution)
@@ -164,7 +153,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		}
 		Geometry2D pie = d1Pie2D(degrees(-90), degrees(90), angularResolution/2);
 		Geometry3D res = rotateExtrude(degrees(360), angularResolution, pie);
-		return res;
+		return cache(res);
 	}
 
 	@Override
@@ -181,7 +170,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 			return sphere;
 		}
 		Transform3D translate = translate3DZ(0.5*diameter);
-		return translate.transform(sphere);
+		return cache(translate.transform(sphere));
 	}
 
 	@Override
@@ -189,7 +178,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Geometry2D rect = rectangle2D(xSize, ySize);
 		Geometry3D box = linearExtrude(zSize, centerZ, rect);
-		return box;
+		return cache(box);
 	}
 
 	@Override
@@ -197,7 +186,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Transform3D translate = translate3D(cx, cy, cz);
 		Geometry3D box = box3D(xSize, ySize, zSize, true);
-		return translate.transform(box);
+		return cache(translate.transform(box));
 	}
 
 	@Override
@@ -217,7 +206,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Geometry2D circle = circle2D(diameter, angularResolution);
 		Geometry3D cylinder = linearExtrude(height, centerZ, circle);
-		return cylinder;
+		return cache(cylinder);
 	}
 
 	@Override
@@ -225,7 +214,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Geometry2D circleSegment = circleSegment2D(diameter, beginAngle, endAngle, angularResolution);
 		Geometry3D cylinder = linearExtrude(height, centerZ, circleSegment);
-		return cylinder;
+		return cache(cylinder);
 	}
 
 	@Override
@@ -233,7 +222,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Geometry2D ring = ring2D(innerDiameter, outerDiameter, angularResolution);
 		Geometry3D cylinder = linearExtrude(height, centerZ, ring);
-		return cylinder;
+		return cache(cylinder);
 	}
 
 	@Override
@@ -241,7 +230,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Geometry2D ringSegment = ringSegment2D(innerDiameter, outerDiameter, beginAngle, endAngle, angularResolution);
 		Geometry3D cylinder = linearExtrude(height, centerZ, ringSegment);
-		return cylinder;
+		return cache(cylinder);
 	}
 
 	@Override
@@ -283,10 +272,10 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		}
 		if(centerZ)
 		{
-			return cone;
+			return cache(cone);
 		}
 		Transform3D translate = translate3DZ(height/2);
-		return translate.transform(cone);
+		return cache(translate.transform(cone));
 	}
 
 	@Override
@@ -324,10 +313,10 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		}
 		if(centerZ)
 		{
-			return cone;
+			return cache(cone);
 		}
 		Transform3D translate = translate3DZ(height/2);
-		return translate.transform(cone);
+		return cache(translate.transform(cone));
 	}
 
 	@Override
@@ -335,7 +324,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Geometry2D ring = ring2D(innerDiameter, outerDiameter, angularResolution);
 		Geometry3D flatRing = linearExtrude(height, centerZ, ring);
-		return flatRing;
+		return cache(flatRing);
 	}
 
 	@Override
@@ -343,7 +332,7 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Geometry2D ringSegment = ringSegment2D(innerDiameter, outerDiameter, beginAngle, endAngle, angularResolution);
 		Geometry3D flatRing = linearExtrude(height, centerZ, ringSegment);
-		return flatRing;
+		return cache(flatRing);
 	}
 
 	@Override
@@ -358,9 +347,9 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 		Geometry3D torus = rotateExtrude(rotations(1), largeCircleResolution, smallCircle);
 		if(centerZ)
 		{
-			return torus;
+			return cache(torus);
 		}
-		return translate3DZ(smallCircleDiameter / 2).transform(torus);
+		return cache(translate3DZ(smallCircleDiameter / 2).transform(torus));
 	}
 
 	@Override
@@ -386,17 +375,17 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 
 		if(centerZ)
 		{
-			return torusSegment;
+			return cache(torusSegment);
 		}
 		Transform3D translate = translate3DZ(smallCircleDiameter/2);
-		return translate.transform(torusSegment);
+		return cache(translate.transform(torusSegment));
 	}
 
 	@Override
 	public Geometry3D wedge3D(double xSize, double ySize, double zSize, boolean centerZ)
 	{
 		Geometry2D triangle = rightTriangle2D(xSize, ySize);
-		return linearExtrude(zSize, centerZ, triangle);
+		return cache(linearExtrude(zSize, centerZ, triangle));
 	}
 
 	@Override
@@ -404,26 +393,17 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Vector3D min = geometry.getMin();
 		Vector3D max = geometry.getMax();
-		Geometry3D lower = boxCorners3D
+		Geometry3D restrict = boxCorners3D
 			(
-				min.x()-1,
-				min.y()-1,
-				min.z()-1,
 				xMin,
-				max.y()+1,
-				max.z()+1
-			);
-		Geometry3D upper = boxCorners3D
-			(
-				xMax,
 				min.y()-1,
 				min.z()-1,
-				max.x()+1,
+				xMax,
 				max.y()+1,
 				max.z()+1
 			);
-		Geometry3D slice = difference3D(geometry, lower, upper);
-		return slice;
+		Geometry3D slice = intersection3D(geometry, restrict);
+		return cache(slice);
 	}
 
 	@Override
@@ -431,26 +411,17 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Vector3D min = geometry.getMin();
 		Vector3D max = geometry.getMax();
-		Geometry3D lower = boxCorners3D
+		Geometry3D restrict = boxCorners3D
 			(
 				min.x()-1,
-				min.y()-1,
-				min.z()-1,
-				max.x()+1,
 				yMin,
-				max.z()+1
-			);
-		Geometry3D upper = boxCorners3D
-			(
-				min.x()-1,
-				yMax,
 				min.z()-1,
 				max.x()+1,
-				max.y()+1,
+				yMax,
 				max.z()+1
 			);
-		Geometry3D slice = difference3D(geometry, lower, upper);
-		return slice;
+		Geometry3D slice = intersection3D(geometry, restrict);
+		return cache(slice);
 	}
 
 	@Override
@@ -458,25 +429,16 @@ public class JavaCSGImpl extends AbstractJavaCSGBase implements JavaCSG
 	{
 		Vector3D min = geometry.getMin();
 		Vector3D max = geometry.getMax();
-		Geometry3D lower = boxCorners3D
+		Geometry3D restrict = boxCorners3D
 			(
 				min.x()-1,
 				min.y()-1,
-				min.z()-1,
+				zMin,
 				max.x()+1,
 				max.y()+1,
-				zMin
+				zMax
 			);
-		Geometry3D upper = boxCorners3D
-			(
-				min.x()-1,
-				min.y()-1,
-				zMax,
-				max.x()+1,
-				max.y()+1,
-				max.z()+1
-			);
-		Geometry3D slice = difference3D(geometry, lower, upper);
-		return slice;
+		Geometry3D slice = intersection3D(geometry, restrict);
+		return cache(slice);
 	}
 }
