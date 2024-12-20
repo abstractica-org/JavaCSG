@@ -1,10 +1,12 @@
 # ToDo
 
-- **Remove flatRing:**  
-  This is redundant as it is the same as hollowCylinder.
+- **Implement Quarternions**  
+  Quarternions would be a nice feature to have.
 
-- **Rename normalize to normalized**  
-  This makes it more clear that the parameter doesn't change.
+
+- **Create more common shapes**  
+  What shapes are beeing used a lot and should be part of the library?
+
 
 - **Create reader and writer for .3mf files**  
   This should actually be done in JavaOpenSCAD first.

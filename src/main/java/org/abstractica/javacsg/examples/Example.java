@@ -1,3 +1,5 @@
+package org.abstractica.javacsg.examples;
+
 import org.abstractica.javacsg.*;
 
 import java.io.IOException;

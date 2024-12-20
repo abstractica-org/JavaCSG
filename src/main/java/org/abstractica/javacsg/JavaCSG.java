@@ -598,7 +598,7 @@ public interface JavaCSG
 	 * @param angularResolution the resolution for the curves
 	 * @return a new {@link Geometry2D} ring
 	 */
-	Geometry2D ring2D(double innerDiameter, double outerDiameter, int angularResolution);
+	Geometry2D hollowCircle2D(double innerDiameter, double outerDiameter, int angularResolution);
 
 	/**
 	 * Creates a 2D ring segment, a portion of a ring defined by angles.
@@ -610,11 +610,11 @@ public interface JavaCSG
 	 * @param angularResolution the resolution for the curves
 	 * @return a new {@link Geometry2D} ring segment
 	 */
-	Geometry2D ringSegment2D(double innerDiameter,
-							 double outerDiameter,
-							 Angle beginAngle,
-							 Angle endAngle,
-							 int angularResolution);
+	Geometry2D hollowCircleSegment2D(double innerDiameter,
+									 double outerDiameter,
+									 Angle beginAngle,
+									 Angle endAngle,
+									 int angularResolution);
 
 	/**
 	 * Creates a 2D rectangle.
@@ -1272,42 +1272,6 @@ public interface JavaCSG
 							 Angle endAngle,
 							 int angularResolution,
 							 boolean centerZ);
-
-	/**
-	 * Creates a flat 3D ring defined by inner and outer diameters.
-	 *
-	 * @param innerDiameter the inner diameter
-	 * @param outerDiameter the outer diameter
-	 * @param height the thickness of the ring along Z
-	 * @param angularResolution the resolution
-	 * @param centerZ if true, centers the ring along the Z-axis
-	 * @return a new {@link Geometry3D} flat ring
-	 */
-	Geometry3D flatRing3D(double innerDiameter,
-						  double outerDiameter,
-						  double height,
-						  int angularResolution,
-						  boolean centerZ);
-
-	/**
-	 * Creates a flat 3D ring segment defined by angular bounds.
-	 *
-	 * @param innerDiameter the inner diameter
-	 * @param outerDiameter the outer diameter
-	 * @param height the thickness along Z
-	 * @param beginAngle the starting angle
-	 * @param endAngle the ending angle
-	 * @param angularResolution the resolution
-	 * @param centerZ if true, centers the ring along the Z-axis
-	 * @return a new {@link Geometry3D} flat ring segment
-	 */
-	Geometry3D flatRingSegment3D(double innerDiameter,
-								 double outerDiameter,
-								 double height,
-								 Angle beginAngle,
-								 Angle endAngle,
-								 int angularResolution,
-								 boolean centerZ);
 
 	/**
 	 * Creates a flat 3D cylinder defined by diameter, width, and height.

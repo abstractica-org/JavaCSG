@@ -439,7 +439,7 @@ public class JavaCSGImpl implements JavaCSG
 	}
 
 	@Override
-	public Geometry2D ring2D(double innerDiameter, double outerDiameter, int angularResolution)
+	public Geometry2D hollowCircle2D(double innerDiameter, double outerDiameter, int angularResolution)
 	{
 		Geometry2D innerCircle = circle2D(innerDiameter, angularResolution);
 		Geometry2D outerCircle = circle2D(outerDiameter, angularResolution);
@@ -447,9 +447,9 @@ public class JavaCSGImpl implements JavaCSG
 	}
 
 	@Override
-	public Geometry2D ringSegment2D(double innerDiameter, double outerDiameter, Angle beginAngle, Angle endAngle, int angularResolution)
+	public Geometry2D hollowCircleSegment2D(double innerDiameter, double outerDiameter, Angle beginAngle, Angle endAngle, int angularResolution)
 	{
-		Geometry2D ring = ring2D(innerDiameter, outerDiameter, angularResolution);
+		Geometry2D ring = hollowCircle2D(innerDiameter, outerDiameter, angularResolution);
 		Geometry2D pie = cutoutPie2D(outerDiameter, beginAngle, endAngle);
 		return base.cache(intersection2D(ring, pie));
 	}
@@ -918,7 +918,7 @@ public class JavaCSGImpl implements JavaCSG
 	@Override
 	public Geometry3D hollowCylinder3D(double outerDiameter, double innerDiameter, double height, int angularResolution, boolean centerZ)
 	{
-		Geometry2D ring = ring2D(innerDiameter, outerDiameter, angularResolution);
+		Geometry2D ring = hollowCircle2D(innerDiameter, outerDiameter, angularResolution);
 		Geometry3D cylinder = base.linearExtrude(height, centerZ, ring);
 		return base.cache(cylinder);
 	}
@@ -926,7 +926,7 @@ public class JavaCSGImpl implements JavaCSG
 	@Override
 	public Geometry3D hollowCylinderSegment3D(double outerDiameter, double innerDiameter, double height, Angle beginAngle, Angle endAngle, int angularResolution, boolean centerZ)
 	{
-		Geometry2D ringSegment = ringSegment2D(innerDiameter, outerDiameter, beginAngle, endAngle, angularResolution);
+		Geometry2D ringSegment = hollowCircleSegment2D(innerDiameter, outerDiameter, beginAngle, endAngle, angularResolution);
 		Geometry3D cylinder = base.linearExtrude(height, centerZ, ringSegment);
 		return base.cache(cylinder);
 	}
@@ -1015,22 +1015,6 @@ public class JavaCSGImpl implements JavaCSG
 		}
 		Transform3D translate = translate3DZ(height/2);
 		return base.cache(translate.transform(cone));
-	}
-
-	@Override
-	public Geometry3D flatRing3D(double innerDiameter, double outerDiameter, double height, int angularResolution, boolean centerZ)
-	{
-		Geometry2D ring = ring2D(innerDiameter, outerDiameter, angularResolution);
-		Geometry3D flatRing = base.linearExtrude(height, centerZ, ring);
-		return base.cache(flatRing);
-	}
-
-	@Override
-	public Geometry3D flatRingSegment3D(double innerDiameter, double outerDiameter, double height, Angle beginAngle, Angle endAngle, int angularResolution, boolean centerZ)
-	{
-		Geometry2D ringSegment = ringSegment2D(innerDiameter, outerDiameter, beginAngle, endAngle, angularResolution);
-		Geometry3D flatRing = base.linearExtrude(height, centerZ, ringSegment);
-		return base.cache(flatRing);
 	}
 
 	@Override
