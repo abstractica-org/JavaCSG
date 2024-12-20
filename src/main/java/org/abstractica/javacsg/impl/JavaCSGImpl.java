@@ -589,6 +589,17 @@ public class JavaCSGImpl implements JavaCSG
 	}
 
 	@Override
+	public Vector3D cross(Vector3D vector1, Vector3D vector2)
+	{
+		return new Vector3DImpl
+				(
+						vector1.y() * vector2.z() - vector1.z() * vector2.y(),
+						vector1.z() * vector2.x() - vector1.x() * vector2.z(),
+						vector1.x() * vector2.y() - vector1.y() * vector2.x()
+				);
+	}
+
+	@Override
 	public Vector3D fromTo(Vector3D from, Vector3D to)
 	{
 		return sub(to, from);

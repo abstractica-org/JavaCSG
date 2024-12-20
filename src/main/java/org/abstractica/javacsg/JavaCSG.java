@@ -591,7 +591,7 @@ public interface JavaCSG
 	Geometry2D circleSegment2D(double diameter, Angle beginAngle, Angle endAngle, int angularResolution);
 
 	/**
-	 * Creates a 2D ring defined by inner and outer diameters.
+	 * Creates a 2D hollow circle defined by inner and outer diameters.
 	 *
 	 * @param innerDiameter the inner circle’s diameter
 	 * @param outerDiameter the outer circle’s diameter
@@ -601,7 +601,7 @@ public interface JavaCSG
 	Geometry2D hollowCircle2D(double innerDiameter, double outerDiameter, int angularResolution);
 
 	/**
-	 * Creates a 2D ring segment, a portion of a ring defined by angles.
+	 * Creates a 2D segment of a hollow circle, a portion of a hollw circle defined by angles.
 	 *
 	 * @param innerDiameter the inner circle’s diameter
 	 * @param outerDiameter the outer circle’s diameter
@@ -747,6 +747,15 @@ public interface JavaCSG
 	 * @return the dot product
 	 */
 	double dot(Vector3D vector1, Vector3D vector2);
+
+	/**
+	 * Computes the cross product of two 3D vectors.
+	 *
+	 * @param vector1 the first {@link Vector3D}
+	 * @param vector2 the second {@link Vector3D}
+	 * @return a new {@link Vector3D} representing the cross product
+	 */
+	Vector3D cross(Vector3D vector1, Vector3D vector2);
 
 	/**
 	 * Creates a vector from one point to another in 3D space.
