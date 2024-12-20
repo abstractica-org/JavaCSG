@@ -86,7 +86,7 @@ public class Example {
 
         csg.view(intersection);
         // This creates the file OpenSCAD/view0.scad that can be opened with OpenSCAD
-        // OpenSCAD will automatically update the view when the file is saved
+        // OpenSCAD will automatically update the view when the file is updated
 
         csg.saveSTL("STL/example.stl", intersection);
         // This creates the file STL/example.stl
