@@ -11,3 +11,5 @@
 - **Create reader and writer for .3mf files**  
   This should actually be done in JavaOpenSCAD first.
 
+- **Consider new base implementation**  
+  Consider an implementation with a local mesh representation.
