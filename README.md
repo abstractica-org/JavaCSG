@@ -50,7 +50,7 @@ Add JavaCSG to your project using Maven or Gradle.
     <dependency>
         <groupId>com.github.abstractica-org</groupId>
         <artifactId>JavaCSG</artifactId>
-        <version>0.6.0</version>
+        <version>1.0.0</version>
     </dependency>
 </dependencies>
 ```
@@ -63,7 +63,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.abstractica-org:JavaCSG:0.6.0'
+    implementation 'com.github.abstractica-org:JavaCSG:1.0.0'
 }
 ```
 
