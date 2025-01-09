@@ -1217,20 +1217,20 @@ public interface JavaCSG
 	/**
 	 * Creates a hollow cylinder with an inner and outer diameter.
 	 *
-	 * @param outerDiameter the outer diameter
 	 * @param innerDiameter the inner diameter
+	 * @param outerDiameter the outer diameter
 	 * @param height the height of the hollow cylinder
 	 * @param angularResolution the resolution around its circumference
 	 * @param centerZ if true, centers the cylinder along the Z-axis
 	 * @return a new {@link Geometry3D} hollow cylinder
 	 */
-	Geometry3D hollowCylinder3D(double outerDiameter, double innerDiameter, double height, int angularResolution, boolean centerZ);
+	Geometry3D hollowCylinder3D(double innerDiameter, double outerDiameter, double height, int angularResolution, boolean centerZ);
 
 	/**
 	 * Creates a hollow cylindrical segment defined by angles and diameters.
 	 *
-	 * @param outerDiameter the outer diameter
 	 * @param innerDiameter the inner diameter
+	 * @param outerDiameter the outer diameter
 	 * @param height the height
 	 * @param beginAngle the starting angle
 	 * @param endAngle the ending angle
@@ -1238,8 +1238,8 @@ public interface JavaCSG
 	 * @param centerZ if true, centers the cylinder along the Z-axis
 	 * @return a new {@link Geometry3D} hollow cylindrical segment
 	 */
-	Geometry3D hollowCylinderSegment3D(double outerDiameter,
-									   double innerDiameter,
+	Geometry3D hollowCylinderSegment3D(double innerDiameter,
+									   double outerDiameter,
 									   double height,
 									   Angle beginAngle,
 									   Angle endAngle,

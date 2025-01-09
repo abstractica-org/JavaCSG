@@ -927,7 +927,7 @@ public class JavaCSGImpl implements JavaCSG
 	}
 
 	@Override
-	public Geometry3D hollowCylinder3D(double outerDiameter, double innerDiameter, double height, int angularResolution, boolean centerZ)
+	public Geometry3D hollowCylinder3D(double innerDiameter, double outerDiameter, double height, int angularResolution, boolean centerZ)
 	{
 		Geometry2D ring = hollowCircle2D(innerDiameter, outerDiameter, angularResolution);
 		Geometry3D cylinder = base.linearExtrude(height, centerZ, ring);
@@ -935,7 +935,7 @@ public class JavaCSGImpl implements JavaCSG
 	}
 
 	@Override
-	public Geometry3D hollowCylinderSegment3D(double outerDiameter, double innerDiameter, double height, Angle beginAngle, Angle endAngle, int angularResolution, boolean centerZ)
+	public Geometry3D hollowCylinderSegment3D(double innerDiameter, double outerDiameter, double height, Angle beginAngle, Angle endAngle, int angularResolution, boolean centerZ)
 	{
 		Geometry2D ringSegment = hollowCircleSegment2D(innerDiameter, outerDiameter, beginAngle, endAngle, angularResolution);
 		Geometry3D cylinder = base.linearExtrude(height, centerZ, ringSegment);
