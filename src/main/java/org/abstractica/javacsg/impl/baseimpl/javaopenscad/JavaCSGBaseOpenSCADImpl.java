@@ -470,16 +470,28 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry3D loadSTL(String name) throws IOException
+	public Geometry3D loadSTL(String fileName) throws IOException
 	{
-		return new Geometry3DImpl(javaOpenSCAD.loadSTL(name));
+		return new Geometry3DImpl(javaOpenSCAD.loadSTL(fileName));
 	}
 
 	@Override
-	public void saveSTL(String name, Geometry3D geometry) throws IOException
+	public void saveSTL(String fileName, Geometry3D geometry) throws IOException
 	{
 		OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
-		javaOpenSCAD.saveSTL(name, openSCADGeometry);
+		javaOpenSCAD.saveSTL(fileName, openSCADGeometry);
+	}
+
+	@Override
+	public Geometry3D load3MF(String fileName) throws IOException
+	{
+		return new Geometry3DImpl(javaOpenSCAD.load3MF(fileName));
+	}
+
+	@Override
+	public void save3MF(String fileName, Geometry3D geometry) throws IOException
+	{
+
 	}
 
 	private static class Transform2DComposed implements Transform2D

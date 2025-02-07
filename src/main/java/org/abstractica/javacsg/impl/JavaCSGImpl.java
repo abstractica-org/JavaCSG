@@ -1192,4 +1192,16 @@ public class JavaCSGImpl implements JavaCSG
 	{
 		base.saveSTL(fileName, geometry);
 	}
+
+	@Override
+	public Geometry3D load3MF(String fileName) throws IOException
+	{
+		return base.load3MF(fileName);
+	}
+
+	@Override
+	public void save3MF(String fileName, Geometry3D geometry) throws IOException
+	{
+		base.save3MF(fileName, geometry);
+	}
 }
