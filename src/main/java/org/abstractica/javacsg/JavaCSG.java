@@ -1455,4 +1455,25 @@ public interface JavaCSG
 	 */
 	void saveSTL(String fileName, Geometry3D geometry) throws IOException;
 
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// Save and load 3MF
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Loads a 3D geometry from a 3MF file.
+	 *
+	 * @param fileName the path to the 3MF file
+	 * @return a new {@link Geometry3D} representing the loaded model
+	 * @throws IOException if an I/O error occurs while reading the file
+	 */
+	Geometry3D load3MF(String fileName) throws IOException;
+
+	/**
+	 * Saves a 3D geometry to a 3MF file.
+	 *
+	 * @param fileName the path to the output 3MF file
+	 * @param geometry the {@link Geometry3D} to save
+	 * @throws IOException if an I/O error occurs while writing the file
+	 */
+	void save3MF(String fileName, Geometry3D geometry) throws IOException;
 }
