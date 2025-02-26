@@ -30,7 +30,7 @@ JavaCSG uses OpenSCAD as its CSG-engine though [JavaOpenSCAD](https://github.com
   Use unified interfaces for angles (rotations, degrees, radians) and vectors (2D and 3D) for precise geometric calculations.
 
 - **Integration with External Tools:**  
-  Load and save geometries in STL format, enabling interoperability with external modeling software and 3D printers.
+  Load and save geometries in STL and 3MF formats, enabling interoperability with external modeling software and 3D printers.
 
 ## Getting Started
 

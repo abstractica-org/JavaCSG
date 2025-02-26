@@ -31,6 +31,21 @@ public class JavaCSGFactory
 	}
 
 	/**
+	 * Creates a cache-configured {@link JavaCSG} instance with a custom cache directory.
+	 * <p>
+	 * Use this method to obtain a {@link JavaCSG} object that that caches geometries
+	 * to the provided directory.
+	 *
+	 * @return a newly created {@link JavaCSG} instance with caching configuration
+	 */
+	public static JavaCSG createCached(String cacheDirectory)
+	{
+		JavaCSGBase base = new JavaCSGBaseOpenSCADImpl(cacheDirectory);
+		JavaCSG javaCSG = new JavaCSGImpl(base);
+		return javaCSG;
+	}
+
+	/**
 	 * Creates a {@link JavaCSG} instance without caching.
 	 * <p>
 	 * Use this method when you prefer to disable caching, This is mainly useful

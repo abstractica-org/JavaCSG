@@ -27,7 +27,17 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 
 	public JavaCSGBaseOpenSCADImpl(boolean useCache)
 	{
-		this.javaOpenSCAD = new JavaOpenSCADImpl(useCache);
+		this(new JavaOpenSCADImpl(useCache));
+	}
+
+	public JavaCSGBaseOpenSCADImpl(String cacheDirectory)
+	{
+		this(new JavaOpenSCADImpl(cacheDirectory));
+	}
+
+	private JavaCSGBaseOpenSCADImpl(JavaOpenSCAD javaOpenSCAD)
+	{
+		this.javaOpenSCAD = javaOpenSCAD;
 		OpenSCADTextFont font = javaOpenSCAD.textFont("Consolas", "Regular", "en", "latin");
 		OpenSCADTextSize textSize = javaOpenSCAD.textSize(10.0, 1);
 		OpenSCADTextAlignment alignment = javaOpenSCAD.textAlignment(
