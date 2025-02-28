@@ -25,7 +25,7 @@ public class JavaCSGFactory
 	 */
 	public static JavaCSG createDefault()
 	{
-		JavaCSGBase base = new JavaCSGBaseOpenSCADImpl(true);
+		JavaCSGBase base = new JavaCSGBaseOpenSCADImpl(false);
 		JavaCSG javaCSG = new JavaCSGImpl(base);
 		return javaCSG;
 	}
@@ -41,21 +41,6 @@ public class JavaCSGFactory
 	public static JavaCSG createCached(String cacheDirectory)
 	{
 		JavaCSGBase base = new JavaCSGBaseOpenSCADImpl(cacheDirectory);
-		JavaCSG javaCSG = new JavaCSGImpl(base);
-		return javaCSG;
-	}
-
-	/**
-	 * Creates a {@link JavaCSG} instance without caching.
-	 * <p>
-	 * Use this method when you prefer to disable caching, This is mainly useful
-	 * for smaller projects or when you want to avoid writing files to the file system.
-	 *
-	 * @return a newly created {@link JavaCSG} instance with caching disabled
-	 */
-	public static JavaCSG createNoCaching()
-	{
-		JavaCSGBase base = new JavaCSGBaseOpenSCADImpl(false);
 		JavaCSG javaCSG = new JavaCSGImpl(base);
 		return javaCSG;
 	}

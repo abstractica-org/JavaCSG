@@ -171,18 +171,6 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
-	public Geometry2D color2D(double r, double g, double b, double a, Iterable<Geometry2D> geometries)
-	{
-		OpenSCADGeometry2DFrom2D color = javaOpenSCAD.color2D(r, g, b, a);
-		for(Geometry2D geometry : geometries)
-		{
-			OpenSCADGeometry2D openSCADGeometry = ((Geometry2DImpl) geometry).getOpenSCADGeometry();
-			color.add(openSCADGeometry);
-		}
-		return new Geometry2DImpl(color);
-	}
-
-	@Override
 	public Geometry2D char2D(char ch, double width, int angularResolution)
 	{
 		OpenSCADGeometry2D char2D = javaOpenSCAD.text("" + ch, textAttributes, angularResolution);
@@ -376,6 +364,15 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	}
 
 	@Override
+	public Geometry3D color3D(Color color, Geometry3D geometry)
+	{
+		OpenSCADGeometry3DFrom3D coloredGeometry = javaOpenSCAD.color3D(color.r(), color.g(), color.b(), color.a());
+		OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
+		coloredGeometry.add(openSCADGeometry);
+		return new Geometry3DImpl(coloredGeometry);
+	}
+
+	@Override
 	public Geometry3D linearExtrude(double height,
 	                                Angle twist,
 	                                double scale,
@@ -501,7 +498,8 @@ public class JavaCSGBaseOpenSCADImpl implements JavaCSGBase
 	@Override
 	public void save3MF(String fileName, Geometry3D geometry) throws IOException
 	{
-
+		OpenSCADGeometry3D openSCADGeometry = ((Geometry3DImpl) geometry).getOpenSCADGeometry();
+		javaOpenSCAD.save3MF(fileName, openSCADGeometry);
 	}
 
 	private static class Transform2DComposed implements Transform2D

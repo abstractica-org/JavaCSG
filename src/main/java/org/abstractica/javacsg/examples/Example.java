@@ -7,7 +7,7 @@ import java.io.IOException;
 public class Example {
     public static void main(String[] args) throws IOException
     {
-        JavaCSG csg = JavaCSGFactory.createNoCaching();
+        JavaCSG csg = JavaCSGFactory.createDefault();
 
         Geometry3D box = csg.box3D(10, 10, 10, true);
         Geometry3D sphere = csg.sphere3D(12, 64, true);

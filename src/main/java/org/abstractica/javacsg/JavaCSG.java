@@ -22,6 +22,51 @@ import java.util.List;
 public interface JavaCSG
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////
+	// Color
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+ * Creates a new {@link Color} with the specified RGBA components.
+ *
+ * @param r the red component in the interval [0.0,1.0]
+ * @param g the green component in the interval [0.0,1.0]
+ * @param b the blue component in the interval [0.0,1.0]
+ * @param a the alpha (transparency) in the interval [0.0,1.0]
+ * @return a new {@link Color}
+ */
+Color color(double r, double g, double b, double a);
+
+	/**
+	 * Creates a new {@link Color} with the specified RGB components.
+	 *
+	 * @param r the red component in the interval [0.0,1.0]
+	 * @param g the greencomponent in the interval [0.0,1.0]
+	 * @param b the bluecomponent in the interval [0.0,1.0]
+	 * @return a new {@link Color} with full opacity
+	 */
+	Color color(double r, double g, double b);
+
+	/**
+	 * Creates a new {@link Color} with the specified RGBA components.
+	 *
+	 * @param r the red component in the interval [0,255]
+	 * @param g the green component in the interval [0,255]
+	 * @param b the blue component in the interval [0,255]
+	 * @param a the alpha (transparency) in the interval [0, 255]
+	 * @return a new {@link Color}
+	 */
+	Color color(int r, int g, int b, int a);
+
+	/**
+	 * Creates a new {@link Color} with the specified RGB components.
+	 *
+	 * @param r the red component in the interval [0,255]
+	 * @param g the green component in the interval [0,255]
+	 * @param b the blue component in the interval [0,255]
+	 * @return a new {@link Color} with full opacity
+	 */
+	Color color(int r, int g, int b);
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	// Angle
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -458,30 +503,6 @@ public interface JavaCSG
 	 * @return a new {@link Geometry2D} with rounded offsets
 	 */
 	Geometry2D offsetRound2D(double radius, int angularResolution, Iterable<Geometry2D> geometries);
-
-	/**
-	 * Assigns a color to one or more 2D geometries.
-	 *
-	 * @param r red component [0.0,1.0]
-	 * @param g green component [0.0,1.0]
-	 * @param b blue component [0.0,1.0]
-	 * @param a alpha (transparency) [0.0,1.0]
-	 * @param geometries an array of {@link Geometry2D} to color
-	 * @return a new {@link Geometry2D} with the specified color assigned
-	 */
-	Geometry2D color2D(double r, double g, double b, double a, Geometry2D... geometries);
-
-	/**
-	 * Assigns a color to multiple 2D geometries.
-	 *
-	 * @param r red component [0.0,1.0]
-	 * @param g green component [0.0,1.0]
-	 * @param b blue component [0.0,1.0]
-	 * @param a alpha (transparency) [0.0,1.0]
-	 * @param geometries an {@link Iterable} of {@link Geometry2D}
-	 * @return a new {@link Geometry2D} with the specified color assigned
-	 */
-	Geometry2D color2D(double r, double g, double b, double a, Iterable<Geometry2D> geometries);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// Text2D
@@ -1113,6 +1134,18 @@ public interface JavaCSG
 	 * @return a new {@link Geometry3D} representing the Minkowski sum
 	 */
 	Geometry3D minkowski3D(Iterable<Geometry3D> geometries);
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// Color 3D geometries
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Colors a Geometry3D with a rgba color.
+	 *
+	 * @param color the color to use {@link Color}
+	 * @param geometry the geometry to be colored {@link Geometry3D}
+	 * @return a new {@link Geometry3D} representing the colored geometry
+	 */
+	Geometry3D color3D(Color color, Geometry3D geometry);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// 3D shapes

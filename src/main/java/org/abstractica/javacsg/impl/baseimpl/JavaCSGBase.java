@@ -33,7 +33,6 @@ public interface JavaCSGBase
     Geometry2D minkowski2D(Iterable<Geometry2D> geometries);
     Geometry2D offset2D(double delta, boolean chamfer, Iterable<Geometry2D> geometries);
     Geometry2D offsetRound2D(double radius, int angularResolution, Iterable<Geometry2D> geometries);
-    Geometry2D color2D(double r, double g, double b, double a, Iterable<Geometry2D> geometries);
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// 2D text
@@ -87,6 +86,11 @@ public interface JavaCSGBase
     Geometry3D difference3D(Geometry3D filled, Iterable<Geometry3D> cutouts);
     Geometry3D hull3D(Iterable<Geometry3D> geometries);
     Geometry3D minkowski3D(Iterable<Geometry3D> geometries);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Color 3D geometries
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Geometry3D color3D(Color color, Geometry3D geometry);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // View geometry

@@ -6,7 +6,7 @@
 
     <groupId>org.abstractica</groupId>
     <artifactId>JavaCSG</artifactId>
-    <version>1.0.0</version>
+    <version>1.4.0</version>
 
     <repositories>
         <repository>
@@ -75,7 +75,7 @@
             <groupId>com.github.abstractica-org</groupId>
             <artifactId>JavaOpenSCAD</artifactId>
             <!--suppress MavenModelInspection -->
-            <version>v0.3.0</version>
+            <version>v0.6.0</version>
         </dependency>
     </dependencies>
 

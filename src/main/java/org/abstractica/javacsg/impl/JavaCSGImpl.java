@@ -35,6 +35,32 @@ public class JavaCSGImpl implements JavaCSG
 	}
 
 	@Override
+	public Color color(double r, double g, double b, double a)
+	{
+		return new ColorImpl(r, g, b, a);
+	}
+
+	@Override
+	public Color color(double r, double g, double b)
+	{
+		return new ColorImpl(r, g, b, 1.0);
+	}
+
+	@Override
+	public Color color(int r, int g, int b, int a)
+	{
+		double delta = 1.0 / 255.0;
+		return color(r * delta, g * delta, b * delta, a * delta);
+	}
+
+	@Override
+	public Color color(int r, int g, int b)
+	{
+		double delta = 1.0 / 255.0;
+		return color(r * delta, g * delta, b * delta);
+	}
+
+	@Override
 	public Angle rotations(double rotations)
 	{
 		return new AngleImpl(rotations);
@@ -329,18 +355,6 @@ public class JavaCSGImpl implements JavaCSG
 	public Geometry2D offsetRound2D(double radius, int angularResolution, Geometry2D... geometries)
 	{
 		return base.offsetRound2D(radius, angularResolution, Arrays.asList(geometries));
-	}
-
-	@Override
-	public Geometry2D color2D(double r, double g, double b, double a, Iterable<Geometry2D> geometries)
-	{
-		return base.color2D(r, g, b, a, geometries);
-	}
-
-	@Override
-	public Geometry2D color2D(double r, double g, double b, double a, Geometry2D... geometries)
-	{
-		return base.color2D(r, g, b, a, Arrays.asList(geometries));
 	}
 
 	@Override
@@ -840,6 +854,12 @@ public class JavaCSGImpl implements JavaCSG
 	public Geometry3D minkowski3D(Iterable<Geometry3D> geometries)
 	{
 		return base.minkowski3D(geometries);
+	}
+
+	@Override
+	public Geometry3D color3D(Color color, Geometry3D geometry)
+	{
+		return base.color3D(color, geometry);
 	}
 
 	private Geometry3D d1Sphere3D(int angularResolution)
