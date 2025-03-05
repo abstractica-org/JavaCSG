@@ -866,7 +866,6 @@ Color color(double r, double g, double b, double a);
 	 */
 	Transform3D identity3D();
 
-
 	/**
 	 * Composes multiple 3D transformations into one.
 	 * <p>
@@ -1011,6 +1010,15 @@ Color color(double r, double g, double b, double a);
 	 * @return a new {@link Transform3D}
 	 */
 	Transform3D rotate3DZAround(Vector3D point, Angle angle);
+
+	/**
+	 * Creates a 3D rotation transformation that rotates one vector into another.
+	 *
+	 * @param from the start vector {@link Vector3D}
+	 * @param to the end vector {@link Vector3D}
+	 * @return a new {@link Transform3D}
+	 */
+	Transform3D rotate3DVectorIntoVector(Vector3D from, Vector3D to);
 
 	/**
 	 * Creates a 3D scaling transformation.

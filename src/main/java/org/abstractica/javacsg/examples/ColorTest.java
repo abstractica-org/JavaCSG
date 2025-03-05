@@ -20,8 +20,8 @@ public class ColorTest
 					40,
 					csg.degrees(43),
 					csg.degrees(132),
-					16,
 					64,
+					256,
 					true
 				);
 		torus1 = csg.translate3DY(-20).transform(torus1);
@@ -32,8 +32,8 @@ public class ColorTest
 						40,
 						csg.degrees(132),
 						csg.degrees(221),
-						16,
 						64,
+						256,
 						true
 				);
 		torus2 = csg.translate3DX(20).transform(torus2);
@@ -41,5 +41,6 @@ public class ColorTest
 		Geometry3D res = csg.union3D(torus1, torus2);
 		res = csg.cache(res);
 		csg.save3MF("OpenSCAD/colorTest.3mf", res);
+		csg.saveSTL("OpenSCAD/colorTest.stl", res);
 	}
 }

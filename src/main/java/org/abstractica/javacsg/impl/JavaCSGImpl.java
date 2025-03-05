@@ -767,6 +767,79 @@ public class JavaCSGImpl implements JavaCSG
 	}
 
 	@Override
+	public Transform3D rotate3DVectorIntoVector(Vector3D from, Vector3D to)
+	{
+		// Step 1: Compute the norms of the input vectors.
+		double normFrom = Math.sqrt(from.x() * from.x() + from.y() * from.y() + from.z() * from.z());
+		double normTo   = Math.sqrt(to.x() * to.x() + to.y() * to.y() + to.z() * to.z());
+		if (normFrom < 1e-6 || normTo < 1e-6)
+			throw new IllegalArgumentException("Zero-length vector provided");
+
+		// Step 2: Compute the dot product and the angle between the vectors.
+		double dot = from.x() * to.x() + from.y() * to.y() + from.z() * to.z();
+		double cosTheta = dot / (normFrom * normTo);
+		// Clamp cosTheta to avoid NaN due to floating-point inaccuracies.
+		cosTheta = Math.max(-1.0, Math.min(1.0, cosTheta));
+		double theta = Math.acos(cosTheta);
+
+		// Step 3: Compute the cross product to get the rotation axis.
+		double axisX = from.y() * to.z() - from.z() * to.y();
+		double axisY = from.z() * to.x() - from.x() * to.z();
+		double axisZ = from.x() * to.y() - from.y() * to.x();
+		double axisLength = Math.sqrt(axisX * axisX + axisY * axisY + axisZ * axisZ);
+
+		// Step 4: Handle cases where the vectors are parallel or anti-parallel.
+		if (axisLength < 1e-6) {
+			if (cosTheta > 0) {
+				// Vectors are in the same direction; no rotation is needed.
+				return identity3D();
+			} else {
+				// Vectors are opposite; choose an arbitrary perpendicular axis.
+				double absX = Math.abs(from.x());
+				double absY = Math.abs(from.y());
+				double absZ = Math.abs(from.z());
+				if (absX < absY && absX < absZ) {
+					axisX = 0;
+					axisY = -from.z();
+					axisZ = from.y();
+				} else if (absY < absZ) {
+					axisX = -from.z();
+					axisY = 0;
+					axisZ = from.x();
+				} else {
+					axisX = -from.y();
+					axisY = from.x();
+					axisZ = 0;
+				}
+				axisLength = Math.sqrt(axisX * axisX + axisY * axisY + axisZ * axisZ);
+			}
+		}
+
+		// Normalize the axis.
+		double ux = axisX / axisLength;
+		double uy = axisY / axisLength;
+		double uz = axisZ / axisLength;
+
+		// Step 5: Convert the axis-angle rotation into a quaternion.
+		double halfTheta = theta / 2.0;
+		double sinHalfTheta = Math.sin(halfTheta);
+		double cosHalfTheta = Math.cos(halfTheta);
+		// Quaternion representation: q = (w, x, y, z)
+		double q0 = cosHalfTheta;         // w
+		double q1 = sinHalfTheta * ux;      // x
+		double q2 = sinHalfTheta * uy;      // y
+		double q3 = sinHalfTheta * uz;      // z
+
+		// Step 6: Convert the quaternion into Euler angles.
+		// These formulas assume an intrinsic rotation sequence: X (roll), then Y (pitch), then Z (yaw).
+		double roll = Math.atan2(2 * (q0 * q1 + q2 * q3), 1 - 2 * (q1 * q1 + q2 * q2));
+		double pitch = Math.asin(2 * (q0 * q2 - q3 * q1));
+		double yaw = Math.atan2(2 * (q0 * q3 + q1 * q2), 1 - 2 * (q2 * q2 + q3 * q3));
+
+		return rotate3D(radians(roll), radians(pitch), radians(yaw));
+	}
+
+	@Override
 	public Transform3D scale3D(double x, double y, double z)
 	{
 		return base.scale3D(x, y, z);
