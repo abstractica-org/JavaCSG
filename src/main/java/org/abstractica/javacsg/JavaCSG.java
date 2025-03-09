@@ -26,15 +26,15 @@ public interface JavaCSG
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
- * Creates a new {@link Color} with the specified RGBA components.
- *
- * @param r the red component in the interval [0.0,1.0]
- * @param g the green component in the interval [0.0,1.0]
- * @param b the blue component in the interval [0.0,1.0]
- * @param a the alpha (transparency) in the interval [0.0,1.0]
- * @return a new {@link Color}
- */
-Color color(double r, double g, double b, double a);
+	 * Creates a new {@link Color} with the specified RGBA components.
+	 *
+	 * @param r the red component in the interval [0.0,1.0]
+	 * @param g the green component in the interval [0.0,1.0]
+	 * @param b the blue component in the interval [0.0,1.0]
+	 * @param a the alpha (transparency) in the interval [0.0,1.0]
+	 * @return a new {@link Color}
+	 */
+	Color colorRGBA(double r, double g, double b, double a);
 
 	/**
 	 * Creates a new {@link Color} with the specified RGB components.
@@ -44,7 +44,7 @@ Color color(double r, double g, double b, double a);
 	 * @param b the bluecomponent in the interval [0.0,1.0]
 	 * @return a new {@link Color} with full opacity
 	 */
-	Color color(double r, double g, double b);
+	Color colorRGB(double r, double g, double b);
 
 	/**
 	 * Creates a new {@link Color} with the specified RGBA components.
@@ -55,7 +55,7 @@ Color color(double r, double g, double b, double a);
 	 * @param a the alpha (transparency) in the interval [0, 255]
 	 * @return a new {@link Color}
 	 */
-	Color color(int r, int g, int b, int a);
+	Color colorRGBAint(int r, int g, int b, int a);
 
 	/**
 	 * Creates a new {@link Color} with the specified RGB components.
@@ -65,7 +65,7 @@ Color color(double r, double g, double b, double a);
 	 * @param b the blue component in the interval [0,255]
 	 * @return a new {@link Color} with full opacity
 	 */
-	Color color(int r, int g, int b);
+	Color colorRGBint(int r, int g, int b);
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// Angle
 	////////////////////////////////////////////////////////////////////////////////////////////////

@@ -35,29 +35,29 @@ public class JavaCSGImpl implements JavaCSG
 	}
 
 	@Override
-	public Color color(double r, double g, double b, double a)
+	public Color colorRGBA(double r, double g, double b, double a)
 	{
 		return new ColorImpl(r, g, b, a);
 	}
 
 	@Override
-	public Color color(double r, double g, double b)
+	public Color colorRGB(double r, double g, double b)
 	{
 		return new ColorImpl(r, g, b, 1.0);
 	}
 
 	@Override
-	public Color color(int r, int g, int b, int a)
+	public Color colorRGBAint(int r, int g, int b, int a)
 	{
 		double delta = 1.0 / 255.0;
-		return color(r * delta, g * delta, b * delta, a * delta);
+		return colorRGBA(r * delta, g * delta, b * delta, a * delta);
 	}
 
 	@Override
-	public Color color(int r, int g, int b)
+	public Color colorRGBint(int r, int g, int b)
 	{
 		double delta = 1.0 / 255.0;
-		return color(r * delta, g * delta, b * delta);
+		return colorRGB(r * delta, g * delta, b * delta);
 	}
 
 	@Override

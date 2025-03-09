@@ -12,8 +12,8 @@ public class ColorTest
 	public static void main(String[] args) throws IOException
     {
 		JavaCSG csg = JavaCSGFactory.createDefault();
-		Color blue = csg.color(0,0, 200);
-		Color red = csg.color(200,0, 0);
+		Color blue = csg.colorRGBint(0,0, 200);
+		Color red = csg.colorRGBint(200,0, 0);
 		Geometry3D torus1 = csg.torusSegment3D
 				(
 					10,
