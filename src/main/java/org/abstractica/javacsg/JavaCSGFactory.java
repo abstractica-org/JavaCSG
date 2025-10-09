@@ -36,6 +36,7 @@ public class JavaCSGFactory
 	 * Use this method to obtain a {@link JavaCSG} object that that caches geometries
 	 * to the provided directory.
 	 *
+     * @param cacheDirectory a string representing the directory path where cached geometries will be stored
 	 * @return a newly created {@link JavaCSG} instance with caching configuration
 	 */
 	public static JavaCSG createCached(String cacheDirectory)

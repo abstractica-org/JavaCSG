@@ -1,5 +1,11 @@
 package org.abstractica.javacsg;
 
+/**
+ * Provides an immutable color.
+ * <p>
+ * This interface represents a color.
+ * </p>
+ */
 public interface Color
 {
     /**
