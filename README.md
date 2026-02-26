@@ -3,11 +3,34 @@ Java Constructive Solid Geometry.
 
 **JavaCSG** is a Java framework for constructive solid geometry (CSG), geometric modeling, and manipulation of 2D and 3D shapes. It provides an extensive set of immutable operations and data types, including vectors, angles, transformations, and boolean operations on geometries. This makes JavaCSG suitable for computational geometry tasks, CAD/CAM applications, and procedural shape generation.
 
-## OpenSCAD
-JavaCSG uses OpenSCAD as its CSG-engine though [JavaOpenSCAD](https://github.com/abstractica-org/JavaOpenSCAD). For JavaCSG to work, OpenSCAD must be installed and available on the system path. JavaCSG uses the [manifold](https://github.com/elalish/manifold) engine in OpenSCAD which (as of when this was written) is only available in the development snapshot of OpenSCAD:
+## CSG Backends
+
+JavaCSG supports two CSG backends. Choose the one that best fits your needs:
+
+### OpenSCAD (default)
+
+The default backend uses OpenSCAD as its CSG engine through [JavaOpenSCAD](https://github.com/abstractica-org/JavaOpenSCAD). This backend supports all features including Minkowski sum, text rendering, and 3MF I/O.
+
+For this backend to work, OpenSCAD must be installed and available on the system path. JavaCSG uses the [manifold](https://github.com/elalish/manifold) engine in OpenSCAD which (as of when this was written) is only available in the development snapshot of OpenSCAD:
 [OpenSCAD development snapshot](https://openscad.org/downloads.html#snapshots)
 
 **Make sure to add OpenSCAD to the system path after installation and check that OpenSCAD can be called from a command prompt (windows) or a terminal (linux / mac)**
+
+```java
+JavaCSG csg = JavaCSGFactory.createDefault();
+```
+
+### Manifold (native)
+
+An alternative backend uses [Manifold](https://github.com/elalish/manifold) directly via native JNI bindings, providing fast in-memory CSG operations without requiring an external OpenSCAD installation. This backend is significantly faster for boolean operations and does not require any external tools.
+
+```java
+JavaCSG csg = JavaCSGFactory.createManifold();
+```
+
+**Supported:** All 2D/3D primitives, boolean operations, transformations, hull, linear/rotate extrude, text rendering, STL I/O.
+
+**Not supported:** Minkowski sum, 3MF I/O. Color is accepted but has no effect.
 
 ## Features
 
@@ -76,7 +99,9 @@ import java.io.IOException;
 public class Example {
     public static void main(String[] args) throws IOException
     {
-        JavaCSG csg = JavaCSGFactory.createDefault();
+        // Use either backend:
+        JavaCSG csg = JavaCSGFactory.createDefault();   // OpenSCAD backend
+        // JavaCSG csg = JavaCSGFactory.createManifold(); // Manifold backend (no OpenSCAD needed)
 
         Geometry3D box = csg.box3D(10, 10, 10, true);
         Geometry3D sphere = csg.sphere3D(12, 64, true);
@@ -85,12 +110,10 @@ public class Example {
         // The 'intersection' now represents the shape where the box and sphere overlap.
 
         csg.view(intersection);
-        // This creates the file OpenSCAD/view0.scad that can be opened with OpenSCAD
-        // OpenSCAD will automatically update the view when the file is updated
+        // OpenSCAD backend: creates OpenSCAD/view0.scad for live preview
+        // Manifold backend: creates STL/View0.stl
 
         csg.saveSTL("STL/example.stl", intersection);
-        // This creates the file STL/example.stl
-        // For this to work OpenSCAD must be installed and in the system path
     }
 }
 ```
