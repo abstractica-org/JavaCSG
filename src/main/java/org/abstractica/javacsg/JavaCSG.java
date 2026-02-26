@@ -1454,6 +1454,14 @@ public interface JavaCSG
 	 */
 	void view(Geometry3D geometry, int windowID);
 
+	/**
+	 * Saves a 3D geometry to a temporary STL file and opens it in f3d for interactive viewing.
+	 * Requires f3d to be installed and available on the system PATH.
+	 *
+	 * @param geometry the {@link Geometry3D} to view
+	 */
+	void viewF3D(Geometry3D geometry);
+
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// Cache geometry
 	////////////////////////////////////////////////////////////////////////////////////////////////

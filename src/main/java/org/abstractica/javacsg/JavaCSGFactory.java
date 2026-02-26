@@ -3,6 +3,7 @@ package org.abstractica.javacsg;
 import org.abstractica.javacsg.impl.baseimpl.JavaCSGBase;
 import org.abstractica.javacsg.impl.JavaCSGImpl;
 import org.abstractica.javacsg.impl.baseimpl.javaopenscad.JavaCSGBaseOpenSCADImpl;
+import org.abstractica.javacsg.impl.baseimpl.manifold.JavaCSGBaseManifoldImpl;
 
 /**
  * A factory class for creating {@link JavaCSG} instances configured in various ways.
@@ -44,5 +45,20 @@ public class JavaCSGFactory
 		JavaCSGBase base = new JavaCSGBaseOpenSCADImpl(cacheDirectory);
 		JavaCSG javaCSG = new JavaCSGImpl(base);
 		return javaCSG;
+	}
+
+	/**
+	 * Creates a {@link JavaCSG} instance backed by the Manifold CSG engine.
+	 * <p>
+	 * This backend uses native Manifold bindings for fast in-memory CSG operations
+	 * without requiring an external OpenSCAD installation. Note that some operations
+	 * (Minkowski sum, text/char, 3MF I/O) are not supported by this backend.
+	 *
+	 * @return a newly created {@link JavaCSG} instance using the Manifold backend
+	 */
+	public static JavaCSG createManifold()
+	{
+		JavaCSGBase base = new JavaCSGBaseManifoldImpl();
+		return new JavaCSGImpl(base);
 	}
 }

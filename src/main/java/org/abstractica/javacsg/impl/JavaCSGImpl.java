@@ -1263,6 +1263,26 @@ public class JavaCSGImpl implements JavaCSG
 	}
 
 	@Override
+	public void viewF3D(Geometry3D geometry)
+	{
+		try
+		{
+			java.io.File stlDir = new java.io.File("STL");
+			if (!stlDir.exists()) stlDir.mkdirs();
+			java.io.File stlFile = java.io.File.createTempFile("view_", ".stl", stlDir);
+			//stlFile.deleteOnExit();
+			base.saveSTL(stlFile.getAbsolutePath(), geometry);
+			new ProcessBuilder("f3d", stlFile.getAbsolutePath())
+					.inheritIO()
+					.start();
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException("Could not view geometry with f3d", e);
+		}
+	}
+
+	@Override
 	public Geometry2D cache(Geometry2D geometry)
 	{
 		return base.cache(geometry);

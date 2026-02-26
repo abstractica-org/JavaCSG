@@ -10,7 +10,8 @@ public class SaveSTLExample
 {
 	public static void main(String[] args) throws IOException
 	{
-		JavaCSG csg = JavaCSGFactory.createDefault();
+		//JavaCSG csg = JavaCSGFactory.createDefault();
+        JavaCSG csg = JavaCSGFactory.createManifold();
 		Geometry3D torus = csg.torusSegment3D
 			(
 				10,
@@ -22,6 +23,6 @@ public class SaveSTLExample
 				true
 			);
 		csg.view(torus);
-		csg.saveSTL("C:/tmp/Torus.stl", torus);
+		csg.save3MF("./3MF/Torus.3mf", torus);
 	}
 }

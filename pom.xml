@@ -21,6 +21,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>clojars</id>
+            <url>https://repo.clojars.org</url>
+        </repository>
     </repositories>
 
     <build>
@@ -55,6 +59,7 @@
                                 org.abstractica.javacsg.impl:
                                 org.abstractica.javacsg.impl.baseimpl:
                                 org.abstractica.javacsg.impl.baseimpl.javaopenscad:
+                                org.abstractica.javacsg.impl.baseimpl.manifold:
                                 org.abstractica.javacsg.examples
                             </excludePackageNames>
                         </configuration>
@@ -68,6 +73,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
+        <manifold.classifier>linux-x86_64</manifold.classifier>
     </properties>
 
     <dependencies>
@@ -77,6 +83,24 @@
             <!--suppress MavenModelInspection -->
             <version>v0.6.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.clojars.cartesiantheatrics</groupId>
+            <artifactId>manifold3d</artifactId>
+            <version>2.1.0</version>
+            <classifier>${manifold.classifier}</classifier>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>mac</id>
+            <activation>
+                <os><family>mac</family></os>
+            </activation>
+            <properties>
+                <manifold.classifier>mac-x86_64</manifold.classifier>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
