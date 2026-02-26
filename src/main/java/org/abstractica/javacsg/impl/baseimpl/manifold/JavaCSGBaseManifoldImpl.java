@@ -18,6 +18,12 @@ import org.abstractica.javacsg.impl.baseimpl.JavaCSGBase;
 import org.abstractica.javacsg.impl.Vector2DImpl;
 import org.abstractica.javacsg.impl.Vector3DImpl;
 
+import java.awt.Font;
+import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +36,10 @@ import java.util.List;
 public class JavaCSGBaseManifoldImpl implements JavaCSGBase
 {
 	private static final double RAD_TO_DEG = 180.0 / Math.PI;
+
+	private final Font awtFont;
+	private final FontRenderContext frc;
+	private final double textScale;
 
 	// Pre-load libmanifold.so.3 before any Manifold/CrossSection classes are touched.
 	// The manifold3d JAR bundles it as "libmanifold.so" at the JAR root, but the JNI
@@ -66,6 +76,20 @@ public class JavaCSGBaseManifoldImpl implements JavaCSGBase
 			System.err.println("JavaCSG Manifold: Could not pre-load native library (" +
 					e.getMessage() + "). Falling back to system library path.");
 		}
+	}
+
+	public JavaCSGBaseManifoldImpl()
+	{
+		Font candidate = new Font("Consolas", Font.PLAIN, 100);
+		if (!"Consolas".equalsIgnoreCase(candidate.getFamily()))
+		{
+			candidate = new Font(Font.MONOSPACED, Font.PLAIN, 100);
+		}
+		this.awtFont = candidate;
+		this.frc = new FontRenderContext(null, true, true);
+		GlyphVector gv = awtFont.createGlyphVector(frc, "M");
+		double advanceWidth = gv.getGlyphMetrics(0).getAdvance();
+		this.textScale = 1.0 / advanceWidth;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -298,17 +322,22 @@ public class JavaCSGBaseManifoldImpl implements JavaCSGBase
 	@Override
 	public Geometry2D char2D(char ch, double width, int angularResolution)
 	{
-		throw new UnsupportedOperationException(
-				"char2D is not supported by the Manifold backend. " +
-				"Use the OpenSCAD backend for text operations.");
+		double flatness = angularResolutionToFlatness(angularResolution);
+		CrossSection glyph = glyphToCrossSection(ch, flatness);
+		double scale = width * textScale;
+		CrossSection scaled = glyph.scale(new DoubleVec2(scale, scale));
+		return new Geometry2DImpl(scaled);
 	}
 
 	@Override
 	public Geometry2D char2D(char ch, double width, double height, int angularResolution)
 	{
-		throw new UnsupportedOperationException(
-				"char2D is not supported by the Manifold backend. " +
-				"Use the OpenSCAD backend for text operations.");
+		double flatness = angularResolutionToFlatness(angularResolution);
+		CrossSection glyph = glyphToCrossSection(ch, flatness);
+		double scaleX = textScale * width;
+		double scaleY = textScale * 0.5 * height;
+		CrossSection scaled = glyph.scale(new DoubleVec2(scaleX, scaleY));
+		return new Geometry2DImpl(scaled);
 	}
 
 	@Override
@@ -321,6 +350,85 @@ public class JavaCSGBaseManifoldImpl implements JavaCSGBase
 	public double charBaseline2D(double height)
 	{
 		return 0.2 * height;
+	}
+
+	private double angularResolutionToFlatness(int angularResolution)
+	{
+		if (angularResolution < 3) angularResolution = 3;
+		double referenceRadius = 50.0;
+		double flatness = referenceRadius * (1.0 - Math.cos(Math.PI / angularResolution));
+		return Math.max(0.01, Math.min(flatness, 10.0));
+	}
+
+	private CrossSection glyphToCrossSection(char ch, double flatness)
+	{
+		GlyphVector gv = awtFont.createGlyphVector(frc, new char[]{ch});
+		Shape outline = gv.getOutline();
+
+		AffineTransform yFlip = new AffineTransform(1, 0, 0, -1, 0, 0);
+		PathIterator pi = outline.getPathIterator(yFlip, flatness);
+
+		Polygons polygons = new Polygons();
+		SimplePolygon currentPoly = null;
+		double[] coords = new double[6];
+
+		while (!pi.isDone())
+		{
+			int type = pi.currentSegment(coords);
+			switch (type)
+			{
+				case PathIterator.SEG_MOVETO:
+					if (currentPoly != null && currentPoly.size() > 0)
+					{
+						polygons.pushBack(currentPoly);
+					}
+					currentPoly = new SimplePolygon();
+					currentPoly.pushBack(new DoubleVec2(coords[0], coords[1]));
+					break;
+
+				case PathIterator.SEG_LINETO:
+					if (currentPoly != null)
+					{
+						currentPoly.pushBack(new DoubleVec2(coords[0], coords[1]));
+					}
+					break;
+
+				case PathIterator.SEG_CLOSE:
+					if (currentPoly != null && currentPoly.size() > 0)
+					{
+						polygons.pushBack(currentPoly);
+						currentPoly = null;
+					}
+					break;
+
+				case PathIterator.SEG_QUADTO:
+					if (currentPoly != null)
+					{
+						currentPoly.pushBack(new DoubleVec2(coords[2], coords[3]));
+					}
+					break;
+
+				case PathIterator.SEG_CUBICTO:
+					if (currentPoly != null)
+					{
+						currentPoly.pushBack(new DoubleVec2(coords[4], coords[5]));
+					}
+					break;
+			}
+			pi.next();
+		}
+
+		if (currentPoly != null && currentPoly.size() > 0)
+		{
+			polygons.pushBack(currentPoly);
+		}
+
+		if (polygons.size() == 0)
+		{
+			return new CrossSection();
+		}
+
+		return new CrossSection(polygons, 0);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////

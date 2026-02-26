@@ -52,6 +52,12 @@ public class ManifoldTest
 		// Hull Test
 		testHull3D(csg);
 
+		// Text Rendering Tests
+		testChar2D(csg);
+		testChar2DWithHeight(csg);
+		testText2D(csg);
+		testChar2DSpace(csg);
+
 		System.out.println("\n=== Results: " + passed + " passed, " + failed + " failed ===");
 		if (failed > 0)
 		{
@@ -282,6 +288,80 @@ public class ManifoldTest
 			System.out.println("  FAIL: Hull 3D should be larger than sum of parts (" +
 					String.format("%.2f", hullVolume) + " <= " +
 					String.format("%.2f", box1Volume + box2Volume) + ")");
+			failed++;
+		}
+	}
+
+	// ========== Text Rendering Tests ==========
+
+	private static void testChar2D(JavaCSG csg)
+	{
+		Geometry2D charA = csg.char2D('A', 5.0, 64);
+		double area = getArea(charA);
+		if (area > 0)
+		{
+			System.out.println("  PASS: char2D('A') area = " + String.format("%.4f", area));
+			passed++;
+		}
+		else
+		{
+			System.out.println("  FAIL: char2D('A') area should be > 0, got " + String.format("%.4f", area));
+			failed++;
+		}
+	}
+
+	private static void testChar2DWithHeight(JavaCSG csg)
+	{
+		Geometry2D charB = csg.char2D('B', 5.0, 10.0, 64);
+		double area = getArea(charB);
+		if (area > 0)
+		{
+			System.out.println("  PASS: char2D('B', w=5, h=10) area = " + String.format("%.4f", area));
+			passed++;
+		}
+		else
+		{
+			System.out.println("  FAIL: char2D('B', w=5, h=10) area should be > 0, got " + String.format("%.4f", area));
+			failed++;
+		}
+	}
+
+	private static void testText2D(JavaCSG csg)
+	{
+		Geometry2D text = csg.text2D("Hello", 5, 64);
+		double area = getArea(text);
+		Vector2D min = text.getMin();
+		Vector2D max = text.getMax();
+		double textWidth = max.x() - min.x();
+		boolean areaOk = area > 0;
+		boolean widthOk = textWidth > 20 && textWidth < 30; // 5 chars * 5 width ≈ 25
+		if (areaOk && widthOk)
+		{
+			System.out.println("  PASS: text2D(\"Hello\") area=" + String.format("%.4f", area) +
+					", width=" + String.format("%.2f", textWidth));
+			passed++;
+		}
+		else
+		{
+			System.out.println("  FAIL: text2D(\"Hello\") area=" + String.format("%.4f", area) +
+					", width=" + String.format("%.2f", textWidth) +
+					" (expected area>0, width in [20,30])");
+			failed++;
+		}
+	}
+
+	private static void testChar2DSpace(JavaCSG csg)
+	{
+		Geometry2D space = csg.char2D(' ', 5.0, 64);
+		double area = getArea(space);
+		if (area == 0)
+		{
+			System.out.println("  PASS: char2D(' ') area = 0 (empty glyph)");
+			passed++;
+		}
+		else
+		{
+			System.out.println("  FAIL: char2D(' ') area should be 0, got " + String.format("%.4f", area));
 			failed++;
 		}
 	}
